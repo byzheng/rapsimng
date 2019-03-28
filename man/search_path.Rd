@@ -37,8 +37,9 @@ that has the name ‘Soil’ that is in scope
 }
 
 \examples{
+library(jsonlite)
 m <- read_json('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
 # Find the potential branching rate
-potential <- search_path(model,
+potential <- search_path(m,
                          path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
 }

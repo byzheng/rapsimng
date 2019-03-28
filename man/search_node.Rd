@@ -18,9 +18,10 @@ A list matching all criterias
 Find an element in the apsimx file
 }
 \examples{
+library(jsonlite)
 m <- read_json('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
 # Find the potential branching rate
-potential <- search_node(model,
+potential <- search_node(m,
             Name = 'PotentialBranchingRate',
             XProperty = "[Structure].LeafTipsAppeared")
 }

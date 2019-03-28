@@ -12,9 +12,10 @@
 #' @export
 #'
 #' @examples
+#' library(jsonlite)
 #' m <- read_json('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
 #' # Find the potential branching rate
-#' potential <- search_node(model,
+#' potential <- search_node(m,
 #'             Name = 'PotentialBranchingRate',
 #'             XProperty = "[Structure].LeafTipsAppeared")
 search_node <- function(l, ...) {
@@ -75,9 +76,10 @@ search_node <- function(l, ...) {
 #' @export
 #'
 #' @examples
+#' library(jsonlite)
 #' m <- read_json('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
 #' # Find the potential branching rate
-#' potential <- search_path(model,
+#' potential <- search_path(m,
 #'                          path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
 search_path <- function(l, path, type = NULL) {
     if (length(path) != 1) {
@@ -118,10 +120,10 @@ search_path <- function(l, path, type = NULL) {
 #' @export
 #'
 #' @examples
-
+#' library(jsonlite)
 #' m <- read_json('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
 #' # Find the potential branching rate
-#' potential <- search_path(model,
+#' potential <- search_path(m,
 #'                          path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
 #' convert_xypair(potential)
 convert_xypair <- function(l) {
