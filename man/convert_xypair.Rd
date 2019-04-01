@@ -4,10 +4,14 @@
 \alias{convert_xypair}
 \title{Convert a model into xypair}
 \usage{
-convert_xypair(l)
+convert_xypair(l, lower = NULL, upper = NULL)
 }
 \arguments{
 \item{l}{the list of apsimx file}
+
+\item{lower}{The lower bound. The first value will be copied lower is not NULL}
+
+\item{upper}{The upper bound. The last value will be copied upper is not NULL}
 }
 \value{
 a data.frame for X and Y values.
