@@ -115,7 +115,8 @@ search_path <- function(l, path, type = NULL) {
 #' Convert a model into xypair
 #'
 #' @param l the list of apsimx file
-#'
+#' @param lower The lower bound. The first value will be copied lower is not NULL
+#' @param upper The upper bound. The last value will be copied upper is not NULL
 #' @return a data.frame for X and Y values.
 #' @export
 #'
@@ -126,21 +127,34 @@ search_path <- function(l, path, type = NULL) {
 #' potential <- search_path(m,
 #'                          path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
 #' convert_xypair(potential)
-convert_xypair <- function(l) {
+convert_xypair <- function(l, lower = NULL, upper = NULL) {
 
     l_children <- l$Children
     if (is.null(l_children)) {
         stop('Children node is not found.')
     }
-    res <- NULL
+    x <- NULL
+    Y <- NULL
     for (i in seq_along(l_children)) {
         if (!is.null(l_children[[i]]$`$type`) &&
             l_children[[i]]$`$type` == 'Models.Functions.XYPairs, Models') {
-            res <- data.frame(X = unlist(l_children[[i]]$X),
-                       Y = unlist(l_children[[i]]$Y))
+            X <- unlist(l_children[[i]]$X)
+            Y <- unlist(l_children[[i]]$Y)
             break
         }
     }
+    if (length(X) == 0 || length(Y) == 0) {
+        stop('No values are found for X and Y.')
+    }
+    if (!is.null(lower)) {
+        X <- c(lower, X)
+        Y <- c(Y[1], Y)
+    }
+    if (!is.null(upper)) {
+        X <- c(X, upper)
+        Y <- c(Y, Y[length(Y)])
+    }
+    res <- data.frame(X = X, Y = Y)
     return(res)
 }
 
