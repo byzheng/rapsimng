@@ -83,7 +83,11 @@ search_node <- function(l, ...) {
             return(res)
         }
     }
-    return(r_search_node(l, conds, ele_names))
+    res <- r_search_node(l, conds, ele_names)
+    if (is.null(res$node) && is.null(res$path)) {
+        res <- list(node = res, path = NULL)
+    }
+    return(res)
 }
 
 
@@ -117,7 +121,7 @@ search_node <- function(l, ...) {
 #' # Find the potential branching rate
 #' potential <- search_path(m,
 #'                          path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
-search_path <- function(l, path, type = NULL) {
+search_path <- function(l, path) {
     if (length(path) != 1) {
         stop('Only one path is supported.')
     }
@@ -132,6 +136,8 @@ search_path <- function(l, path, type = NULL) {
         if (is.null(l)) {
             stop('The path is not found.')
         }
+    } else if (path_type == 'absolute') {
+        l <- list(node = l, path = NULL)
     }
     search_path <- sub('^(\\.|\\[.*\\]\\.)(.*)', '\\2', path)
     if (nchar(search_path) == 0) {

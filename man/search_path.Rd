@@ -4,7 +4,7 @@
 \alias{search_path}
 \title{Find a model in the apsimx file using specified path}
 \usage{
-search_path(l, path, type = NULL)
+search_path(l, path)
 }
 \arguments{
 \item{l}{the list of apsimx file}
