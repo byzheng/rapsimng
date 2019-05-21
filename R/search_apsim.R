@@ -3,6 +3,35 @@
 # * Copyright: MIT
 
 
+
+#' Read APSIMX file
+#'
+#' @param path The file path or URL to apsimx file
+#'
+#' @return A list object of apsimx file
+#' @export
+#'
+#' @examples
+#' m <- read_apsimx('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
+read_apsimx <- function(path) {
+
+    jsonlite::read_json(path, simplifyDataFrame = FALSE,
+                       simplifyVector = FALSE, simplifyMatrix = FALSE)
+}
+
+
+#' Write APSIMX file
+#'
+#' @param l the list of apsimx file
+#' @param path The file path to apsimx file
+#'
+#' @return A list object of apsimx file
+#' @export
+write_apsimx <- function(l, file) {
+    jsonlite::write_json(l, file, pretty = TRUE, auto_unbox = TRUE, null = 'null')
+}
+
+
 #' Find an element in the apsimx file
 #'
 #' @param l the list of apsimx file
@@ -39,8 +68,15 @@ search_node <- function(l, ...) {
         if (!is.null(l$Children)) {
             res <- NULL
             for (i in seq(along = l$Children)) {
+
                 res <- r_search_node(l$Children[[i]], conds, ele_names)
                 if (!is.null(res)) {
+                    if (is.null(res$path)) {
+                        res <- list(node = res)
+                        res$path <- i
+                    } else {
+                        res$path <- c(i, res$path)
+                    }
                     return(res)
                 }
             }
@@ -104,12 +140,34 @@ search_path <- function(l, path, type = NULL) {
     search_path <- strsplit(search_path, '\\.')[[1]]
     current_node <- l
     for (i in seq_along(search_path)) {
-        current_node <- search_node(current_node, Name = search_path[i])
+        old_path <- current_node$path
+        current_node <- search_node(current_node$node, Name = search_path[i])
+        current_node$path <- c(old_path, current_node$path)
         if (is.null(current_node)) {
             stop('The path is not found.')
         }
     }
     return(current_node)
+}
+
+
+#' Replace a model with new values
+#'
+#' @param l the list of apsimx file
+#' @param path The path returned by search_path or search_node
+#' @param new A new model
+#' @return The modified list with new value
+#' @export
+#'
+replace_model <- function(l, path, new) {
+    eq <- 'l'
+    for (i in seq(along = path)) {
+        eq <- c(eq, '[["Children"]]', paste0('[[', path[i], ']]'))
+    }
+    eq <- c(eq, '<- new')
+    eq_str <- paste(eq, collapse = '')
+    eval(parse(text=eq_str))
+    return(l)
 }
 
 #' Convert a model into xypair
@@ -127,7 +185,7 @@ search_path <- function(l, path, type = NULL) {
 #' potential <- search_path(m,
 #'                          path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
 #' convert_xypair(potential)
-convert_xypair <- function(l, lower = NULL, upper = NULL) {
+xypair <- function(l, lower = NULL, upper = NULL) {
 
     l_children <- l$Children
     if (is.null(l_children)) {
@@ -158,3 +216,13 @@ convert_xypair <- function(l, lower = NULL, upper = NULL) {
     return(res)
 }
 
+
+#' The fixed value in the apsimx
+#'
+#' @param l the list of apsimx file
+#'
+#' @return Value of this node
+#' @export
+fixed_value <- function(l) {
+    as.numeric(l$FixedValue)
+}
