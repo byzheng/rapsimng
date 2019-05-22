@@ -4,10 +4,12 @@
 \alias{search_node}
 \title{Find an element in the apsimx file}
 \usage{
-search_node(l, ...)
+search_node(l, max_depth = 1e+05, ...)
 }
 \arguments{
 \item{l}{the list of apsimx file}
+
+\item{max_depth}{The maximum depth to search}
 
 \item{...}{Other names arguments for property}
 }

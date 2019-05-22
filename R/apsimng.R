@@ -43,6 +43,7 @@ write_apsimx <- function(l, file) {
 #' Find an element in the apsimx file
 #'
 #' @param l the list of apsimx file
+#' @param max_depth The maximum depth to search
 #' @param ... Other names arguments for property
 #'
 #' @return A list matching all criterias
@@ -55,7 +56,7 @@ write_apsimx <- function(l, file) {
 #' potential <- search_node(m,
 #'             Name = 'PotentialBranchingRate',
 #'             XProperty = "[Structure].LeafTipsAppeared")
-search_node <- function(l, ...) {
+search_node <- function(l, max_depth = 100000, ...) {
     conds <- list(...)
     ele_names <- names(conds)
 
@@ -63,8 +64,7 @@ search_node <- function(l, ...) {
     if (!(!is.null(ele_names) && all(nchar(ele_names) > 0))) {
         stop('All elements should be named.')
     }
-    r_search_node <- function(l, conds, ele_names){
-
+    r_search_node <- function(l, conds, ele_names, max_depth, cdepth){
         check <- TRUE
         for (i in seq(along = conds)) {
             check <- check && !is.null(l[[ele_names[i]]]) && l[[ele_names[i]]] == as.character(conds[i])
@@ -72,12 +72,14 @@ search_node <- function(l, ...) {
         if (check) {
             return(l)
         }
-
+        if (cdepth > max_depth) {
+            return (NULL)
+        }
         if (!is.null(l$Children)) {
             res <- NULL
             for (i in seq(along = l$Children)) {
 
-                res <- r_search_node(l$Children[[i]], conds, ele_names)
+                res <- r_search_node(l$Children[[i]], conds, ele_names, max_depth, cdepth + 1)
                 if (!is.null(res)) {
                     if (is.null(res$path)) {
                         res <- list(node = res)
@@ -91,8 +93,9 @@ search_node <- function(l, ...) {
             return(res)
         }
     }
-    res <- r_search_node(l, conds, ele_names)
-    if (is.null(res$node) && is.null(res$path)) {
+    res <- r_search_node(l, conds, ele_names, max_depth, 1)
+
+    if (!is.null(res) && is.null(res$node) && is.null(res$path)) {
         res <- list(node = res, path = NULL)
     }
     return(res)
@@ -140,24 +143,28 @@ search_path <- function(l, path) {
     }
     if (path_type == 'scoped') {
         name <- sub('^\\[(.*)\\].*', '\\1', path)
+        path <- sub('^\\[(.*)\\](.*)', '\\2', path)
         l <- search_node(l, Name = name)
-        if (is.null(l)) {
+        if (is.null(l$node)) {
             stop('The path is not found.')
         }
     } else if (path_type == 'absolute') {
         l <- list(node = l, path = NULL)
     }
-    search_path <- sub('^(\\.|\\[.*\\]\\.)(.*)', '\\2', path)
-    if (nchar(search_path) == 0) {
+
+    if (nchar(path) == 0) {
         return(l)
     }
+    search_path <- sub('^\\.', '', path)
     search_path <- strsplit(search_path, '\\.')[[1]]
+
     current_node <- l
     for (i in seq_along(search_path)) {
         old_path <- current_node$path
-        current_node <- search_node(current_node$node, Name = search_path[i])
+
+        current_node <- search_node(current_node$node, Name = search_path[i], max_depth = 1)
         current_node$path <- c(old_path, current_node$path)
-        if (is.null(current_node)) {
+        if (is.null(current_node$node)) {
             stop('The path is not found.')
         }
     }
@@ -206,7 +213,7 @@ remove_model <- function(l, path) {
 }
 
 
-#' Append a model into apsimx
+#' Insert a model into apsimx
 #'
 #' @param l the list of apsimx file
 #' @param path If numeric, the path returned by search_path or search_node. If character, the path supported by apsimx
@@ -214,7 +221,7 @@ remove_model <- function(l, path) {
 #' @return The modified list with new value
 #' @export
 #'
-append_model <- function(l, path, model) {
+insert_model <- function(l, path, model) {
     path <- .check_path(l, path)
     eq <- 'l'
     for (i in seq(along = path)) {
