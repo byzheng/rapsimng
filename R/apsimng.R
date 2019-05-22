@@ -2,7 +2,15 @@
 # * Created:   01:09 PM Thursday, 21 February 2019
 # * Copyright: MIT
 
-
+# Internal code to check path
+.check_path <- function(l, path) {
+    if (all(is.numeric(path))) {
+        return(path)
+    } else if (length(path) == 1 && is.character(path)) {
+        return(search_path(l, path)$path)
+    }
+    stop("not implemented")
+}
 
 #' Read APSIMX file
 #'
@@ -131,7 +139,7 @@ search_path <- function(l, path) {
         stop('The path is not supported.')
     }
     if (path_type == 'scoped') {
-        name <- sub('^\\[(.*)\\]\\..*', '\\1', path)
+        name <- sub('^\\[(.*)\\].*', '\\1', path)
         l <- search_node(l, Name = name)
         if (is.null(l)) {
             stop('The path is not found.')
@@ -141,7 +149,7 @@ search_path <- function(l, path) {
     }
     search_path <- sub('^(\\.|\\[.*\\]\\.)(.*)', '\\2', path)
     if (nchar(search_path) == 0) {
-        stop('Path cannot be zero length.')
+        return(l)
     }
     search_path <- strsplit(search_path, '\\.')[[1]]
     current_node <- l
@@ -160,22 +168,65 @@ search_path <- function(l, path) {
 #' Replace a model with new values
 #'
 #' @param l the list of apsimx file
-#' @param path The path returned by search_path or search_node
-#' @param new A new model
+#' @param path If numeric, the path returned by search_path or search_node. If character, the path supported by apsimx
+#' @param model A new model
 #' @return The modified list with new value
 #' @export
 #'
-replace_model <- function(l, path, new) {
+replace_model <- function(l, path, model) {
+    path <- .check_path(l, path)
     eq <- 'l'
     for (i in seq(along = path)) {
         eq <- c(eq, '[["Children"]]', paste0('[[', path[i], ']]'))
     }
-    eq <- c(eq, '<- new')
+    eq <- c(eq, '<- model')
     eq_str <- paste(eq, collapse = '')
     eval(parse(text=eq_str))
     return(l)
 }
 
+
+#' Remove a model with new values
+#'
+#' @param l the list of apsimx file
+#' @param path If numeric, the path returned by search_path or search_node. If character, the path supported by apsimx
+#' @return The modified list with new value
+#' @export
+#'
+remove_model <- function(l, path) {
+    path <- .check_path(l, path)
+    eq <- 'l'
+    for (i in seq(along = path)) {
+        eq <- c(eq, '[["Children"]]', paste0('[[', path[i], ']]'))
+    }
+    eq <- c(eq, '<- NULL')
+    eq_str <- paste(eq, collapse = '')
+    eval(parse(text=eq_str))
+    return(l)
+}
+
+
+#' Append a model into apsimx
+#'
+#' @param l the list of apsimx file
+#' @param path If numeric, the path returned by search_path or search_node. If character, the path supported by apsimx
+#' @param model A new model
+#' @return The modified list with new value
+#' @export
+#'
+append_model <- function(l, path, model) {
+    path <- .check_path(l, path)
+    eq <- 'l'
+    for (i in seq(along = path)) {
+        eq <- c(eq, '[["Children"]]', paste0('[[', path[i], ']]'))
+    }
+    eq <- c(eq, '[["Children"]]')
+    eq_str <- paste(eq, collapse = '')
+    eq_str <- paste0(eq_str, '[[length(', eq_str, ')+1]] <- model')
+
+    eval(parse(text=eq_str))
+    return(l)
+}
 #' Convert a model into xypair
 #'
 #' @param l the list of apsimx file
