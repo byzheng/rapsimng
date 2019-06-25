@@ -25,5 +25,5 @@ m <- read_json('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/
 # Find the potential branching rate
 potential <- search_path(m,
                          path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
-convert_xypair(potential)
+xypair(potential)
 }

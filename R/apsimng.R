@@ -248,10 +248,10 @@ insert_model <- function(l, path, model) {
 #' # Find the potential branching rate
 #' potential <- search_path(m,
 #'                          path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
-#' convert_xypair(potential)
+#' xypair(potential)
 xypair <- function(l, lower = NULL, upper = NULL) {
 
-    l_children <- l$Children
+    l_children <- l$node$Children
     if (is.null(l_children)) {
         stop('Children node is not found.')
     }
