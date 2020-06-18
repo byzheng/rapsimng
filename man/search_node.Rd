@@ -2,9 +2,9 @@
 % Please edit documentation in R/apsimng.R
 \name{search_node}
 \alias{search_node}
-\title{Find an element in the apsimx file}
+\title{Find an element in the apsimx file (first occurrence)}
 \usage{
-search_node(l, max_depth = 1e+05, ...)
+search_node(l, max_depth = 1e+06, ...)
 }
 \arguments{
 \item{l}{the list of apsimx file}
@@ -17,7 +17,7 @@ search_node(l, max_depth = 1e+05, ...)
 A list matching all criterias
 }
 \description{
-Find an element in the apsimx file
+Find an element in the apsimx file (first occurrence)
 }
 \examples{
 library(jsonlite)
