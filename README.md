@@ -1,6 +1,6 @@
 # RApsimNG
 
-A R package for APSIM Next Generation 
+A R package for APSIM Next Generation
 
 
 ## Features
@@ -8,12 +8,13 @@ A R package for APSIM Next Generation
 
 
 
-## Install
+## Installation
+
+Currently on [Github](https://github.com/byzheng/RApsimNG) only. Install with:
 
 ```r
 devtools::install_github('byzheng/RApsimNG')
 ```
-
 
 ## Example
 

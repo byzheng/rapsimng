@@ -3,9 +3,11 @@ title: "Use RApsimNG to modify apximx file"
 author: "Bangyou Zheng"
 date: "`r Sys.Date()`"
 output: 
-  rmarkdown::html_vignette: default
+  rmarkdown::html_vignette
 vignette: |
-  %\VignetteIndexEntry{Vignette Title} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{RApsimNG} 
+  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
