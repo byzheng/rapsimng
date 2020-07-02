@@ -21,6 +21,7 @@ if (!require(RApsimNG1)) {
 }
 library(RApsimNG)
 ```
+## Read APSIMX file
 
 ```{r read-apsimx}
 # Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.
