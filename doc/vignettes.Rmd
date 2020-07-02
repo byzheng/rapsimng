@@ -1,0 +1,38 @@
+---
+title: "Use RApsimNG to modify apximx file"
+author: "Bangyou Zheng"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette
+vignette: |
+  %\VignetteIndexEntry{RApsimNG} 
+  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+# install packages
+if (!require(RApsimNG1)) {
+    devtools::install_github('byzheng/RApsimNG')
+}
+library(RApsimNG)
+```
+## Read APSIMX file
+
+```{r read-apsimx}
+# Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.
+wheat_apsimx <- read_apsimx("https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Tests/Validation/Wheat/Wheat.apsimx")
+
+```
+## Search a path
+
+A node can be found using the path style in APSIMX. 
+```{r search-path}
+
+
+```
+
