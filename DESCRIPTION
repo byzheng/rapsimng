@@ -1,11 +1,16 @@
 Package: RApsimNG
 Type: Package
-Title: R package for APSIM NG
+Title: APSIM Next Generation in R
 Version: 0.1.0
-Authors@R: c(person("Bangyou", "Zheng", email = "bangyou.zheng@csiro.au", role = "cre"))
+Authors@R: person("Bangyou", "Zheng", 
+               email = "bangyou.zheng@csiro.au", 
+               role = c("aut", "cre"))
 Description: A R package for APSIM Next Generation <https://www.apsim.info/> to 
              modify apsimx file and run APSIM NG.
 License: file LICENSE
+URL: https://rapsimng.bangyou.me/,
+    https://github.com/byzheng/RApsimNG
+BugReports: https://github.com/byzheng/RApsimNG/issues
 Encoding: UTF-8
 LazyData: true
 Imports: jsonlite, xml2
