@@ -8,3 +8,4 @@ CRAN-RELEASE
 *.bak
 *.db-shm
 *.db-wal
+docs

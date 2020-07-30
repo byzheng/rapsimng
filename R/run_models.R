@@ -22,7 +22,7 @@ run_models <- function(models_exe, path,
     if (!file.exists(models_exe)) {
         stop("Models.exe does not exist")
     }
-    cmd <- paste0(models_exe, ' ', path)
+    cmd <- paste0('"', models_exe, '" "', path, '"')
     if (!is.null(pattern) && is.character(pattern)) {
         cmd <- paste0(cmd, " ", "/SimulationNameRegexPattern:", pattern)
     }

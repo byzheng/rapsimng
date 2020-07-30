@@ -9,3 +9,6 @@ cran-comments.md
 .*\.bak
 .*\.db-shm
 .*\.db-wal
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
