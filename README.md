@@ -1,6 +1,8 @@
 # RApsimNG
 
 [![Build Status](https://travis-ci.com/byzheng/RApsimNG.svg?branch=master)](https://travis-ci.com/byzheng/RApsimNG)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/RApsimNG)](https://cran.r-project.org/package=RApsimNG)
+
 
 
 A R package for APSIM Next Generation
