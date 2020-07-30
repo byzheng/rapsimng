@@ -1,6 +1,6 @@
 # RApsimNG
 
-[![Build Status](https://travis-ci.com/byzheng/RApsimNG.svg?branch=master)](https://travis-ci.com/byzheng/RApsimNG)
+![R-CMD-check](https://github.com/byzheng/RApsimNG/workflows/R-CMD-check/badge.svg)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/RApsimNG)](https://cran.r-project.org/package=RApsimNG)
 
 
