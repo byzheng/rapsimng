@@ -36,16 +36,21 @@ m <- read_apsimx(file)
 
 ```
 
-## Search by of APSIM NG 
+## Search by of APSIM NG
 
-A node can be found using the path style in APSIMX. 
+A node in the apsimx file can be found using the [path specification](https://apsimnextgeneration.netlify.app/development/model/4-pathspecification/) in APSIM NG.
 ```{r search-path}
-
-
+potential <- search_path(m,
+    path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
+potential
 ```
-## Modify and replace a model  
 
-## Create a new model
+
+## Run apsimx file
+
+A function `run_models` is wrapped for APSIM NG `Models.exe` in the command line and can be called to run apsimx files. See [APSIM website](https://apsimnextgeneration.netlify.app/) for documentation. 
+
+
 
 
 
