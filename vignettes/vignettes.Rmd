@@ -20,23 +20,19 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-# install packages
-if (!require(RApsimNG)) {
-    devtools::install_github('byzheng/RApsimNG')
-}
 library(RApsimNG)
 ```
 
 
 ## Read APSIMX file
 
-The `wheat.apsimx` in the validation dataset of APSIM NG  is used as an example. Function `read_apsimx` is used to read `*.apximx` file through `jsonlite::read_json` and returns as a list.
+The `wheat.apsimx` in the validation dataset of APSIM NG  is used as an example. Function `read_apsimx` is used to read `*.apsimx` file through `jsonlite::read_json` and returns as a list.
 
 
 ```{r read-apsimx}
 # Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.
-wheat_apsimx <- read_apsimx("https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Tests/Validation/Wheat/Wheat.apsimx")
-summary(wheat_apsimx)
+file <- system.file("wheat.apsimx", package = "RApsimNG")
+m <- read_apsimx(file)
 
 ```
 

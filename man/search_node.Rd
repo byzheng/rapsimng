@@ -14,14 +14,14 @@ search_node(l, max_depth = 1e+06, ...)
 \item{...}{Other names arguments for property}
 }
 \value{
-A list matching all criterias
+A list matching all criteria
 }
 \description{
 Find an element in the apsimx file (first occurrence)
 }
 \examples{
-library(jsonlite)
-m <- read_json('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
+file <- system.file("wheat.apsimx", package = "RApsimNG")
+m <- read_apsimx(file)
 # Find the potential branching rate
 potential <- search_node(m,
             Name = 'PotentialBranchingRate',

@@ -2,12 +2,13 @@ Package: RApsimNG
 Type: Package
 Title: R package for APSIM NG
 Version: 0.1.0
-Author: Bangyou Zheng
-Maintainer: Bangyou Zheng <bangyou.zheng@csiro.au>
-Description: R package for APSIM NG
-License: MIT
+Authors@R: c(person("Bangyou", "Zheng", email = "bangyou.zheng@csiro.au", role = "cre"))
+Description: A R package for APSIM Next Generation <https://www.apsim.info/> to 
+             modify apsimx file and run APSIM NG.
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports: jsonlite, xml2
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
 Suggests: knitr, rmarkdown

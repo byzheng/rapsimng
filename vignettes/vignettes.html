@@ -12,7 +12,7 @@
 
 <meta name="author" content="Bangyou Zheng" />
 
-<meta name="date" content="2020-07-02" />
+<meta name="date" content="2020-07-30" />
 
 <title>Use RApsimNG to modify apximx file</title>
 
@@ -315,27 +315,17 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Use RApsimNG to modify apximx file</h1>
 <h4 class="author">Bangyou Zheng</h4>
-<h4 class="date">2020-07-02</h4>
+<h4 class="date">2020-07-30</h4>
 
 
 
 <p>The RApsimNG is designed to modify and run the *.apsimx simulations using R.</p>
 <div id="read-apsimx-file" class="section level2">
 <h2>Read APSIMX file</h2>
-<p>The <code>wheat.apsimx</code> in the validation dataset of APSIM NG is used as an example. Function <code>read_apsimx</code> is used to read <code>*.apximx</code> file through <code>jsonlite::read_json</code> and returns as a list.</p>
+<p>The <code>wheat.apsimx</code> in the validation dataset of APSIM NG is used as an example. Function <code>read_apsimx</code> is used to read <code>*.apsimx</code> file through <code>jsonlite::read_json</code> and returns as a list.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>wheat_apsimx &lt;-<span class="st"> </span><span class="kw">read_apsimx</span>(<span class="st">&quot;https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Tests/Validation/Wheat/Wheat.apsimx&quot;</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">summary</span>(wheat_apsimx)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt;                        Length Class  Mode     </span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt; $type                  1      -none- character</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt; ExplorerWidth          1      -none- numeric  </span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt; Version                1      -none- numeric  </span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt; ApsimVersion           1      -none- character</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt; Name                   1      -none- character</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#&gt; Children               6      -none- list     </span></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="co">#&gt; IncludeInDocumentation 1      -none- logical  </span></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="co">#&gt; Enabled                1      -none- logical  </span></span>
-<span id="cb1-13"><a href="#cb1-13"></a><span class="co">#&gt; ReadOnly               1      -none- logical</span></span></code></pre></div>
+<span id="cb1-2"><a href="#cb1-2"></a>file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;wheat.apsimx&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;RApsimNG&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>m &lt;-<span class="st"> </span><span class="kw">read_apsimx</span>(file)</span></code></pre></div>
 </div>
 <div id="search-by-of-apsim-ng" class="section level2">
 <h2>Search by of APSIM NG</h2>

@@ -1,4 +1,11 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^doc$
-^Meta$
+cran-comments.md
+.travis.yml
+^LICENSE.md$
+^CRAN-RELEASE$
+^NEWS.md$
+.*\.db
+.*\.bak
+.*\.db-shm
+.*\.db-wal

@@ -6,18 +6,11 @@
 # Models of APSIMNG
 
 .read_assembly <- function() {
-  var <- '_global.rapsimng.assembly.xml'
-  if (exists(var, .GlobalEnv))
-  {
-    res <- get(var, .GlobalEnv)
-  } else {
-    file <- system.file("Models.xml", package = "RApsimNG")
-    if (!file.exists(file)) {
-      stop("Models.xml doesn't exist.")
-    }
-    res <- xml2::read_xml(file)
-    assign(var, res, .GlobalEnv)
+  file <- system.file("Models.xml", package = "RApsimNG")
+  if (!file.exists(file)) {
+    stop("Models.xml doesn't exist.")
   }
+  res <- xml2::read_xml(file)
   res
 }
 
@@ -26,8 +19,6 @@
 #'
 #' @param name The name of new model
 #' @param namespace The namespace in the model
-#'
-#' @return
 #'
 #' @examples
 #' new_model("Cultivar")

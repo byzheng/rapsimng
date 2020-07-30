@@ -20,7 +20,8 @@
 #' @export
 #'
 #' @examples
-#' m <- read_apsimx('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
+#' file <- system.file("wheat.apsimx", package = "RApsimNG")
+#' m <- read_apsimx(file)
 read_apsimx <- function(path) {
 
     jsonlite::read_json(path, simplifyDataFrame = FALSE,
@@ -31,7 +32,7 @@ read_apsimx <- function(path) {
 #' Write APSIMX file
 #'
 #' @param l the list of apsimx file
-#' @param path The file path to apsimx file
+#' @param file The file path to apsimx file
 #'
 #' @return A list object of apsimx file
 #' @export
@@ -46,12 +47,12 @@ write_apsimx <- function(l, file) {
 #' @param max_depth The maximum depth to search
 #' @param ... Other names arguments for property
 #'
-#' @return A list matching all criterias
+#' @return A list matching all criteria
 #' @export
 #'
 #' @examples
-#' library(jsonlite)
-#' m <- read_json('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
+#' file <- system.file("wheat.apsimx", package = "RApsimNG")
+#' m <- read_apsimx(file)
 #' # Find the potential branching rate
 #' potential <- search_node(m,
 #'             Name = 'PotentialBranchingRate',
@@ -127,11 +128,11 @@ search_node <- function(l, max_depth = 1000000, ...) {
 #' @export
 #'
 #' @examples
-#' library(jsonlite)
-#' m <- read_json('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
+#' file <- system.file("wheat.apsimx", package = "RApsimNG")
+#' m <- read_apsimx(file)
 #' # Find the potential branching rate
 #' potential <- search_path(m,
-#'                          path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
+#'    path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
 search_path <- function(l, path) {
     if (length(path) != 1) {
         stop('Only one path is supported.')
@@ -220,7 +221,6 @@ remove_model <- function(l, path) {
 #' @param model A new model
 #' @return The modified list with new value
 #' @export
-#'
 insert_model <- function(l, path, model) {
     path <- .check_path(l, path)
     eq <- 'l'
@@ -243,7 +243,6 @@ insert_model <- function(l, path, model) {
 #' @param model A new model
 #' @return The modified list with new value
 #' @export
-#'
 append_model <- function(l, path, model) {
     path <- .check_path(l, path)
     if (length(path) == 1) {
@@ -275,11 +274,10 @@ append_model <- function(l, path, model) {
 #' @export
 #'
 #' @examples
-#' library(jsonlite)
-#' m <- read_json('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
-#' # Find the potential branching rate
+#' file <- system.file("wheat.apsimx", package = "RApsimNG")
+#' m <- read_apsimx(file)
 #' potential <- search_path(m,
-#'                          path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
+#'    path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
 #' xypair(potential)
 xypair <- function(l, lower = NULL, upper = NULL) {
 

@@ -2,3 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+cran-comments.md
+CRAN-RELEASE
+*.db
+*.bak
+*.db-shm
+*.db-wal

@@ -20,10 +20,9 @@ a data.frame for X and Y values.
 Convert a model into xypair
 }
 \examples{
-library(jsonlite)
-m <- read_json('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
-# Find the potential branching rate
+file <- system.file("wheat.apsimx", package = "RApsimNG")
+m <- read_apsimx(file)
 potential <- search_path(m,
-                         path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
+   path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
 xypair(potential)
 }

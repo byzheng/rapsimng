@@ -16,5 +16,6 @@ A list object of apsimx file
 Read APSIMX file
 }
 \examples{
-m <- read_apsimx('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
+file <- system.file("wheat.apsimx", package = "RApsimNG")
+m <- read_apsimx(file)
 }

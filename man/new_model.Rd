@@ -11,9 +11,6 @@ new_model(name, namespace = "PMF")
 
 \item{namespace}{The namespace in the model}
 }
-\value{
-
-}
 \description{
 Create a new model
 }

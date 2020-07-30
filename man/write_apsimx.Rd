@@ -9,7 +9,7 @@ write_apsimx(l, file)
 \arguments{
 \item{l}{the list of apsimx file}
 
-\item{path}{The file path to apsimx file}
+\item{file}{The file path to apsimx file}
 }
 \value{
 A list object of apsimx file
