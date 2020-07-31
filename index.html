@@ -47,18 +47,6 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="articles/vignettes.html">Use RApsimNG to modify apximx file</a>
-    </li>
-  </ul>
-</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -83,7 +71,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#rapsimng" class="anchor"></a>RApsimNG</h1></div>
 
-<p>A R package for APSIM Next Generation</p>
+<p><a href="https://rapsimng.bangyou.me">RApsimNG</a> package is designed to modify and run the *.apsimx simulations using R in <a href="https://www.apsim.info/">APSIM Next Generation</a>.</p>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
@@ -99,24 +87,52 @@
 <span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">'byzheng/RApsimNG'</span>)
 </pre></div>
 </div>
-<div id="example" class="section level2">
+<div id="read-apsimx-file" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+<a href="#read-apsimx-file" class="anchor"></a>Read APSIMX file</h2>
+<p>The <code>wheat.apsimx</code> in the validation dataset of APSIM NG is used as an example. Function <code>read_apsimx</code> is used to read <code>*.apsimx</code> file through <code><a href="https://jeroen.cran.dev/jsonlite/reference/read_json.html">jsonlite::read_json</a></code> and returns as a list.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rapsimng.bangyou.me">RApsimNG</a></span>)
-<span class="co"># Read apsimx file</span>
-<span class="kw">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_apsimx.html">read_apsimx</a></span>(<span class="st">'https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json'</span>)
-<span class="co"># Search for a model by path</span>
-<span class="kw">potential</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/search_path.html">search_path</a></span>(<span class="kw">m</span>, path = <span class="st">'[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate'</span>)
-
-<span class="co"># modify a model</span>
+<span class="co"># Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.</span>
+<span class="kw">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"wheat.apsimx"</span>, package = <span class="st">"RApsimNG"</span>)
+<span class="kw">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_apsimx.html">read_apsimx</a></span>(<span class="kw">file</span>)
+</pre></div>
+</div>
+<div id="search-by-of-apsim-ng" class="section level2">
+<h2 class="hasAnchor">
+<a href="#search-by-of-apsim-ng" class="anchor"></a>Search by of APSIM NG</h2>
+<p>A node in the apsimx file can be found using the <a href="https://apsimnextgeneration.netlify.app/development/model/4-pathspecification/">path specification</a> in APSIM NG.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">potential</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/search_path.html">search_path</a></span>(<span class="kw">m</span>,
+    path = <span class="st">'[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate'</span>)
+<span class="kw">potential</span>
+</pre></div>
+</div>
+<div id="modify-a-found-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#modify-a-found-model" class="anchor"></a>Modify a found model</h2>
+<div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="kw">new_model</span> <span class="op">&lt;-</span> <span class="kw">potential</span><span class="op">$</span><span class="kw">node</span>
 <span class="kw">new_model</span><span class="op">$</span><span class="kw">XProperty</span> <span class="op">&lt;-</span> <span class="st">'NewVariable'</span>
-
-<span class="co"># Replace the new model </span>
+</pre></div>
+</div>
+<div id="replace-the-new-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#replace-the-new-model" class="anchor"></a>Replace the new model</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="kw">new</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/replace_model.html">replace_model</a></span>(<span class="kw">m</span>, <span class="kw">potential</span><span class="op">$</span><span class="kw">path</span>, <span class="kw">new_model</span>)
+</pre></div>
+</div>
+<div id="save-into-a-new-apsimx-file" class="section level2">
+<h2 class="hasAnchor">
+<a href="#save-into-a-new-apsimx-file" class="anchor"></a>Save into a new apsimx file</h2>
+<div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="fu"><a href="reference/write_apsimx.html">write_apsimx</a></span>(<span class="kw">new</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(fileext = <span class="st">'.json'</span>))
 </pre></div>
+</div>
+<div id="run-apsimx-file" class="section level2">
+<h2 class="hasAnchor">
+<a href="#run-apsimx-file" class="anchor"></a>Run apsimx file</h2>
+<p>A function <code>run_models</code> is wrapped for APSIM NG <code>Models.exe</code> in the command line and can be called to run apsimx files. See <a href="https://apsimnextgeneration.netlify.app/">APSIM website</a> for documentation.</p>
 </div>
 </div>
   </div>
