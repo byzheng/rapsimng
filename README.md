@@ -5,7 +5,9 @@
 
 
 
-A R package for APSIM Next Generation
+
+[RApsimNG](https://rapsimng.bangyou.me) package is designed to modify and run the *.apsimx simulations using R in [APSIM Next Generation](https://www.apsim.info/).
+
 
 
 ## Features
@@ -21,21 +23,50 @@ Currently on [Github](https://github.com/byzheng/RApsimNG) only. Install with:
 devtools::install_github('byzheng/RApsimNG')
 ```
 
-## Example
+
+## Read APSIMX file
+
+The `wheat.apsimx` in the validation dataset of APSIM NG  is used as an example. Function `read_apsimx` is used to read `*.apsimx` file through `jsonlite::read_json` and returns as a list.
+
 
 ```r
-library(RApsimNG)
-# Read apsimx file
-m <- read_apsimx('https://raw.githubusercontent.com/APSIMInitiative/ApsimX/master/Models/Resources/Wheat.json')
-# Search for a model by path
-potential <- search_path(m, path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
-
-# modify a model
-new_model <- potential$node
-new_model$XProperty <- 'NewVariable'
-
-# Replace the new model 
-new <- replace_model(m, potential$path, new_model)
-write_apsimx(new, tempfile(fileext = '.json'))
+# Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.
+file <- system.file("wheat.apsimx", package = "RApsimNG")
+m <- read_apsimx(file)
 
 ```
+
+
+
+## Search by of APSIM NG
+
+A node in the apsimx file can be found using the [path specification](https://apsimnextgeneration.netlify.app/development/model/4-pathspecification/) in APSIM NG.
+```r
+potential <- search_path(m,
+    path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
+potential
+```
+
+
+## Modify a found model 
+```r
+new_model <- potential$node
+new_model$XProperty <- 'NewVariable'
+```
+
+## Replace the new model 
+```r
+new <- replace_model(m, potential$path, new_model)
+```
+
+## Save into a new apsimx file
+```r
+write_apsimx(new, tempfile(fileext = '.json'))
+```
+
+
+## Run apsimx file
+
+A function `run_models` is wrapped for APSIM NG `Models.exe` in the command line and can be called to run apsimx files. See [APSIM website](https://apsimnextgeneration.netlify.app/) for documentation. 
+
+
