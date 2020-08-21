@@ -45,5 +45,8 @@ run_models <- function(models_exe, path,
             cmd <- paste0(cmd, " /NumberOfProcessors:", ncpus)
         }
     }
-    system(cmd)
+    r <- system(cmd, intern = FALSE)
+    if (r != 0) {
+        stop("Failed to run apsimx: ", path)
+    }
 }
