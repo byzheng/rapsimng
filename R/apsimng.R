@@ -110,7 +110,7 @@ search_node <- function(l, max_depth = 1000000, ...) {
 #' Absolute paths have a leading ‘.’ e.g.
 #' \itemize{
 #'   \item .Simulations.Test.Clock - absolute path - refers to the clock model
-#' in the ‘Test’ simulation.
+#' in the 'Test' simulation.
 #' }
 #'
 #' @section Scoped Paths:
@@ -118,7 +118,7 @@ search_node <- function(l, max_depth = 1000000, ...) {
 #' of the specified name, in scope, is located before applying the rest of the path.
 #' \itemize{
 #'    \item [Soil].Water - scoped path - refers to the Water model that is a child of a model
-#' that has the name ‘Soil’ that is in scope
+#' that has the name 'Soil' that is in scope
 #' }
 #'
 #' @param l the list of apsimx file
