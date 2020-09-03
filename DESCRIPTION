@@ -1,15 +1,15 @@
 Package: RApsimNG
 Type: Package
-Title: APSIM Next Generation in R
+Title: APSIM Next Generation
 Version: 0.1.0
 Authors@R: person("Bangyou", "Zheng", 
                email = "bangyou.zheng@csiro.au", 
                role = c("aut", "cre"))
-Description: The Agricultural Production Systems sIMulator (APSIM) is a widely
+Description: The Agricultural Production Systems sIMulator ('APSIM') is a widely
     used to simulate the agricultural systems for multiple crops. This pacage 
-    is designed to create, modify and run apsimx files in the APSIM Next 
+    is designed to create, modify and run 'apsimx' files in the 'APSIM' Next 
     Generation <https://www.apsim.info/>.
-License: file LICENSE
+License: MIT + file LICENSE
 URL: https://rapsimng.bangyou.me/,
     https://github.com/byzheng/RApsimNG
 BugReports: https://github.com/byzheng/RApsimNG/issues
