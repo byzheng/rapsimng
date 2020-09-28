@@ -41,13 +41,15 @@ write_apsimx <- function(l, file) {
 }
 
 
-#' Find an element in the apsimx file (first occurrence)
+#' Find element(s) in  apsimx file
 #'
-#' @param l the list of apsimx file
+#' @param l The list of apsimx file
+#' @param all Whether to find all elements
 #' @param max_depth The maximum depth to search
-#' @param ... Other names arguments for property
+#' @param ... Other names arguments for property to match
 #'
-#' @return A list matching all criteria
+#' @return A list matching all criteria if all equals to TRUE,
+#' A list with node and path if all equals to FALSE (default)
 #' @export
 #'
 #' @examples
@@ -57,52 +59,54 @@ write_apsimx <- function(l, file) {
 #' potential <- search_node(m,
 #'             Name = 'PotentialBranchingRate',
 #'             XProperty = "[Structure].LeafTipsAppeared")
-search_node <- function(l, max_depth = 1000000, ...) {
+search_node <- function(l, all = FALSE, max_depth = 1000000, ...) {
     conds <- list(...)
     ele_names <- names(conds)
-
-
     if (!(!is.null(ele_names) && all(nchar(ele_names) > 0))) {
         stop('All elements should be named.')
     }
-    r_search_node <- function(l, conds, ele_names, max_depth, cdepth){
+    r_search_node <- function(l, conds, ele_names, max_depth, cdepth, cpath = 1, all = FALSE, result = list()){
         check <- TRUE
         for (i in seq(along = conds)) {
             check <- check && !is.null(l[[ele_names[i]]]) && l[[ele_names[i]]] == as.character(conds[i])
         }
         if (check) {
-            return(l)
+            # assign('l', l, .GlobalEnv)
+            # stop()
+            r <- list()
+            r$node <- l
+            r$path <- cpath[-length(cpath)]
+            r$path <- cpath
+            class(r) <- 'apsimxNode'
+            result[[length(result) + 1]] <- r
+            if (!all) {
+                return (result)
+            }
         }
         if (cdepth > max_depth) {
-            return (NULL)
+            return (result)
         }
-        if (!is.null(l$Children)) {
-            res <- NULL
+        if (!is.null(l$Children) && length(l$Children) > 0) {
             for (i in seq(along = l$Children)) {
 
-                res <- r_search_node(l$Children[[i]], conds, ele_names, max_depth, cdepth + 1)
-                if (!is.null(res)) {
-                    if (is.null(res$path)) {
-                        res <- list(node = res)
-                        res$path <- i
-                    } else {
-                        res$path <- c(i, res$path)
-                    }
-                    return(res)
-                }
+                result <- r_search_node(l$Children[[i]], conds, ele_names, max_depth, cdepth + 1,
+                                     cpath = c(cpath, i), result = result)
             }
-            return(res)
         }
+        return (result)
     }
-    res <- r_search_node(l, conds, ele_names, max_depth, 1)
-
-    if (!is.null(res) && is.null(res$node) && is.null(res$path)) {
-        res <- list(node = res, path = NULL)
+    res <- r_search_node(l, conds, ele_names, max_depth, 1, all = all)
+    if (length(res) == 0) {
+        return (res)
+    }
+    if (!all) {
+        if (length(all) != 1) {
+            stop("Require 1 element if all = TRUE")
+        }
+        res <- res[[1]]
     }
     return(res)
 }
-
-
 
 #' Find a model in the apsimx file using specified path
 #'
@@ -147,26 +151,28 @@ search_path <- function(l, path) {
         path <- sub('^\\[(.*)\\](.*)', '\\2', path)
         l <- search_node(l, Name = name)
         if (is.null(l$node)) {
-            stop('The path is not found.')
+            return(list())
         }
     } else if (path_type == 'absolute') {
-        l <- list(node = l, path = NULL)
+        l <- list(node = l, path = c(1))
     }
 
     if (nchar(path) == 0) {
         return(l)
     }
-    search_path <- sub('^\\.', '', path)
-    search_path <- strsplit(search_path, '\\.')[[1]]
+    search_path_str <- sub('^\\.', '', path)
+    search_path_str <- strsplit(search_path_str, '\\.')[[1]]
 
     current_node <- l
-    for (i in seq_along(search_path)) {
+    for (i in seq_along(search_path_str)) {
         old_path <- current_node$path
-
-        current_node <- search_node(current_node$node, Name = search_path[i], max_depth = 1)
-        current_node$path <- c(old_path, current_node$path)
+        current_node <- search_node(current_node$node, Name = search_path_str[i], max_depth = 1)
         if (is.null(current_node$node)) {
-            stop('The path is not found.')
+            return (list())
+        }
+        current_node$path <- c(old_path, current_node$path[-1])
+        if (is.null(current_node$node)) {
+            return (list())
         }
     }
     return(current_node)

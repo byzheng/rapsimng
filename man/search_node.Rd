@@ -2,22 +2,25 @@
 % Please edit documentation in R/apsimng.R
 \name{search_node}
 \alias{search_node}
-\title{Find an element in the apsimx file (first occurrence)}
+\title{Find element(s) in  apsimx file}
 \usage{
-search_node(l, max_depth = 1e+06, ...)
+search_node(l, all = FALSE, max_depth = 1e+06, ...)
 }
 \arguments{
-\item{l}{the list of apsimx file}
+\item{l}{The list of apsimx file}
+
+\item{all}{Whether to find all elements}
 
 \item{max_depth}{The maximum depth to search}
 
-\item{...}{Other names arguments for property}
+\item{...}{Other names arguments for property to match}
 }
 \value{
-A list matching all criteria
+A list matching all criteria if all equals to TRUE,
+A list with node and path if all equals to FALSE (default)
 }
 \description{
-Find an element in the apsimx file (first occurrence)
+Find element(s) in  apsimx file
 }
 \examples{
 file <- system.file("wheat.apsimx", package = "RApsimNG")
