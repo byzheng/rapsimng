@@ -15,7 +15,7 @@ URL: https://rapsimng.bangyou.me/,
 BugReports: https://github.com/byzheng/RApsimNG/issues
 Encoding: UTF-8
 LazyData: true
-Imports: jsonlite, xml2
+Imports: jsonlite, xml2, tibble, magrittr, tidyr, dplyr, rlang
 RoxygenNote: 7.1.1
 Suggests: 
     testthat
