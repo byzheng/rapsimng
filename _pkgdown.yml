@@ -11,17 +11,14 @@ reference:
   desc: "Functions for modify apsimx file."
 - contents:
   - ends_with("_model")
-
 - title: "Run apsimx"
   desc: "Functions for run apsimx file."
 - contents:
   - ends_with("_models")
-
 - title: "Cultivars"
   desc: "Functions for cultivar."
-- contents:"
-  - "get_cultivar"
-
+- contents:
+  -  ends_with("_cultivar")
 - title: "Utilities"
   desc: "Functions for general purpose."
 - contents:

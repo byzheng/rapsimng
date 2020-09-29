@@ -21,4 +21,5 @@ Get all cultivar parameters in a model
 wheat <- read_apsimx(system.file("Wheat.json", package = "RApsimNG"))
 get_cultivar(wheat)
 get_cultivar(wheat, alias = FALSE)
+
 }

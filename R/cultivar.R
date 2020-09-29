@@ -11,6 +11,7 @@
 #' wheat <- read_apsimx(system.file("Wheat.json", package = "RApsimNG"))
 #' get_cultivar(wheat)
 #' get_cultivar(wheat, alias = FALSE)
+#'
 get_cultivar <- function(l, alias = TRUE) {
     culs <- search_node(l, `$type` = "Models.PMF.Cultivar, Models", all = TRUE)
     if (length(culs) == 0) {
