@@ -7,3 +7,17 @@ reference:
   desc: "Functions for search in the apsimx file."
 - contents:
   - starts_with("search_")
+- title: "Modify apsimx"
+  desc: "Functions for modify apsimx file."
+- contents:
+  - ends_with("_model")
+
+- title: "Run apsimx"
+  desc: "Functions for run apsimx file."
+- contents:
+  - ends_with("_models")
+- title: "Utilities"
+  desc: "Functions for general purpose."
+- contents:
+  - "fixed_value"
+  - "xypair"
