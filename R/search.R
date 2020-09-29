@@ -12,34 +12,6 @@
     stop("not implemented")
 }
 
-#' Read APSIMX file
-#'
-#' @param path The file path or URL to apsimx file
-#'
-#' @return A list object of apsimx file
-#' @export
-#'
-#' @examples
-#' file <- system.file("wheat.apsimx", package = "RApsimNG")
-#' m <- read_apsimx(file)
-read_apsimx <- function(path) {
-
-    jsonlite::read_json(path, simplifyDataFrame = FALSE,
-                       simplifyVector = FALSE, simplifyMatrix = FALSE)
-}
-
-
-#' Write APSIMX file
-#'
-#' @param l the list of apsimx file
-#' @param file The file path to apsimx file
-#'
-#' @return A list object of apsimx file
-#' @export
-write_apsimx <- function(l, file) {
-    jsonlite::write_json(l, file, pretty = TRUE, auto_unbox = TRUE, null = 'null')
-}
-
 
 #' Find element(s) in  apsimx file
 #'
@@ -53,12 +25,28 @@ write_apsimx <- function(l, file) {
 #' @export
 #'
 #' @examples
-#' file <- system.file("wheat.apsimx", package = "RApsimNG")
-#' m <- read_apsimx(file)
-#' # Find the potential branching rate
-#' potential <- search_node(m,
+#' wheat <- read_apsimx(system.file("Wheat.json", package = "RApsimNG"))
+#' # Return empty list if not found
+#' search_node(wheat, Name = "Simulations1")
+#' # Find root level
+#' a <- search_node(wheat, Name = "Simulations")
+#' a$path
+#' # Find sub-level
+#' a <- search_node(wheat, Name = "Wheat")
+#' a$path
+#' a <- search_node(wheat, `$type` = "Models.PMF.Cultivar, Models")
+#' a$path
+#'
+#' # Find multiple attributes
+#' a <- search_node(wheat,
 #'             Name = 'PotentialBranchingRate',
-#'             XProperty = "[Structure].LeafTipsAppeared")
+#'             `$type` = "Models.Functions.PhaseLookup, Models")
+#' a$path
+#' a$node$Name
+#' # Find all cultivar nodes
+#'  a <- search_node(wheat, `$type` = "Models.PMF.Cultivar, Models", all = TRUE)
+#' length(a)
+
 search_node <- function(l, all = FALSE, max_depth = 1000000, ...) {
     conds <- list(...)
     ele_names <- names(conds)
@@ -132,11 +120,64 @@ search_node <- function(l, all = FALSE, max_depth = 1000000, ...) {
 #' @export
 #'
 #' @examples
-#' file <- system.file("wheat.apsimx", package = "RApsimNG")
-#' m <- read_apsimx(file)
-#' # Find the potential branching rate
-#' potential <- search_path(m,
-#'    path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
+#' wheat <- read_apsimx(system.file("Wheat.json", package = "RApsimNG"))
+#' # Return empty list if not found
+#' search_path(wheat, "[Simulations1]")
+#' # Search root path
+#' a <- search_path(wheat, '.Simulations')
+#' a$path
+#' a$node$Name
+#' # Level one
+#' a <- search_path(wheat, '.Simulations.Wheat1')
+#' a$path
+#' a$node$Name
+#' # Level two
+#' a <- search_path(wheat, '.Simulations.Wheat')
+#' a$path
+#' a$node$Name
+#' # Level three
+#' a <- search_path(wheat, '.Simulations.Wheat.BranchingRate')
+#' a$path
+#' a$node$Name
+#' a <- search_path(wheat, '.Simulations.Wheat.Structure')
+#' a$path
+#' a$node$Name
+#' # Level four
+#' a <- search_path(wheat, '.Simulations.Wheat.Structure.BranchingRate')
+#' a$path
+#' a$node$Name
+#' a <- search_path(wheat, '.Simulations.Wheat.Structure.BranchingRate1')
+#' a$path
+#' a$node$Name
+#' # scoped
+#' # Root path
+#' a <- search_path(wheat, '[Simulations1]')
+#' a <- search_path(wheat, '[Simulations]')
+#' a$path
+#' a$node$Name
+#' # Level two
+#' a <- search_path(wheat, '[Simulations].Wheat1')
+#' a <- search_path(wheat, '[Simulations1].Wheat')
+#' a$path
+#' a$node$Name
+#' a <- search_path(wheat, '[Whea]')
+#' a <- search_path(wheat, '[Wheat]')
+#' a$path
+#' a$node$Name
+#' # Level three
+#' a <- search_path(wheat, '[Wheat].BranchingRate')
+#' a <- search_path(wheat, '[Wheat].Structure')
+#' a$path
+#' a$node$Name
+#' a <- search_path(wheat, '[Structure]')
+#' a$path
+#' a$node$Name
+#' # Level four
+#' a <- search_path(wheat, '[Structure].BranchingRate')
+#' a$path
+#' a$node$Name
+#' a <- search_path(wheat, '[Structure].BranchingRate1')
+#' a <- search_path(wheat, '[Structure1].BranchingRate')
 search_path <- function(l, path) {
     if (length(path) != 1) {
         stop('Only one path is supported.')
