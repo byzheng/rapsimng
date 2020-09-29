@@ -1,7 +1,7 @@
 suppressPackageStartupMessages(library(testthat))
 test_that("Search all nodes", {
     # Read wheat.json
-    wheat <- read_apsimx(system.file("wheat.json", package = "RApsimNG"))
+    wheat <- read_apsimx(system.file("Wheat.json", package = "RApsimNG"))
     # Search first node
     # Empty if no matching
     a <- search_node(wheat, Name = "Simulations1")
