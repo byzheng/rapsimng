@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE}
 library(rapsimng)
-suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(magrittr))
 ```
 
 A new model can be generated in R according to Models assemble in APSIM Next Generation. The rapsimng package stores a copy of `Models.xml` from APSIM Next Generation on `1st August, 2020`.  
