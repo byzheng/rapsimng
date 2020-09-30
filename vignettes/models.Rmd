@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 ```{r setup, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE}
 library(rapsimng)
 suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(reactable))
 ```
 
 A new model can be generated in R according to Models assemble in APSIM Next Generation. The rapsimng package stores a copy of `Models.xml` from APSIM Next Generation on `1st August, 2020`.  
@@ -24,6 +25,6 @@ The available models can be listed using function `available_models`.
 
 ```{r}
 data.frame(model = available_models()) %>% 
-  reactable::reactable(pagination = FALSE, searchable = TRUE)
+  reactable(pagination = FALSE, searchable = TRUE)
 ```
 
