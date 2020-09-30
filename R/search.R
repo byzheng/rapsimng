@@ -2,16 +2,6 @@
 # * Created:   01:09 PM Thursday, 21 February 2019
 # * Copyright: MIT
 
-# Internal code to check path
-.check_path <- function(l, path) {
-    if (all(is.numeric(path))) {
-        return(path)
-    } else if (length(path) == 1 && is.character(path)) {
-        return(search_path(l, path)$path)
-    }
-    stop("not implemented")
-}
-
 
 #' Find element(s) in  apsimx file
 #'

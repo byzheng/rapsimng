@@ -17,3 +17,10 @@ The modified list with new value
 \description{
 Remove a model with new values
 }
+\examples{
+wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
+a <- search_path(wheat, '[Wheat].Phenology.ThermalTime')
+wheat_new <- remove_model(wheat, a$path)
+b <- search_path(wheat_new, '[Wheat].Phenology.ThermalTime')
+b
+}

@@ -1,4 +1,17 @@
 
+
+
+# Internal code to check path
+.check_path <- function(l, path) {
+    if (all(is.numeric(path))) {
+        return(path)
+    } else if (length(path) == 1 && is.character(path)) {
+        return(search_path(l, path)$path)
+    }
+    stop("not implemented")
+}
+
+
 #' Replace a model with new values
 #'
 #' @param l the list of apsimx file
@@ -6,9 +19,17 @@
 #' @param model A new model
 #' @return The modified list with new value
 #' @export
+#' @examples
+#' wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
 #'
+#' a <- search_path(wheat, '[Wheat].Phenology.ThermalTime')
+#' a$node$Children[[1]]$X[[2]] <- 27
+#' wheat_new <- replace_model(wheat, a$path, a$node)
+#' b <- search_path(wheat_new, '[Wheat].Phenology.ThermalTime')
+#' b$node$Children[[1]]$X
 replace_model <- function(l, path, model) {
     path <- .check_path(l, path)
+    path <- path[-1]
     eq <- 'l'
     for (i in seq(along = path)) {
         eq <- c(eq, '[["Children"]]', paste0('[[', path[i], ']]'))
@@ -26,9 +47,15 @@ replace_model <- function(l, path, model) {
 #' @param path If numeric, the path returned by search_path or search_node. If character, the path supported by apsimx
 #' @return The modified list with new value
 #' @export
-#'
+#' @examples
+#' wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
+#' a <- search_path(wheat, '[Wheat].Phenology.ThermalTime')
+#' wheat_new <- remove_model(wheat, a$path)
+#' b <- search_path(wheat_new, '[Wheat].Phenology.ThermalTime')
+#' b
 remove_model <- function(l, path) {
     path <- .check_path(l, path)
+    path <- path[-1]
     eq <- 'l'
     for (i in seq(along = path)) {
         eq <- c(eq, '[["Children"]]', paste0('[[', path[i], ']]'))
@@ -49,6 +76,7 @@ remove_model <- function(l, path) {
 #' @export
 insert_model <- function(l, path, model) {
     path <- .check_path(l, path)
+    path <- path[-1]
     eq <- 'l'
     for (i in seq(along = path)) {
         eq <- c(eq, '[["Children"]]', paste0('[[', path[i], ']]'))
@@ -71,6 +99,7 @@ insert_model <- function(l, path, model) {
 #' @export
 append_model <- function(l, path, model) {
     path <- .check_path(l, path)
+    path <- path[-1]
     if (length(path) == 1) {
         stop("Path should be more than 1")
     }
