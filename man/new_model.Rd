@@ -4,16 +4,17 @@
 \alias{new_model}
 \title{Create a new model}
 \usage{
-new_model(name, namespace = "PMF")
+new_model(model, name = model)
 }
 \arguments{
-\item{name}{The name of new model}
+\item{model}{The name of new model}
 
-\item{namespace}{The namespace in the model}
+\item{name}{The new name}
 }
 \description{
 Create a new model
 }
 \examples{
-new_model("Cultivar")
+new_model(model = "PMF.Cultivar")
+new_model(model = "PMF.Cultivar", name = "example")
 }

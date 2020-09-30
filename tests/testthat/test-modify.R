@@ -19,4 +19,15 @@ test_that("cultivar", {
     b <- search_path(wheat_new, '[Wheat].Phenology.ThermalTime')
     expect_equal(b, list())
 
+    # New model
+    cultivar <- new_model("PMF.Cultivar")
+    expect_equal(cultivar$Name, "Cultivar")
+    expect_equal(cultivar$`$type`, "Models.PMF.Cultivar, Models")
+    cultivar <- new_model("PMF.Cultivar", "test")
+    expect_equal(cultivar$Name, "test")
+    expect_equal(cultivar$`$type`, "Models.PMF.Cultivar, Models")
+    wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+
+    replacements <- new_model("Core.Replacements")
+
 })

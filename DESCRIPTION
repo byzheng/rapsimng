@@ -18,4 +18,7 @@ LazyData: true
 Imports: jsonlite, xml2, tibble, magrittr, tidyr, dplyr, rlang
 RoxygenNote: 7.1.1
 Suggests: 
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

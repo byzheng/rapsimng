@@ -9,3 +9,4 @@ CRAN-RELEASE
 *.db-shm
 *.db-wal
 docs
+inst/doc
