@@ -8,7 +8,7 @@
 #'
 #' @export
 #' @examples
-#' file <- system.file("wheat.apsimx", package = "RApsimNG")
+#' file <- system.file("wheat.apsimx", package = "rapsimng")
 #' m <- read_apsimx(file)
 #' potential <- search_path(m,
 #'    path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')

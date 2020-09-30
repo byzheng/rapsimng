@@ -16,6 +16,6 @@ A list object of apsimx file
 Read APSIMX file
 }
 \examples{
-file <- system.file("wheat.apsimx", package = "RApsimNG")
+file <- system.file("wheat.apsimx", package = "rapsimng")
 m <- read_apsimx(file)
 }

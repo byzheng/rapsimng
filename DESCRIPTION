@@ -1,4 +1,4 @@
-Package: RApsimNG
+Package: rapsimng
 Type: Package
 Title: APSIM Next Generation
 Version: 0.1.0
@@ -11,8 +11,8 @@ Description: The Agricultural Production Systems sIMulator ('APSIM') is a widely
     Generation <https://www.apsim.info/>.
 License: MIT + file LICENCE
 URL: https://rapsimng.bangyou.me/,
-    https://github.com/byzheng/RApsimNG
-BugReports: https://github.com/byzheng/RApsimNG/issues
+    https://github.com/byzheng/rapsimng
+BugReports: https://github.com/byzheng/rapsimng/issues
 Encoding: UTF-8
 LazyData: true
 Imports: jsonlite, xml2, tibble, magrittr, tidyr, dplyr, rlang

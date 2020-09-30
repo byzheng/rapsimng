@@ -25,7 +25,7 @@
 #' @export
 #'
 #' @examples
-#' wheat <- read_apsimx(system.file("Wheat.json", package = "RApsimNG"))
+#' wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
 #' # Return empty list if not found
 #' search_node(wheat, Name = "Simulations1")
 #' # Find root level
@@ -120,7 +120,7 @@ search_node <- function(l, all = FALSE, max_depth = 1000000, ...) {
 #' @export
 #'
 #' @examples
-#' wheat <- read_apsimx(system.file("Wheat.json", package = "RApsimNG"))
+#' wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
 #' # Return empty list if not found
 #' search_path(wheat, "[Simulations1]")
 #' # Search root path

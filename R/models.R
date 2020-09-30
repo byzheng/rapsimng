@@ -6,7 +6,7 @@
 # Models of APSIMNG
 
 .read_assembly <- function() {
-  file <- system.file("Models.xml", package = "RApsimNG")
+  file <- system.file("Models.xml", package = "rapsimng")
   if (!file.exists(file)) {
     stop("Models.xml doesn't exist.")
   }

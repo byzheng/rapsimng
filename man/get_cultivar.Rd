@@ -18,7 +18,7 @@ A data frame for all cultivar parameters
 Get all cultivar parameters in a model
 }
 \examples{
-wheat <- read_apsimx(system.file("Wheat.json", package = "RApsimNG"))
+wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
 get_cultivar(wheat)
 get_cultivar(wheat, alias = FALSE)
 

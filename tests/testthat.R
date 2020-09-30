@@ -1,4 +1,4 @@
 library(testthat)
-library(RApsimNG)
+library(rapsimng)
 
-test_check("RApsimNG")
+test_check("rapsimng")
