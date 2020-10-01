@@ -33,6 +33,7 @@ Several functions are designed to modify the apsimx file, including
 `read_apsimx` is used to read files with apsimx json format, i.e. `*.apsimx` for simulations and `*.json` for model under resource.
 
 ```{r read-apsimx}
+library(rapsimng)
 wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
 ```
 
