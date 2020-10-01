@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Run apsimx file using Models.exe — run_models • rapsimng</title>
+<title>Title Update the cultivar parameters — update_cultivar • rapsimng</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,11 @@
 
 
 
-<meta property="og:title" content="Run apsimx file using Models.exe — run_models" />
-<meta property="og:description" content="Run apsimx file using Models.exe" />
+<meta property="og:title" content="Title Update the cultivar parameters — update_cultivar" />
+<meta property="og:description" content="This function assumes the file is apsimx format.
+A new Replacements node is added if it is not exist.
+The existing cultivar parameters are updated. New cultivar
+is created." />
 
 
 
@@ -117,64 +120,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Run apsimx file using Models.exe</h1>
-    <small class="dont-index">Source: <a href='https://github.com/byzheng/rapsimng/blob/master/R/run_models.R'><code>R/run_models.R</code></a></small>
-    <div class="hidden name"><code>run_models.Rd</code></div>
+    <h1>Title Update the cultivar parameters</h1>
+    <small class="dont-index">Source: <a href='https://github.com/byzheng/rapsimng/blob/master/R/cultivar.R'><code>R/cultivar.R</code></a></small>
+    <div class="hidden name"><code>update_cultivar.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Run apsimx file using Models.exe</p>
+    <p>This function assumes the file is apsimx format.
+A new Replacements node is added if it is not exist.
+The existing cultivar parameters are updated. New cultivar
+is created.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>run_models</span><span class='op'>(</span>
-  <span class='va'>models_exe</span>,
-  <span class='va'>path</span>,
-  pattern <span class='op'>=</span> <span class='cn'>NULL</span>,
-  recurse <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  csv <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  parallel <span class='op'>=</span> <span class='cn'>NULL</span>,
-  ncpus <span class='op'>=</span> <span class='cn'>NULL</span>,
-  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>update_cultivar</span><span class='op'>(</span><span class='va'>l</span>, <span class='va'>df</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>models_exe</th>
-      <td><p>path to Models.exe</p></td>
+      <th>l</th>
+      <td><p>The list of apsimx file</p></td>
     </tr>
     <tr>
-      <th>path</th>
-      <td><p>The path to an .apsimx file. May include wildcard.</p></td>
-    </tr>
-    <tr>
-      <th>pattern</th>
-      <td><p>Use to filter simulation names to run.</p></td>
-    </tr>
-    <tr>
-      <th>recurse</th>
-      <td><p>Recursively search subdirectories for files matching ApsimXFileSpec. FALSE in default.</p></td>
-    </tr>
-    <tr>
-      <th>csv</th>
-      <td><p>Export all reports to .csv files. FALSE in default.</p></td>
-    </tr>
-    <tr>
-      <th>parallel</th>
-      <td><p>Use the multi-process job runner. If FALSE, use single threaded; if TRUE, use the multi-process job runner</p></td>
-    </tr>
-    <tr>
-      <th>ncpus</th>
-      <td><p>Set the number of processors to use. All processes in default</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>Write messages to StdOut when a simulation starts/finishes. Only has an effect when running a directory of .apsimx files (*.apsimx).</p></td>
+      <th>df</th>
+      <td><p>A data frame for new parameters with three columns, i.e. name, parameter and value.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>The modified apsimx file</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>wheat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_apsimx.html'>read_apsimx</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"wheat.apsimx"</span>, package <span class='op'>=</span> <span class='st'>"rapsimng"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='co'># Update cultivars</span>
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"Hartog"</span>, <span class='fl'>3</span><span class='op'>)</span>,
+                 parameter <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"[Phenology].MinimumLeafNumber.FixedValue"</span>,
+                              <span class='st'>"[Phenology].VrnSensitivity.FixedValue"</span>,
+                              <span class='st'>"[Phenology].PpSensitivity.FixedValue"</span><span class='op'>)</span>,
+                value <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>7</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>wheat_cultivar</span> <span class='op'>&lt;-</span> <span class='fu'>update_cultivar</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='va'>df</span><span class='op'>)</span>
+<span class='va'>hartog</span> <span class='op'>&lt;-</span> <span class='fu'><a href='search_path.html'>search_path</a></span><span class='op'>(</span><span class='va'>wheat_cultivar</span>, <span class='st'>"[Replacements].Hartog"</span><span class='op'>)</span>
+<span class='va'>hartog</span><span class='op'>$</span><span class='va'>path</span>
+</div><div class='output co'>#&gt; [1] 1 3 1</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
