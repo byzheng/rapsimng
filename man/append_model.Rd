@@ -11,11 +11,36 @@ append_model(l, path, model)
 
 \item{path}{If numeric, the path returned by search_path or search_node. If character, the path supported by apsimx}
 
-\item{model}{A new model}
+\item{model}{A new model which should be a list of new models}
 }
 \value{
 The modified list with new value
 }
 \description{
 append a model into apsimx
+}
+\examples{
+wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+replacements <- new_model("Core.Replacements")
+wheat_new <- insert_model(wheat, 1, replacements)
+replacements_node <- search_path(wheat_new, ".Simulations.Replacements")
+replacements_node$path
+# Add a cultivar folder under replacements
+cultivar_folder <- new_model("PMF.CultivarFolder", "Cultivars")
+wheat_new <- insert_model(wheat_new, replacements_node$path, cultivar_folder)
+cultivar_folder_node <- search_path(wheat_new,
+                                    ".Simulations.Replacements.Cultivars")
+cultivar_folder_node$path
+# Add an new cultivar
+cultivar <- new_model("PMF.Cultivar", "Hartog")
+wheat_new <- insert_model(wheat_new, cultivar_folder_node$path, cultivar)
+cultivar_node <- search_path(wheat_new,
+                             ".Simulations.Replacements.Cultivars.Hartog")
+cultivar_node$path
+# Append another cultivar
+cultivar2 <- new_model("PMF.Cultivar", "Axe")
+wheat_new <- append_model(wheat_new, cultivar_node$path, list(cultivar2))
+cultivar2_node <- search_path(wheat_new,
+                              ".Simulations.Replacements.Cultivars.Axe")
+cultivar2_node$path
 }

@@ -44,3 +44,103 @@ get_cultivar <- function(l, alias = TRUE) {
         tidyr::separate(.data$cmd, into = c("parameter", "value"), sep = " *= *")
     r
 }
+
+# wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+# df <- data.frame(name = rep("Hartog", 3),
+#                  parameter = c("[Phenology].MinimumLeafNumber.FixedValue",
+#                                "[Phenology].VrnSensitivity.FixedValue",
+#                                "[Phenology].PpSensitivity.FixedValue"),
+#                  value = c(9, 7, 3))
+# l <- wheat
+#' Title Update the cultivar parameters
+#'
+#' @description
+#' This function assumes the file is apsimx format.
+#' A new Replacements node is added if it is not exist.
+#' The existing cultivar parameters are updated. New cultivar
+#' is created.
+#'
+#'
+#' @param l The list of apsimx file
+#' @param df A data frame for new parameters with three columns, i.e. name, parameter and value.
+#'
+#' @return The modified apsimx file
+#' @export
+#'
+#' @examples
+#' wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+#' # Update cultivars
+#' df <- data.frame(name = rep("Hartog", 3),
+#'                  parameter = c("[Phenology].MinimumLeafNumber.FixedValue",
+#'                               "[Phenology].VrnSensitivity.FixedValue",
+#'                               "[Phenology].PpSensitivity.FixedValue"),
+#'                 value = c(9, 7, 3))
+#'
+#' wheat_cultivar <- update_cultivar(wheat, df)
+#' hartog <- search_path(wheat_cultivar, "[Replacements].Hartog")
+#' hartog$path
+update_cultivar <- function(l, df) {
+    if (!tibble::has_name(df, "name")) {
+        stop("'name' column is required in the data frame 'df'.")
+    }
+
+    if (!tibble::has_name(df, "parameter")) {
+        stop("'parameter' column is required in the data frame 'df'.")
+    }
+
+    if (!tibble::has_name(df, "value")) {
+        stop("'value' column is required in the data frame 'df'.")
+    }
+
+    # Check the replacement node (assume the apsimx file)
+    cultivars_node <- search_path(l, "[Replacements]")
+
+    if (length(cultivars_node) == 0) {
+        replacements <- new_model("Core.Replacements")
+        l <- insert_model(l, 1, replacements)
+    }
+
+    # define the root node:
+    # Cultivars or Replacemens
+    # Check whether cultivar node exists
+    root_node <- search_path(l, "[Cultivars]")
+    if (length(root_node) == 0) {
+        root_node <- search_path(l, "[Replacements]")
+    }
+
+    cultivars_name <- unique(df$name)
+    i <- 1
+    for (i in seq(along = cultivars_name)) {
+        df_cultivar <- df[df$name == cultivars_name[i]]
+        commands <- paste0(df$parameter, " = ", df$value)
+        # Search whether the cultivar existing
+        cultivar_node <- search_path(l, paste0("[", cultivars_name[i], "]"))
+        if (length(cultivar_node) != 0) {
+            # overwrite in case the cultivar existing
+            cultivar_model <- cultivar_node$node
+            commands_old <- cultivar_model$Command
+            for (j in seq(along = df_cultivar$parameter)) {
+                pos <- grepl(df_cultivar$parameter[j], commands_old, fixed = TRUE)
+                # Overwrite if existing
+                if (sum(pos) > 0) {
+                    commands_old[pos] <- commands[j]
+                } else {
+                    commands_old <- c(commands_old, commands[j])
+                }
+            }
+            cultivar_model$Command <- commands_old
+            # Replace cultivar
+            l <- replace_model(l, cultivar_node$path,
+                               cultivar_model)
+        } else {
+            # Create a new one if not existing
+            cultivar_model <- new_model("PMF.Cultivar", cultivars_name[i])
+            cultivar_model$Command <- paste0(df$parameter, " = ", df$value)
+            # Insert new model
+            l <- insert_model(l, root_node$path,
+                              cultivar_model)
+        }
+
+    }
+    l
+}

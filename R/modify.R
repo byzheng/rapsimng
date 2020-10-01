@@ -74,6 +74,24 @@ remove_model <- function(l, path) {
 #' @param model A new model
 #' @return The modified list with new value
 #' @export
+#' @examples
+#' wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+#' replacements <- new_model("Core.Replacements")
+#' wheat_new <- insert_model(wheat, 1, replacements)
+#' replacements_node <- search_path(wheat_new, ".Simulations.Replacements")
+#' replacements_node$path
+#' # Add a cultivar folder under replacements
+#' cultivar_folder <- new_model("PMF.CultivarFolder", "Cultivars")
+#' wheat_new <- insert_model(wheat_new, replacements_node$path, cultivar_folder)
+#' cultivar_folder_node <- search_path(wheat_new,
+#'                                     ".Simulations.Replacements.Cultivars")
+#' cultivar_folder_node$path
+#' # Add an new cultivar
+#' cultivar <- new_model("PMF.Cultivar", "Hartog")
+#' wheat_new <- insert_model(wheat_new, cultivar_folder_node$path, cultivar)
+#' cultivar_node <- search_path(wheat_new,
+#'                              ".Simulations.Replacements.Cultivars.Hartog")
+#' cultivar_node$path
 insert_model <- function(l, path, model) {
     path <- .check_path(l, path)
     path <- path[-1]
@@ -94,9 +112,33 @@ insert_model <- function(l, path, model) {
 #'
 #' @param l the list of apsimx file
 #' @param path If numeric, the path returned by search_path or search_node. If character, the path supported by apsimx
-#' @param model A new model
+#' @param model A new model which should be a list of new models
 #' @return The modified list with new value
 #' @export
+#' @examples
+#' wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+#' replacements <- new_model("Core.Replacements")
+#' wheat_new <- insert_model(wheat, 1, replacements)
+#' replacements_node <- search_path(wheat_new, ".Simulations.Replacements")
+#' replacements_node$path
+#' # Add a cultivar folder under replacements
+#' cultivar_folder <- new_model("PMF.CultivarFolder", "Cultivars")
+#' wheat_new <- insert_model(wheat_new, replacements_node$path, cultivar_folder)
+#' cultivar_folder_node <- search_path(wheat_new,
+#'                                     ".Simulations.Replacements.Cultivars")
+#' cultivar_folder_node$path
+#' # Add an new cultivar
+#' cultivar <- new_model("PMF.Cultivar", "Hartog")
+#' wheat_new <- insert_model(wheat_new, cultivar_folder_node$path, cultivar)
+#' cultivar_node <- search_path(wheat_new,
+#'                              ".Simulations.Replacements.Cultivars.Hartog")
+#' cultivar_node$path
+#' # Append another cultivar
+#' cultivar2 <- new_model("PMF.Cultivar", "Axe")
+#' wheat_new <- append_model(wheat_new, cultivar_node$path, list(cultivar2))
+#' cultivar2_node <- search_path(wheat_new,
+#'                               ".Simulations.Replacements.Cultivars.Axe")
+#' cultivar2_node$path
 append_model <- function(l, path, model) {
     path <- .check_path(l, path)
     path <- path[-1]
