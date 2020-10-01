@@ -1,12 +1,12 @@
-# RApsimNG
+# rapsimng
 
-![R-CMD-check](https://github.com/byzheng/RApsimNG/workflows/R-CMD-check/badge.svg)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/RApsimNG)](https://cran.r-project.org/package=RApsimNG)
-
-
+![R-CMD-check](https://github.com/byzheng/rapsimng/workflows/R-CMD-check/badge.svg)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rapsimng)](https://cran.r-project.org/package=rapsimng)
 
 
-[RApsimNG](https://rapsimng.bangyou.me) package is designed to modify and run the *.apsimx simulations using R in [APSIM Next Generation](https://www.apsim.info/).
+
+
+[rapsimng](https://rapsimng.bangyou.me) package is designed to modify and run the *.apsimx simulations using R in [APSIM Next Generation](https://www.apsim.info/).
 
 
 
@@ -17,10 +17,10 @@
 
 ## Installation
 
-Currently on [Github](https://github.com/byzheng/RApsimNG) only. Install with:
+Currently on [Github](https://github.com/byzheng/rapsimng) only. Install with:
 
 ```r
-devtools::install_github('byzheng/RApsimNG')
+devtools::install_github('byzheng/rapsimng')
 ```
 
 
@@ -31,7 +31,7 @@ The `wheat.apsimx` in the validation dataset of APSIM NG  is used as an example.
 
 ```r
 # Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.
-file <- system.file("wheat.apsimx", package = "RApsimNG")
+file <- system.file("wheat.apsimx", package = "rapsimng")
 m <- read_apsimx(file)
 
 ```
