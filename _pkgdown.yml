@@ -19,8 +19,3 @@ reference:
   desc: "Functions for cultivar."
 - contents:
   -  ends_with("_cultivar")
-- title: "Utilities"
-  desc: "Functions for general purpose."
-- contents:
-  - "fixed_value"
-  - "xypair"
