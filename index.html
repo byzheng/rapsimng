@@ -80,9 +80,9 @@
   <div class="contents col-md-9">
 <div id="rapsimng" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#rapsimng" class="anchor"></a>RApsimNG</h1></div>
+<a href="#rapsimng" class="anchor"></a>rapsimng</h1></div>
 
-<p><a href="https://rapsimng.bangyou.me">RApsimNG</a> package is designed to modify and run the *.apsimx simulations using R in <a href="https://www.apsim.info/">APSIM Next Generation</a>.</p>
+<p><a href="https://rapsimng.bangyou.me">rapsimng</a> package is designed to modify and run the *.apsimx simulations using R in <a href="https://www.apsim.info/">APSIM Next Generation</a>.</p>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
@@ -93,9 +93,9 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Currently on <a href="https://github.com/byzheng/RApsimNG">Github</a> only. Install with:</p>
+<p>Currently on <a href="https://github.com/byzheng/rapsimng">Github</a> only. Install with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">'byzheng/RApsimNG'</span><span class="op">)</span></pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">'byzheng/rapsimng'</span><span class="op">)</span></pre></div>
 </div>
 <div id="read-apsimx-file" class="section level2">
 <h2 class="hasAnchor">
@@ -103,7 +103,7 @@
 <p>The <code>wheat.apsimx</code> in the validation dataset of APSIM NG is used as an example. Function <code>read_apsimx</code> is used to read <code>*.apsimx</code> file through <code><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html">jsonlite::read_json</a></code> and returns as a list.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="co"># Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.</span>
-<span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"RApsimNG"</span><span class="op">)</span>
+<span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span>
 <span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></pre></div>
 </div>
 <div id="search-by-of-apsim-ng" class="section level2">
@@ -176,7 +176,7 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=RApsimNG"><img src="http://www.r-pkg.org/badges/version/RApsimNG" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://cran.r-project.org/package=rapsimng"><img src="http://www.r-pkg.org/badges/version/rapsimng" alt="CRAN_Status_Badge"></a></li>
 </ul>
 </div>
 </div>
