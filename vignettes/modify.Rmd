@@ -17,7 +17,6 @@ knitr::opts_chunk$set(
 ```{r setup, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE}
 library(rapsimng)
 suppressPackageStartupMessages(library(magrittr))
-suppressPackageStartupMessages(library(reactable))
 ```
 
 Several functions are designed to modify the apsimx file, including
@@ -109,8 +108,7 @@ A new model can be generated in R according to Models assemble in APSIM Next Gen
 The available models can be listed using function `available_models`.
 
 ```{r}
-data.frame(model = available_models()) %>% 
-  reactable(pagination = TRUE, searchable = TRUE,defaultPageSize = 10)
+head(data.frame(model = available_models()))
 ```
 
 ## Update cultivar parameter values
