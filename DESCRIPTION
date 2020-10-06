@@ -6,10 +6,10 @@ Authors@R: person("Bangyou", "Zheng",
                email = "bangyou.zheng@csiro.au", 
                role = c("aut", "cre"))
 Description: The Agricultural Production Systems sIMulator ('APSIM') is a widely
-    used to simulate the agricultural systems for multiple crops. This pacage 
+    used to simulate the agricultural systems for multiple crops. This package 
     is designed to create, modify and run 'apsimx' files in the 'APSIM' Next 
     Generation <https://www.apsim.info/>.
-License: MIT + file LICENCE
+License: MIT + file LICENSE
 URL: https://rapsimng.bangyou.me/,
     https://github.com/byzheng/rapsimng
 BugReports: https://github.com/byzheng/rapsimng/issues

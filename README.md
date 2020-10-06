@@ -40,7 +40,7 @@ m <- read_apsimx(file)
 
 ## Search by of APSIM NG
 
-A node in the apsimx file can be found using the [path specification](https://apsimnextgeneration.netlify.app/development/model/4-pathspecification/) in APSIM NG.
+A node in the apsimx file can be found using the path specification in APSIM NG.
 ```r
 potential <- search_path(m,
     path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
