@@ -73,7 +73,8 @@
 
       
 
-      </header><script src="modify_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="modify_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="modify_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="modify_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Modify apsimx file</h1>
@@ -93,7 +94,8 @@
 <p><code>read_apsimx</code> is used to read files with apsimx json format, i.e. <code>*.apsimx</code> for simulations and <code>*.json</code> for model under resource.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rapsimng.bangyou.me/">rapsimng</a></span><span class="op">)</span>
-<span class="va">wheat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"Wheat.json"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span></pre></div>
+<span class="va">wheat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"Wheat.json"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#wheat &lt;- read_apsimx("inst/Wheat.json")</span></pre></div>
 </div>
 <div id="modify-existing-model" class="section level2">
 <h2 class="hasAnchor">
@@ -203,7 +205,7 @@ The available models can be listed using function <code>available_models</code>.
 <a href="#update-cultivar-parameter-values" class="anchor"></a>Update cultivar parameter values</h2>
 <p>Function <code>update_cultivar</code> is a short way to update parameter values for cultivars.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="va">wheat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">wheat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"Wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># Update cultivars</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Hartog"</span>, <span class="fl">3</span><span class="op">)</span>,
                   parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"[Phenology].MinimumLeafNumber.FixedValue"</span>,
