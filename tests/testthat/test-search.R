@@ -38,7 +38,7 @@ test_that("Search all nodes", {
     expect_equal(length(a), 1)
     expect_equal(a[[1]]$path, c(1, 1, 2))
     a <- search_node(wheat, `$type` = "Models.PMF.Cultivar, Models", all = TRUE)
-    expect_equal(length(a), 133)
+    expect_equal(length(a), 5)
 
     # Search by path
     # Absolute path
@@ -70,7 +70,7 @@ test_that("Search all nodes", {
     # Level four
     a <- search_path(wheat, '.Simulations.Wheat.Structure.BranchingRate')
     expect_equal(length(a), 2)
-    expect_equal(a$path, c(1, 1, 4, 2))
+    expect_equal(a$path, c(1, 1, 4, 1))
     a <- search_path(wheat, '.Simulations.Wheat.Structure.BranchingRate1')
     expect_equal(length(a), 0)
     expect_equal(a, list())
@@ -117,7 +117,7 @@ test_that("Search all nodes", {
     # Level four
     a <- search_path(wheat, '[Structure].BranchingRate')
     expect_equal(length(a), 2)
-    expect_equal(a$path, c(1, 1, 4, 2))
+    expect_equal(a$path, c(1, 1, 4, 1))
 
     a <- search_path(wheat, '[Structure].BranchingRate1')
     expect_equal(length(a), 0)
