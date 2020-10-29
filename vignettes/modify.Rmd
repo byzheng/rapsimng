@@ -117,7 +117,7 @@ head(data.frame(model = available_models()))
 Function `update_cultivar` is a short way to update parameter values for cultivars.
 
 ```{r}
-wheat <- read_apsimx(system.file("Wheat.apsimx", package = "rapsimng"))
+wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
 # Update cultivars
 df <- data.frame(name = rep("Hartog", 3),
                   parameter = c("[Phenology].MinimumLeafNumber.FixedValue",
