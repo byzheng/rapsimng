@@ -2,7 +2,7 @@
 
 ![R-CMD-check](https://github.com/byzheng/rapsimng/workflows/R-CMD-check/badge.svg)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rapsimng)](https://cran.r-project.org/package=rapsimng)
-
+[![codecov](https://codecov.io/gh/byzheng/RApsimNG/branch/master/graph/badge.svg)](https://codecov.io/gh/byzheng/RApsimNG)
 
 
 
