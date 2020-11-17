@@ -73,8 +73,7 @@
 
       
 
-      </header><script src="modify_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="modify_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="modify_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="modify_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Modify apsimx file</h1>
@@ -92,17 +91,17 @@
 <h2 class="hasAnchor">
 <a href="#read-apsimx-file" class="anchor"></a>Read apsimx file</h2>
 <p><code>read_apsimx</code> is used to read files with apsimx json format, i.e. <code>*.apsimx</code> for simulations and <code>*.json</code> for model under resource.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rapsimng.bangyou.me/">rapsimng</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rapsimng.bangyou.me/">rapsimng</a></span><span class="op">)</span>
 <span class="va">wheat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"Wheat.json"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#wheat &lt;- read_apsimx("inst/Wheat.json")</span></pre></div>
+<span class="co">#wheat &lt;- read_apsimx("inst/Wheat.json")</span></code></pre></div>
 </div>
 <div id="modify-existing-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#modify-existing-model" class="anchor"></a>Modify existing model</h2>
 <p>The existing model can be <code>replaced</code> and <code>removed</code>. The example below shows to update the critical thermal and then remove it.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># Find the ThermalTime model </span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Find the ThermalTime model </span>
 <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Wheat].Phenology.ThermalTime'</span><span class="op">)</span>
 <span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Children</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">X</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>
 <span class="co">#&gt; [1] 26</span>
@@ -121,14 +120,14 @@
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">wheat_new</span>, <span class="st">'[Wheat].Phenology.ThermalTime'</span><span class="op">)</span>
 <span class="co"># The ThermalTime model should not be found now (i.e. Empty list)</span>
 <span class="va">b</span>
-<span class="co">#&gt; list()</span></pre></div>
+<span class="co">#&gt; list()</span></code></pre></div>
 </div>
 <div id="create-new-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#create-new-model" class="anchor"></a>Create new model</h2>
 <p>Function <code>new_model</code> is used to generate the required elements for a new model, e.g. createing a new cultivar <code>Hartog</code></p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">new_cultivar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_model.html">new_model</a></span><span class="op">(</span><span class="st">"PMF.Cultivar"</span>, name <span class="op">=</span> <span class="st">"Hartog"</span><span class="op">)</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">new_cultivar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_model.html">new_model</a></span><span class="op">(</span><span class="st">"PMF.Cultivar"</span>, name <span class="op">=</span> <span class="st">"Hartog"</span><span class="op">)</span>
 <span class="va">new_cultivar</span>
 <span class="co">#&gt; $`$type`</span>
 <span class="co">#&gt; [1] "Models.PMF.Cultivar, Models"</span>
@@ -152,15 +151,15 @@
 <span class="co">#&gt; list()</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Command</span>
-<span class="co">#&gt; list()</span></pre></div>
+<span class="co">#&gt; list()</span></code></pre></div>
 <p>Then the <code>Command</code> can be updated to specify new parameter values.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">new_cultivar</span><span class="op">$</span><span class="va">Command</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">new_cultivar</span><span class="op">$</span><span class="va">Command</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
   <span class="st">"[Phenology].MinimumLeafNumber.FixedValue = 6"</span>,
-  <span class="st">"[Phenology].VrnSensitivity.FixedValue = 0"</span><span class="op">)</span></pre></div>
+  <span class="st">"[Phenology].VrnSensitivity.FixedValue = 0"</span><span class="op">)</span></code></pre></div>
 <p>Finally the new cultivar can be inserted into apsimx file.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># Read the apsimx file</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Read the apsimx file</span>
 <span class="va">wheat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># Create a new Replacements</span>
 <span class="va">replacements</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_model.html">new_model</a></span><span class="op">(</span><span class="st">"Core.Replacements"</span><span class="op">)</span>
@@ -183,29 +182,29 @@
 <span class="co">#&gt; [1] "[Phenology].MinimumLeafNumber.FixedValue = 6"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; [1] "[Phenology].VrnSensitivity.FixedValue = 0"</span></pre></div>
+<span class="co">#&gt; [1] "[Phenology].VrnSensitivity.FixedValue = 0"</span></code></pre></div>
 <div id="available-models" class="section level3">
 <h3 class="hasAnchor">
 <a href="#available-models" class="anchor"></a>Available models</h3>
 <p>A new model can be generated in R according to Models assemble in APSIM Next Generation. The rapsimng package stores a copy of <code>Models.xml</code> from APSIM Next Generation on <code>1st August, 2020</code>.<br>
 The available models can be listed using function <code>available_models</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>model <span class="op">=</span> <span class="fu"><a href="../reference/available_models.html">available_models</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>model <span class="op">=</span> <span class="fu"><a href="../reference/available_models.html">available_models</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;                                             model</span>
 <span class="co">#&gt; 1                            AgPasture.AGPBiomass</span>
 <span class="co">#&gt; 2                           AgPasture.BiomassAndN</span>
 <span class="co">#&gt; 3                    AgPasture.BiomassAndNLayered</span>
 <span class="co">#&gt; 4                         AgPasture.TissuesHelper</span>
 <span class="co">#&gt; 5                         AgPasture.SimpleGrazing</span>
-<span class="co">#&gt; 6 AgPasture.SimpleGrazing.GrazingRotationTypeEnum</span></pre></div>
+<span class="co">#&gt; 6 AgPasture.SimpleGrazing.GrazingRotationTypeEnum</span></code></pre></div>
 </div>
 </div>
 <div id="update-cultivar-parameter-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#update-cultivar-parameter-values" class="anchor"></a>Update cultivar parameter values</h2>
 <p>Function <code>update_cultivar</code> is a short way to update parameter values for cultivars.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="va">wheat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">wheat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># Update cultivars</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Hartog"</span>, <span class="fl">3</span><span class="op">)</span>,
                   parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"[Phenology].MinimumLeafNumber.FixedValue"</span>,
@@ -216,7 +215,7 @@ The available models can be listed using function <code>available_models</code>.
 <span class="co"># Check update cultivar paramters</span>
 <span class="va">hartog</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">wheat_cultivar</span>, <span class="st">"[Replacements].Hartog"</span><span class="op">)</span>
 <span class="va">hartog</span><span class="op">$</span><span class="va">path</span>
-<span class="co">#&gt; [1] 1 3 1</span></pre></div>
+<span class="co">#&gt; [1] 1 3 1</span></code></pre></div>
 </div>
   </div>
 
