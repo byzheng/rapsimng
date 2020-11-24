@@ -34,14 +34,14 @@ test_that("cultivar", {
     wheat_new <- insert_model(wheat, 1, replacements)
     replacements_node <- search_path(wheat_new, ".Simulations.Replacements")
     expect_equal(length(replacements_node), 2)
-    expect_equal(replacements_node$path, c(1, 3))
+    expect_equal(replacements_node$path, c(1, 4))
     # Add a cultivar folder under replacements
     cultivar_folder <- new_model("PMF.CultivarFolder", "Cultivars")
     wheat_new <- insert_model(wheat_new, replacements_node$path, cultivar_folder)
     cultivar_folder_node <- search_path(wheat_new,
                                         ".Simulations.Replacements.Cultivars")
     expect_equal(length(cultivar_folder_node), 2)
-    expect_equal(cultivar_folder_node$path, c(1, 3, 1))
+    expect_equal(cultivar_folder_node$path, c(1, 4, 1))
 
     # Add an new cultivar
     cultivar <- new_model("PMF.Cultivar", "Hartog")
@@ -49,7 +49,7 @@ test_that("cultivar", {
     cultivar_node <- search_path(wheat_new,
                                         ".Simulations.Replacements.Cultivars.Hartog")
     expect_equal(length(cultivar_node), 2)
-    expect_equal(cultivar_node$path, c(1, 3, 1, 1))
+    expect_equal(cultivar_node$path, c(1, 4, 1, 1))
 
     # Append node
     cultivar2 <- new_model("PMF.Cultivar", "Axe")
@@ -57,7 +57,7 @@ test_that("cultivar", {
     cultivar2_node <- search_path(wheat_new,
                                  ".Simulations.Replacements.Cultivars.Axe")
     expect_equal(length(cultivar2_node), 2)
-    expect_equal(cultivar2_node$path, c(1, 3, 1, 2))
+    expect_equal(cultivar2_node$path, c(1, 4, 1, 2))
 
 
     # Update cultivars
@@ -70,7 +70,7 @@ test_that("cultivar", {
     wheat_cultivar <- update_cultivar(wheat, df)
     hartog <- search_path(wheat_cultivar, "[Replacements].Hartog")
     expect_equal(length(hartog), 2)
-    expect_equal(hartog$path, c(1, 3, 1))
+    expect_equal(hartog$path, c(1, 4, 1))
     # Update if existing
     wheat_cultivar2 <- update_cultivar(wheat_cultivar, df)
     hartog2 <- search_path(wheat_cultivar2, "[Replacements].Hartog")
@@ -80,7 +80,7 @@ test_that("cultivar", {
     wheat_cultivar3 <- update_cultivar(wheat_new, df)
     hartog3 <- search_path(wheat_cultivar3, "[Replacements].Cultivars.Hartog")
     expect_equal(length(hartog3), 2)
-    expect_equal(hartog3$path, c(1, 3, 1, 1))
+    expect_equal(hartog3$path, c(1, 4, 1, 1))
     # Update existing one
     wheat_cultivar4 <- update_cultivar(wheat_cultivar3, df)
     hartog4 <- search_path(wheat_cultivar4, "[Replacements].Cultivars.Hartog")

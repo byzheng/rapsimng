@@ -15,6 +15,10 @@ reference:
   desc: "Functions for run apsimx file."
 - contents:
   - ends_with("_models")
+- title: "Simulations"
+  desc: "Functions related with simulations"
+- contents:
+  -  ends_with("_simulations")
 - title: "Cultivars"
   desc: "Functions for cultivar."
 - contents:
