@@ -1,7 +1,9 @@
 
 get_levels <- function(f) {
   r <- NULL
-  if (!is.null(f$Specification) && f$Specification != "") {
+
+  if (!is.null(f$Specification) && f$Specification != "" &&
+      !grepl('^\\[.+\\]$', f$Specification)) {
     pattern <- "^(\\[.+\\]\\..+ *= *)(.+)$"
     if (!grepl(pattern, f$Specification)) {
       stop("Specification should be as [SowingRule].Script.SowingDate = 2003-12-22")
@@ -28,7 +30,8 @@ keep_level <- function(f, v) {
          ") is not in the levels (", paste(levels, collapse = ", "), ")")
   }
   # In case of specification for levels
-  if (f$Specification != "") {
+  if (!is.null(f$Specification) && f$Specification != "" &&
+      !grepl('^\\[.+\\]$', f$Specification)) {
     pattern <- "^(\\[.+\\]\\..+ *= *)(.+)$"
     if (!grepl(pattern, f$Specification)) {
       stop("Specification should be as [SowingRule].Script.SowingDate = 2003-12-22")
