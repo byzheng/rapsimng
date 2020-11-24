@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Title Update the cultivar parameters — update_cultivar • rapsimng</title>
+<title>Get simulations for a factorial experiment — get_simulations • rapsimng</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,8 @@
 
 
 
-<meta property="og:title" content="Title Update the cultivar parameters — update_cultivar" />
-<meta property="og:description" content="This function assumes the file is apsimx format.
-A new Replacements node is added if it is not exist.
-The existing cultivar parameters are updated. New cultivar
-is created." />
+<meta property="og:title" content="Get simulations for a factorial experiment — get_simulations" />
+<meta property="og:description" content="Get simulations for a factorial experiment" />
 
 
 
@@ -120,50 +117,40 @@ is created." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Title Update the cultivar parameters</h1>
-    <small class="dont-index">Source: <a href='https://github.com/byzheng/rapsimng/blob/master/R/cultivar.R'><code>R/cultivar.R</code></a></small>
-    <div class="hidden name"><code>update_cultivar.Rd</code></div>
+    <h1>Get simulations for a factorial experiment</h1>
+    <small class="dont-index">Source: <a href='https://github.com/byzheng/rapsimng/blob/master/R/simulations.R'><code>R/simulations.R</code></a></small>
+    <div class="hidden name"><code>get_simulations.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function assumes the file is apsimx format.
-A new Replacements node is added if it is not exist.
-The existing cultivar parameters are updated. New cultivar
-is created.</p>
+    <p>Get simulations for a factorial experiment</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_cultivar</span><span class='op'>(</span><span class='va'>l</span>, <span class='va'>df</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_simulations</span><span class='op'>(</span><span class='va'>l</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>l</th>
-      <td><p>The list of apsimx file</p></td>
-    </tr>
-    <tr>
-      <th>df</th>
-      <td><p>A data frame for new parameters with three columns, i.e. name, parameter and value.</p></td>
+      <td><p>A list from read_apsim with Factorial.Permutation as root.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The modified apsimx file</p>
+    <p>A list with Factor as name and Levels as values</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>wheat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_apsimx.html'>read_apsimx</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"wheat.apsimx"</span>, package <span class='op'>=</span> <span class='st'>"rapsimng"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># Update cultivars</span>
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"Hartog"</span>, <span class='fl'>3</span><span class='op'>)</span>,
-                 parameter <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"[Phenology].MinimumLeafNumber.FixedValue"</span>,
-                              <span class='st'>"[Phenology].VrnSensitivity.FixedValue"</span>,
-                              <span class='st'>"[Phenology].PpSensitivity.FixedValue"</span><span class='op'>)</span>,
-                value <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>7</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='va'>wheat_cultivar</span> <span class='op'>&lt;-</span> <span class='fu'>update_cultivar</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='va'>df</span><span class='op'>)</span>
-<span class='va'>hartog</span> <span class='op'>&lt;-</span> <span class='fu'><a href='search_path.html'>search_path</a></span><span class='op'>(</span><span class='va'>wheat_cultivar</span>, <span class='st'>"[Replacements].Hartog"</span><span class='op'>)</span>
-<span class='va'>hartog</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1 4 1</div></pre>
+<span class='va'>permutation</span> <span class='op'>&lt;-</span> <span class='fu'><a href='search_path.html'>search_path</a></span><span class='op'>(</span><span class='va'>wheat</span>, path <span class='op'>=</span> <span class='st'>"[Factors].Permutation"</span><span class='op'>)</span>
+<span class='fu'>get_simulations</span><span class='op'>(</span><span class='va'>permutation</span><span class='op'>$</span><span class='va'>node</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $V
+#&gt; [1] "1" "2"
+#&gt; 
+#&gt; $Cv
+#&gt; [1] "Axe"       "Bolac"     "Calingiri"
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
