@@ -147,3 +147,32 @@ keep_simulations <- function(l, s) {
   factors_node$Children <- factors
   replace_model(l, path, factors_node)
 }
+
+
+#' Get the met file name for an experiment
+#'
+#' @param l A list or apsimxNode red by read_apsimx
+#'
+#' @return The met file name in a experiment
+#' @export
+#'
+#' @examples
+#' wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+#' exp <- search_path(wheat, path = "[Experiment]")
+#' get_metfile(exp)
+get_metfile <- function(l) {
+  l <- get_node(l)
+
+  met_node <- search_path(l, "[Weather]")
+  if (length(met_node) == 0) {
+    stop("Weather node is not found.")
+  }
+  if (met_node$node$`$type` != "Models.Climate.Weather, Models") {
+    stop("Weather node is not a Models.Climate.Weather")
+  }
+  met_name <- met_node$node$FileName
+  if (is.null(met_name)) {
+    stop("Cannot found element FileName")
+  }
+  met_name
+}

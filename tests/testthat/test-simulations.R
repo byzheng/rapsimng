@@ -57,4 +57,9 @@ test_that("Search all nodes", {
     permutation <- search_path(wheat, path = "[Experiment1].Factors")
     expect_equal(length(permutation), 2)
     expect_error(get_simulations(permutation$node))
+
+    # Test met name
+    exp <- search_path(wheat, path = "[Experiment]")
+    metfile <- get_metfile(exp)
+    expect_equal(metfile, "%root%\\Examples\\WeatherFiles\\Dalby.met")
 })

@@ -18,8 +18,9 @@ reference:
 - title: "Simulations"
   desc: "Functions related with simulations"
 - contents:
-  -  ends_with("_simulations")
+  - ends_with("_simulations")
+  - get_metfile
 - title: "Cultivars"
   desc: "Functions for cultivar."
 - contents:
-  -  ends_with("_cultivar")
+  - ends_with("_cultivar")

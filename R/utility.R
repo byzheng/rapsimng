@@ -1,3 +1,14 @@
+
+get_node <- function(l) {
+    if (class(l) == "apsimxNode") {
+        l <- l$node
+    }
+    if (class(l) != "list") {
+        stop("A list object is required.")
+    }
+    l
+}
+
 #'
 #' #' Convert a model into xypair
 #' #'
