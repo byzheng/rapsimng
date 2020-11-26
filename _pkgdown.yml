@@ -24,3 +24,7 @@ reference:
   desc: "Functions for cultivar."
 - contents:
   - ends_with("_cultivar")
+- title: "Utilities"
+  desc: "Utility functions."
+- contents:
+  - minimum_apsimng
