@@ -5,4 +5,5 @@ test_that("cultivar", {
     expect_equal(nrow(a), 30)
     a <- get_cultivar(wheat, alias = FALSE)
     expect_equal(nrow(a), 25)
+
 })

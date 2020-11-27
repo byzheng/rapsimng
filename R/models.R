@@ -4,14 +4,21 @@
 
 
 # Models of APSIMNG
-
+pkg_env <- new.env()
 .read_assembly <- function() {
-  file <- system.file("Models.xml", package = "rapsimng")
-  if (!file.exists(file)) {
-    stop("Models.xml doesn't exist.")
+
+  if (!exists(".rapsimng_models", envir = pkg_env)) {
+
+    file <- system.file("Models.Rds", package = "rapsimng")
+    if (!file.exists(file)) {
+      stop("Models.xml doesn't exist.")
+    }
+    .rapsimng_models <- readRDS(file)
+    assign(".rapsimng_models", .rapsimng_models, envir = pkg_env)
+  } else {
+    .rapsimng_models <- get(".rapsimng_models", envir = pkg_env)
   }
-  res <- xml2::read_xml(file)
-  res
+  .rapsimng_models
 }
 
 #' List all available models in APSIM NG
@@ -23,11 +30,9 @@
 #' a <- available_models()
 #' a[1:10]
 available_models <- function() {
-  doc <- .read_assembly()
+  models <- .read_assembly()
   # Find model
-  m <- xml2::xml_find_all(doc, paste0('//member[contains(@name,"T:Models.")]'))
-  m <- xml2::xml_attr(m, "name")
-  gsub("T:Models\\.", "", m)
+  names(models)
 }
 
 
@@ -41,6 +46,9 @@ available_models <- function() {
 #' new_model(model = "PMF.Cultivar", name = "example")
 #' @export
 new_model <- function(model, name = model) {
+  if (length(model) != 1 || length(name) != 1) {
+    stop("Only support 1 character value model")
+  }
   # remove name space
   if (name == model) {
     name <- gsub("^([a-zA-Z_]+)(\\.*)(.*)$", "\\3", model)
@@ -48,27 +56,12 @@ new_model <- function(model, name = model) {
       name <- model
     }
   }
-  doc <- .read_assembly()
+  models <- .read_assembly()
   # Find model
-  m <- xml2::xml_find_first(doc, paste0('//member[@name="T:Models.', model, '"]'))
-  if (length(m) == 0) {
+  m <- models[[model]]
+  if (is.null(m)) {
     stop("Cannot find the models with name ", model)
   }
-  res <- list()
-  res[["$type"]] <- paste0("Models.", model, ", Models")
-
-  res$Name <- name
-  res$Children <- list()
-  res$IncludeInDocumentation <- TRUE
-  res$Enabled <- TRUE
-  res$ReadOnly <- FALSE
-  # Find attributes
-  path <- paste0("//member[contains(@name, 'P:Models.",  model, "')]")
-  members <- xml2::xml_find_all(doc, xpath = path)
-  for (i in seq(along = members)) {
-    attr_name <- xml2::xml_attr(members[[i]], "name")
-    attr_name <- gsub(paste0("P:Models\\.", model, '\\.(.+)'), '\\1', attr_name)
-    res[[attr_name]] <- list()
-  }
-  res
+  m$Name <- name
+  m
 }

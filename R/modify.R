@@ -108,6 +108,48 @@ insert_model <- function(l, path, model) {
 }
 
 
+
+#' Insert models into apsimx
+#'
+#' @param l the list of apsimx file
+#' @param path If numeric, the path returned by search_path or search_node. If character, the path supported by apsimx
+#' @param models New models
+#' @return The modified list with new value
+#' @export
+#' @examples
+#' wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+#' replacements <- new_model("Core.Replacements")
+#' wheat_new <- insert_model(wheat, 1, replacements)
+#' replacements_node <- search_path(wheat_new, ".Simulations.Replacements")
+#' replacements_node$path
+#' # Add a cultivar folder under replacements
+#' cultivar_folder <- new_model("PMF.CultivarFolder", "Cultivars")
+#' wheat_new <- insert_model(wheat_new, replacements_node$path, cultivar_folder)
+#' cultivar_folder_node <- search_path(wheat_new,
+#'                                     ".Simulations.Replacements.Cultivars")
+#' cultivar_folder_node$path
+#' # Add an new cultivar
+#' cultivar <- new_model("PMF.Cultivar", "Hartog")
+#' wheat_new <- insert_model(wheat_new, cultivar_folder_node$path, cultivar)
+#' cultivar_node <- search_path(wheat_new,
+#'                              ".Simulations.Replacements.Cultivars.Hartog")
+#' cultivar_node$path
+insert_models <- function(l, path, models) {
+    path <- .check_path(l, path)
+    path <- path[-1]
+    eq <- 'l'
+    for (i in seq(along = path)) {
+        eq <- c(eq, '[["Children"]]', paste0('[[', path[i], ']]'))
+    }
+    eq <- c(eq, '[["Children"]]')
+    eq_str <- paste(eq, collapse = '')
+    #eq_str <- paste0(eq_str, '[[length(', eq_str, ')+1]] <- models')
+    eq_str <- paste0(eq_str, "<- c(", eq_str, ', models)')
+    eval(parse(text=eq_str))
+    return(l)
+}
+
+
 #' append a model into apsimx
 #'
 #' @param l the list of apsimx file
