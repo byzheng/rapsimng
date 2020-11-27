@@ -45,7 +45,14 @@ get_cultivar <- function(l, alias = TRUE) {
     r
 }
 
-#' Update the cultivar parameters
+# wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+# df <- data.frame(name = rep("Hartog", 3),
+#                  parameter = c("[Phenology].MinimumLeafNumber.FixedValue",
+#                                "[Phenology].VrnSensitivity.FixedValue",
+#                                "[Phenology].PpSensitivity.FixedValue"),
+#                  value = c(9, 7, 3))
+# l <- wheat
+#' Title Update the cultivar parameters
 #'
 #' @description
 #' This function assumes the file is apsimx format.
@@ -109,7 +116,6 @@ update_cultivar <- function(l, df) {
     }
 
     cultivars_name <- unique(df$name)
-    new_cultivar_models <- list()
     i <- 1
     for (i in seq(along = cultivars_name)) {
         df_cultivar <- df[df$name == cultivars_name[i],]
@@ -137,14 +143,11 @@ update_cultivar <- function(l, df) {
             # Create a new one if not existing
             cultivar_model <- new_model("PMF.Cultivar", cultivars_name[i])
             cultivar_model$Command <- commands
-            new_cultivar_models <- c(new_cultivar_models, list(cultivar_model))
+            # Insert new model
+            l <- insert_model(l, root_node$path,
+                              cultivar_model)
         }
 
-    }
-    if (length(new_cultivar_models) > 0) {
-        # Insert new model
-        l <- insert_models(l, root_node$path,
-                          new_cultivar_models)
     }
     l
 }
