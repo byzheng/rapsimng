@@ -4,10 +4,12 @@
 \alias{get_metfile}
 \title{Get the met file name for an experiment}
 \usage{
-get_metfile(l)
+get_metfile(l, is_stop = TRUE)
 }
 \arguments{
 \item{l}{A list or apsimxNode red by read_apsimx}
+
+\item{is_stop}{Whether stop the function when error}
 }
 \value{
 The met file name in a experiment

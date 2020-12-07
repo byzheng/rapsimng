@@ -2,7 +2,7 @@
 % Please edit documentation in R/cultivar.R
 \name{update_cultivar}
 \alias{update_cultivar}
-\title{Update the cultivar parameters}
+\title{Title Update the cultivar parameters}
 \usage{
 update_cultivar(l, df)
 }
