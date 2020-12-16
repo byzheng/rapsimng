@@ -4,6 +4,9 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rapsimng)](https://cran.r-project.org/package=rapsimng)
 [![codecov](https://codecov.io/gh/byzheng/RApsimNG/branch/master/graph/badge.svg)](https://codecov.io/gh/byzheng/RApsimNG)
 
+[![](http://cranlogs.r-pkg.org/badges/grand-total/rapsimng?color=green)](https://cran.r-project.org/package=rapsimng)
+[![](http://cranlogs.r-pkg.org/badges/last-month/rapsimng?color=green)](https://cran.r-project.org/package=rapsimng)
+[![](http://cranlogs.r-pkg.org/badges/last-week/rapsimng?color=green)](https://cran.r-project.org/package=rapsimng)
 
 
 [rapsimng](https://rapsimng.bangyou.me) package is designed to modify and run the *.apsimx simulations using R in [APSIM Next Generation](https://www.apsim.info/).
