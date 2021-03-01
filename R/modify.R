@@ -219,3 +219,71 @@ append_model <- function(l, path, model) {
 }
 
 
+#' Set a parameter with a new value
+#'
+#' @param l the list of apsimx file
+#' @param parameter the name of parameter with APSIM NG specification
+#' @param value the new value
+#'
+#' @return A list with replaced value
+#' @export
+#'
+#' @examples
+#'  wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
+#'  new_wheat <- set_parameter_value(wheat,
+#'   "[Structure].BranchingRate.PotentialBranchingRate.Reproductive.Zero.FixedValue",
+#'   1)
+#' new_wheat2 <- search_path(new_wheat,
+#'     "[Structure].BranchingRate.PotentialBranchingRate.Reproductive.Zero")
+#' new_wheat2$node$FixedValue
+#'
+#' new_wheat <- set_parameter_value(
+#'     wheat,
+#'     "[Structure].HeightModel.WaterStress.XYPairs.Y",
+#'     "0.1,1.1")
+#' new_wheat2 <- search_path(new_wheat,
+#'     "[Structure].HeightModel.WaterStress.XYPairs")
+#' new_wheat2$node$Y
+set_parameter_value <- function(l, parameter, value) {
+    if (length(parameter) != 1) {
+        stop("Require parameter has length 1")
+    }
+    if (length(value) != 1) {
+        stop("Require value has length 1")
+    }
+    if (!is.character(parameter)) {
+        stop("Require parameter is character")
+    }
+    if (grepl("\\.FixedValue$", parameter)) {
+        p_path <- gsub("\\.FixedValue$", "", parameter)
+        p_node <- search_path(l, p_path)
+        if (length(p_node) == 0) {
+            stop('Parameter (', parameter, ') is not found')
+        }
+        p_node$node$FixedValue <- value
+    } else if (grepl("\\.XYPairs\\.(X|Y)$", parameter)) {
+        p_path <- gsub("\\.(X|Y)$", "", parameter)
+        p_node <- search_path(l, p_path)
+        if (length(p_node) == 0) {
+            stop('Parameter (', parameter, ') is not found')
+        }
+        new_values <- strsplit(value, ",| ")[[1]]
+        if (grepl("\\.X$", parameter)) {
+            if (length(new_values) != length(p_node$node$X)) {
+                warning("New value doesn't match the length for old values. ",
+                        "Expect: ", paste(p_node$node$X, collapse = ","))
+            }
+            p_node$node$X <- as.list(new_values)
+        } else if (grepl("\\.Y$", parameter)) {
+            if (length(new_values) != length(p_node$node$Y)) {
+                warning("New value doesn't match the length for old values. ",
+                        "Expect: ", paste(p_node$node$Y, collapse = ","))
+            }
+            p_node$node$Y <- as.list(new_values)
+        }
+    } else  {
+        stop("Cannot replace the parameter value for ", parameter)
+    }
+    l <- replace_model(l, p_node$path, p_node$node)
+    l
+}

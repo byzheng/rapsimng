@@ -2,6 +2,53 @@ suppressPackageStartupMessages(library(testthat))
 test_that("cultivar", {
     wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
 
+
+
+
+    # Set a parameter value
+    new_wheat <- set_parameter_value(wheat,
+                                     "[Structure].BranchingRate.PotentialBranchingRate.Reproductive.Zero.FixedValue",
+                                     1)
+    new_wheat2 <- search_path(new_wheat, "[Structure].BranchingRate.PotentialBranchingRate.Reproductive.Zero")
+    expect_equal(length(new_wheat2), 2)
+    expect_equal(new_wheat2$node$FixedValue, 1)
+
+    new_wheat <- set_parameter_value(wheat,
+                                     "[Structure].HeightModel.WaterStress.XYPairs.X", "0.4,1.1")
+    new_wheat2 <- search_path(new_wheat, "[Structure].HeightModel.WaterStress.XYPairs")
+    expect_equal(length(new_wheat2), 2)
+    expect_equal(new_wheat2$node$X[[1]], "0.4")
+    new_wheat <- set_parameter_value(
+        wheat,
+        "[Structure].HeightModel.WaterStress.XYPairs.Y", "0.1,1.1")
+    new_wheat2 <- search_path(new_wheat, "[Structure].HeightModel.WaterStress.XYPairs")
+    expect_equal(length(new_wheat2), 2)
+    expect_equal(new_wheat2$node$Y[[2]], "1.1")
+
+    expect_error({
+        new_wheat <- set_parameter_value(
+            wheat,
+            "[Structure].HeightModel.WaterStress.XYPairs.X", c(1, 1))
+    })
+    expect_error({
+        new_wheat <- set_parameter_value(
+            wheat,
+            "[Structure].HeightModel.WaterStress", c(1, 1))
+    })
+    expect_error({
+        new_wheat <- set_parameter_value(
+            wheat, 1, c(1, 1))
+    })
+
+    expect_error({
+        new_wheat <- set_parameter_value(
+            wheat, c("A", "B"), c(1, 1))
+    })
+
+
+
+
+
     # Replace a model
     a <- search_path(wheat, '[Wheat].Phenology.ThermalTime')
     wheat_new <- replace_model(wheat, a$path, a$node)
@@ -104,5 +151,6 @@ test_that("cultivar", {
     hartog4 <- search_path(wheat_cultivar4, "[Replacements].Cultivars.Hartog")
     expect_equal(length(hartog4), 2)
     expect_equal(hartog3, hartog4)
+
 
 })
