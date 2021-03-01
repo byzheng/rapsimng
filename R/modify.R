@@ -3,6 +3,20 @@
 
 # Internal code to check path
 .check_path <- function(l, path) {
+    if (length(path) < 1) {
+        stop("Path should not be empty")
+    }
+
+    if (sum(path < 1) > 0) {
+        stop("All path should be positive values")
+    }
+    if (sum(as.integer(path) != path) > 0){
+        stop("All path should be integar values.")
+    }
+    if (path[1] != 1) {
+        stop("Path should start with 1")
+    }
+
     if (all(is.numeric(path))) {
         return(path)
     } else if (length(path) == 1 && is.character(path)) {
@@ -203,3 +217,5 @@ append_model <- function(l, path, model) {
     eval(parse(text=eq_str))
     return(l)
 }
+
+
