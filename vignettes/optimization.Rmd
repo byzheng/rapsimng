@@ -14,6 +14,22 @@ knitr::opts_chunk$set(
 )
 ```
 
+<style>
+p.comment {
+background-color: #DBDBDB;
+padding: 10px;
+border: 1px solid black;
+margin-left: 25px;
+border-radius: 5px;
+font-style: italic;
+}
+
+</style>
+
+<p class="comment">
+<strong>Warning!</strong> The method in this page heavily depends on CPU resources which might not be suitable for every situation.
+</p>
+
 ```{r setup}
 library(rapsimng)
 ```
