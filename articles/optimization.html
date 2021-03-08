@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -68,7 +68,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/byzheng/rapsimng/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -82,7 +82,7 @@
 
       
 
-      </header><script src="optimization_files/header-attrs-2.3/header-attrs.js"></script><script src="optimization_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="optimization_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Optimization of APSIM NG using factorial simulations</h1>
@@ -106,9 +106,10 @@
 <li>Merge simulated values of all treatments for the target cultivars.</li>
 <li>Calibrate and validate the leaf appearance process through comparing simulated and observed values.</li>
 </ul>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="co"># Load the required packages</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rapsimng</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Load the required packages</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rapsimng.bangyou.me/">rapsimng</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div id="split-apsimx-into-individual-simulations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#split-apsimx-into-individual-simulations" class="anchor"></a>Split apsimx into individual simulations</h2>
@@ -117,185 +118,188 @@
 <p>In this step, I assume all datasets have been configured in a single apsimx file (e.g. <a href="https://raw.githubusercontent.com/APSIMInitiative/ApsimX/2a82f22208e1a9bd3d25b501457b43e507411b65/Tests/Validation/Wheat/Wheat.apsimx">Wheat.apsimx</a> in the APSIM NG Release). Experiments contain a factor Cv or Cultivar to specify all cultivars in the field experiments. All files are downloaded from internet.</p>
 <p>The input is the wheatp.apsimx and associated weather files. The output is the split apsimx files merged with weather files and stored as Rds format.</p>
 <p>APSIM NG provides a feature to generate .apsimx files from a single .apsim file through right clicking the root node.</p>
-<p><img src="../../../../../../OneDrive%20-%20CSIRO/Working/04-Software/032-ApsimX/RApsimNG/vignettes/figures/apsimng-generate-simulations.png" width="40%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># Path to wheat.apsimx file</span>
-<span class="no">file</span> <span class="kw">&lt;-</span> <span class="st">"Tests/Validation/Wheat/Wheat.apsimx"</span>
+<p><img src="figures/apsimng-generate-simulations.png" width="40%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Path to wheat.apsimx file</span>
+<span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"Tests/Validation/Wheat/Wheat.apsimx"</span>
 <span class="co"># Path to store the individual apsimx files</span>
-<span class="no">out</span> <span class="kw">&lt;-</span> <span class="st">"Simulations/"</span>
+<span class="va">out</span> <span class="op">&lt;-</span> <span class="st">"Simulations/"</span>
 <span class="co"># Factor in apsimx to specify cultivars</span>
-<span class="no">cultivar_factor</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Cv"</span>, <span class="st">"Cultivar"</span>)
+<span class="va">cultivar_factor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Cv"</span>, <span class="st">"Cultivar"</span><span class="op">)</span>
 
 <span class="co"># read apsimx file</span>
-<span class="no">apsimx_model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span>(<span class="no">file</span>)
+<span class="va">apsimx_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>
 
 <span class="co"># Create a template</span>
-<span class="no">apsimx_model_temp</span> <span class="kw">&lt;-</span> <span class="no">apsimx_model</span>
+<span class="va">apsimx_model_temp</span> <span class="op">&lt;-</span> <span class="va">apsimx_model</span>
 <span class="co"># Remove unused models to save spaces</span>
-<span class="no">remove_nodes</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"[Simulations].Sensibility"</span>,
+<span class="va">remove_nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"[Simulations].Sensibility"</span>,
                   <span class="st">"[Simulations].Validation"</span>,
                   <span class="st">"[Simulations].TitlePage"</span>,
                   <span class="st">"[Simulations].Introduction"</span>,
                   <span class="st">"[DataStore].ExcelMultiInput"</span>,
                   <span class="st">"[DataStore].DailyObsPred"</span>,
-                  <span class="st">"[DataStore].HarvestObsPred"</span>)
-<span class="kw">for</span> (<span class="no">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw">along</span> <span class="kw">=</span> <span class="no">remove_nodes</span>)) {
-  <span class="no">node_remove</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span>(<span class="no">apsimx_model_temp</span>, <span class="no">remove_nodes</span>[<span class="no">j</span>])
-  <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">node_remove</span>) <span class="kw">&gt;</span> <span class="fl">0</span>) {
-    <span class="no">apsimx_model_temp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/remove_model.html">remove_model</a></span>(<span class="no">apsimx_model_temp</span>, <span class="no">node_remove</span>$<span class="no">path</span>)
-  }
-}
+                  <span class="st">"[DataStore].HarvestObsPred"</span><span class="op">)</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">remove_nodes</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">node_remove</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">apsimx_model_temp</span>, <span class="va">remove_nodes</span><span class="op">[</span><span class="va">j</span><span class="op">]</span><span class="op">)</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">node_remove</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">apsimx_model_temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/remove_model.html">remove_model</a></span><span class="op">(</span><span class="va">apsimx_model_temp</span>, <span class="va">node_remove</span><span class="op">$</span><span class="va">path</span><span class="op">)</span>
+  <span class="op">}</span>
+<span class="op">}</span>
 
 <span class="co"># Get all simulations</span>
-<span class="no">sims</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/search_node.html">search_node</a></span>(<span class="no">apsimx_model</span>, <span class="kw">all</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">`$type`</span> <span class="kw">=</span> <span class="st">"Models.Core.Simulation, Models"</span>)
-<span class="no">sims</span> <span class="kw">&lt;-</span> <span class="no">sims</span> <span class="kw">%&gt;%</span> <span class="fu">discard</span>(<span class="kw">function</span>(<span class="no">x</span>) <span class="no">x</span>$<span class="no">node</span>$<span class="no">Name</span> <span class="kw">==</span> <span class="st">"CO2TEBaseSimulation"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu">map_chr</span>(<span class="no">sims</span>, <span class="kw">function</span>(<span class="no">x</span>) <span class="no">x</span>$<span class="no">node</span>$<span class="no">Name</span>))
+<span class="va">sims</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_node.html">search_node</a></span><span class="op">(</span><span class="va">apsimx_model</span>, all <span class="op">=</span> <span class="cn">TRUE</span>, `$type` <span class="op">=</span> <span class="st">"Models.Core.Simulation, Models"</span><span class="op">)</span>
+<span class="va">sims</span> <span class="op">&lt;-</span> <span class="va">sims</span> <span class="op">%&gt;%</span> <span class="fu">discard</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span> <span class="op">==</span> <span class="st">"CO2TEBaseSimulation"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu">map_chr</span><span class="op">(</span><span class="va">sims</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Process each simulation by splitting into individual treatment if parent is Experiment or directly exporting in case of single simulation.</span>
-<span class="kw">for</span> (<span class="no">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw">along</span> <span class="kw">=</span> <span class="no">sims</span>)) {
+<span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">sims</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="co"># Check whether the parent is experiment</span>
-  <span class="no">parent</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_parent.html">get_parent</a></span>(<span class="no">apsimx_model</span>, <span class="no">sims</span><span class="kw">[[</span><span class="no">j</span>]]$<span class="no">path</span>)
-  <span class="kw">if</span> (<span class="no">parent</span>$<span class="no">node</span>$<span class="no">`$type`</span> <span class="kw">==</span> <span class="st">"Models.Factorial.Experiment, Models"</span>) {
-    <span class="no">exp_node</span> <span class="kw">&lt;-</span> <span class="no">parent</span>$<span class="no">node</span>
-    <span class="no">exp_name</span> <span class="kw">&lt;-</span> <span class="no">exp_node</span>$<span class="no">Name</span>
+  <span class="va">parent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_parent.html">get_parent</a></span><span class="op">(</span><span class="va">apsimx_model</span>, <span class="va">sims</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">path</span><span class="op">)</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="va">parent</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">`$type`</span> <span class="op">==</span> <span class="st">"Models.Factorial.Experiment, Models"</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">exp_node</span> <span class="op">&lt;-</span> <span class="va">parent</span><span class="op">$</span><span class="va">node</span>
+    <span class="va">exp_name</span> <span class="op">&lt;-</span> <span class="va">exp_node</span><span class="op">$</span><span class="va">Name</span>
     <span class="co"># Remove all figures as we don't need them</span>
-    <span class="no">graphs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/search_node.html">search_node</a></span>(<span class="no">exp_node</span>, <span class="kw">all</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                          <span class="kw">`$type`</span> <span class="kw">=</span> <span class="st">"Models.Graph, Models"</span>)
-    <span class="kw">for</span> (<span class="no">k</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw">along</span> <span class="kw">=</span> <span class="no">graphs</span>))) {
-      <span class="no">exp_node</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/remove_model.html">remove_model</a></span>(<span class="no">exp_node</span>, <span class="no">graphs</span><span class="kw">[[</span><span class="no">k</span>]]$<span class="no">path</span>)
-    }
+    <span class="va">graphs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_node.html">search_node</a></span><span class="op">(</span><span class="va">exp_node</span>, all <span class="op">=</span> <span class="cn">TRUE</span>, 
+                          `$type` <span class="op">=</span> <span class="st">"Models.Graph, Models"</span><span class="op">)</span>
+    <span class="kw">for</span> <span class="op">(</span><span class="va">k</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">graphs</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+      <span class="va">exp_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/remove_model.html">remove_model</a></span><span class="op">(</span><span class="va">exp_node</span>, <span class="va">graphs</span><span class="op">[[</span><span class="va">k</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">path</span><span class="op">)</span>
+    <span class="op">}</span>
     <span class="co"># Remove unused reports</span>
-    <span class="no">remove_nodes</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"[DailyReport]"</span>,
+    <span class="va">remove_nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"[DailyReport]"</span>,
                       <span class="st">"[MaxLeafSizeReport]"</span>,
-                      <span class="st">"[SowingReport]"</span>)
-    <span class="kw">for</span> (<span class="no">k</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw">along</span> <span class="kw">=</span> <span class="no">remove_nodes</span>)) {
-      <span class="no">node_remove</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span>(<span class="no">exp_node</span>, <span class="no">remove_nodes</span>[<span class="no">k</span>])
-      <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">node_remove</span>) <span class="kw">&gt;</span> <span class="fl">0</span>) {
-        <span class="no">exp_node</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/remove_model.html">remove_model</a></span>(<span class="no">exp_node</span>, <span class="no">node_remove</span>$<span class="no">path</span>)
-      }
-    }
+                      <span class="st">"[SowingReport]"</span><span class="op">)</span>
+    <span class="kw">for</span> <span class="op">(</span><span class="va">k</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">remove_nodes</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+      <span class="va">node_remove</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">exp_node</span>, <span class="va">remove_nodes</span><span class="op">[</span><span class="va">k</span><span class="op">]</span><span class="op">)</span>
+      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">node_remove</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">exp_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/remove_model.html">remove_model</a></span><span class="op">(</span><span class="va">exp_node</span>, <span class="va">node_remove</span><span class="op">$</span><span class="va">path</span><span class="op">)</span>
+      <span class="op">}</span>
+    <span class="op">}</span>
     <span class="co"># Create a new apsimx file from template</span>
-    <span class="no">apsimx_model_exp</span> <span class="kw">&lt;-</span> <span class="no">apsimx_model_temp</span>
-    <span class="no">apsimx_model_exp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/insert_model.html">insert_model</a></span>(<span class="no">apsimx_model_exp</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>), <span class="no">exp_node</span>)
+    <span class="va">apsimx_model_exp</span> <span class="op">&lt;-</span> <span class="va">apsimx_model_temp</span>
+    <span class="va">apsimx_model_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/insert_model.html">insert_model</a></span><span class="op">(</span><span class="va">apsimx_model_exp</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="va">exp_node</span><span class="op">)</span>
     <span class="co"># Get the met files</span>
-    <span class="no">met</span> <span class="kw">&lt;-</span> <span class="kw">NULL</span>
-    <span class="no">met_file</span> <span class="kw">&lt;-</span> <span class="kw">NULL</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/conditions.html">tryCatch</a></span>({
-      <span class="no">met_file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_metfile.html">get_metfile</a></span>(<span class="no">apsimx_model_exp</span>)
-      <span class="no">met_path</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span>(<span class="no">file</span>), <span class="no">met_file</span>)
-      <span class="no">met</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">met_path</span>)
-    }, <span class="kw">error</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">e</span>){
-
-    })
+    <span class="va">met</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
+    <span class="va">met_file</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/conditions.html">tryCatch</a></span><span class="op">(</span><span class="op">{</span>
+      <span class="va">met_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_metfile.html">get_metfile</a></span><span class="op">(</span><span class="va">apsimx_model_exp</span><span class="op">)</span>
+      <span class="va">met_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>, <span class="va">met_file</span><span class="op">)</span>
+      <span class="va">met</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">met_path</span><span class="op">)</span>
+    <span class="op">}</span>, error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">{</span>
+      
+    <span class="op">}</span><span class="op">)</span>
     <span class="co"># Further split apsimx by all factors except Cv</span>
-    <span class="no">all_nodes</span> <span class="kw">&lt;-</span> <span class="no">apsimx_model_exp</span> <span class="kw">%&gt;%</span>
-      <span class="fu"><a href="../reference/search_path.html">search_path</a></span>(<span class="st">"[Factors]"</span>)
-
+    <span class="va">all_nodes</span> <span class="op">&lt;-</span> <span class="va">apsimx_model_exp</span> <span class="op">%&gt;%</span> 
+      <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="st">"[Factors]"</span><span class="op">)</span>
+    
     <span class="co"># find out all combinations of all other nodes</span>
-    <span class="no">simulations</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_simulations.html">get_simulations</a></span>(<span class="no">all_nodes</span>$<span class="no">node</span>)
-
+    <span class="va">simulations</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_simulations.html">get_simulations</a></span><span class="op">(</span><span class="va">all_nodes</span><span class="op">$</span><span class="va">node</span><span class="op">)</span>
+    
     <span class="co"># Check whether Cv node exists</span>
-    <span class="no">pos</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">simulations</span>) <span class="kw">%in%</span> <span class="no">cultivar_factor</span>
-    <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">pos</span>) <span class="kw">==</span> <span class="fl">0</span>) {
-      <span class="fu"><a href="https://rdrr.io/r/base/warning.html">warning</a></span>(<span class="st">"Cultivar factor doesn't exist for experiment "</span>, <span class="no">exp_name</span>)
+    <span class="va">pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">simulations</span><span class="op">)</span> <span class="op">%in%</span> <span class="va">cultivar_factor</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">pos</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+      <span class="kw"><a href="https://rdrr.io/r/base/warning.html">warning</a></span><span class="op">(</span><span class="st">"Cultivar factor doesn't exist for experiment "</span>, <span class="va">exp_name</span><span class="op">)</span>
       <span class="co">#next()</span>
-    }
+    <span class="op">}</span>
     <span class="co"># Generate all simulations for factors except cultivar</span>
-    <span class="no">simulations</span> <span class="kw">&lt;-</span> <span class="no">simulations</span>[!(<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">simulations</span>) <span class="kw">%in%</span> <span class="no">cultivar_factor</span>)]
-    <span class="no">simulations</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span>(<span class="no">simulations</span>, <span class="kw">stringsAsFactors</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+    <span class="va">simulations</span> <span class="op">&lt;-</span> <span class="va">simulations</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">simulations</span><span class="op">)</span> <span class="op">%in%</span> <span class="va">cultivar_factor</span><span class="op">)</span><span class="op">]</span>
+    <span class="va">simulations</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span><span class="va">simulations</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
     <span class="co"># Generate apsimx for each factor</span>
-    <span class="kw">for</span> (<span class="no">m</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">simulations</span>)))) {
+    <span class="kw">for</span> <span class="op">(</span><span class="va">m</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">simulations</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
       <span class="co"># In case of single simulation</span>
-      <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">simulations</span>) <span class="kw">==</span> <span class="fl">0</span>) {
-        <span class="no">model_factor_new</span> <span class="kw">&lt;-</span> <span class="no">all_nodes</span>$<span class="no">node</span>
-        <span class="no">base_name</span> <span class="kw">&lt;-</span> <span class="no">exp_name</span>
-      } <span class="kw">else</span> {
+      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">simulations</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">model_factor_new</span> <span class="op">&lt;-</span> <span class="va">all_nodes</span><span class="op">$</span><span class="va">node</span>
+        <span class="va">base_name</span> <span class="op">&lt;-</span> <span class="va">exp_name</span>
+      <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
         <span class="co"># Keep the required factor</span>
-        <span class="no">model_factor_new</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/keep_simulations.html">keep_simulations</a></span>(<span class="no">all_nodes</span>$<span class="no">node</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">simulations</span>[<span class="no">m</span>,,<span class="kw">drop</span><span class="kw">=</span><span class="fl">FALSE</span>]))
-        <span class="no">factor_name</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">simulations</span>), <span class="st">"_"</span>, <span class="no">simulations</span>[<span class="no">m</span>,]), <span class="kw">collapse</span> <span class="kw">=</span> <span class="st">'_'</span>)
-        <span class="no">base_name</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">exp_name</span>, <span class="st">"-"</span>, <span class="no">factor_name</span>)
-      }
+        <span class="va">model_factor_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/keep_simulations.html">keep_simulations</a></span><span class="op">(</span><span class="va">all_nodes</span><span class="op">$</span><span class="va">node</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">simulations</span><span class="op">[</span><span class="va">m</span>,,drop<span class="op">=</span><span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
+        <span class="va">factor_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">simulations</span><span class="op">)</span>, <span class="st">"_"</span>, <span class="va">simulations</span><span class="op">[</span><span class="va">m</span>,<span class="op">]</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">'_'</span><span class="op">)</span>
+        <span class="va">base_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">exp_name</span>, <span class="st">"-"</span>, <span class="va">factor_name</span><span class="op">)</span>
+      <span class="op">}</span>
       <span class="co"># Generate a new apsimx</span>
-      <span class="no">apsimx_model_new</span> <span class="kw">&lt;-</span> <span class="no">apsimx_model_exp</span>
-      <span class="no">apsimx_model_new</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/replace_model.html">replace_model</a></span>(<span class="no">apsimx_model_exp</span>,
-                                        <span class="no">all_nodes</span>$<span class="no">path</span>,
-                                        <span class="no">model_factor_new</span>)
-
+      <span class="va">apsimx_model_new</span> <span class="op">&lt;-</span> <span class="va">apsimx_model_exp</span>
+      <span class="va">apsimx_model_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/replace_model.html">replace_model</a></span><span class="op">(</span><span class="va">apsimx_model_exp</span>, 
+                                        <span class="va">all_nodes</span><span class="op">$</span><span class="va">path</span>,
+                                        <span class="va">model_factor_new</span><span class="op">)</span>
+      
       <span class="co"># Combine weather and met file</span>
       <span class="co">#apsimx &lt;- readLines(file_name)</span>
-      <span class="no">file_name</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">out</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">base_name</span>, <span class="st">".Rds"</span>))
+      <span class="va">file_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">out</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">base_name</span>, <span class="st">".Rds"</span><span class="op">)</span><span class="op">)</span>
       <span class="co"># Find the weather file</span>
-      <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span>(<span class="no">met</span>)) {
-        <span class="no">treat_node</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span>(<span class="no">apsimx_model_new</span>, <span class="st">"[Permutation].Treat"</span>)
-        <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">treat_node</span>) <span class="kw">&gt;</span> <span class="fl">0</span>) {
-          <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">treat_node</span>$<span class="no">node</span>$<span class="no">Children</span>) <span class="kw">&gt;</span> <span class="fl">1</span> ){
-            <span class="fu"><a href="https://rdrr.io/r/base/stop.html">stop</a></span>()
-          }
-          <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">treat_node</span>$<span class="no">node</span>$<span class="no">Children</span><span class="kw">[[</span><span class="fl">1</span>]]$<span class="no">Children</span>) <span class="kw">&gt;</span> <span class="fl">0</span>) {
-            <span class="no">met_file</span> <span class="kw">&lt;-</span> <span class="no">treat_node</span>$<span class="no">node</span>$<span class="no">Children</span><span class="kw">[[</span><span class="fl">1</span>]]$<span class="no">Children</span><span class="kw">[[</span><span class="fl">1</span>]]$<span class="no">FileName</span>
-            <span class="no">met_path</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span>(<span class="no">file</span>), <span class="no">met_file</span>)
-            <span class="no">new_met</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">met_path</span>)
-          } <span class="kw">else</span> {
-            <span class="no">new_met</span> <span class="kw">&lt;-</span> <span class="kw">NULL</span>
-          }
-        }
-      } <span class="kw">else</span> {
-        <span class="no">new_met</span> <span class="kw">&lt;-</span> <span class="no">met</span>
-      }
+      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">met</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">treat_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">apsimx_model_new</span>, <span class="st">"[Permutation].Treat"</span><span class="op">)</span>
+        <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">treat_node</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+          <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">treat_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Children</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span> <span class="op">)</span><span class="op">{</span>
+            <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="op">)</span>
+          <span class="op">}</span>
+          <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">treat_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Children</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Children</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+            <span class="va">met_file</span> <span class="op">&lt;-</span> <span class="va">treat_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Children</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Children</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">FileName</span>
+            <span class="va">met_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>, <span class="va">met_file</span><span class="op">)</span>
+            <span class="va">new_met</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">met_path</span><span class="op">)</span>
+          <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+            <span class="va">new_met</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
+          <span class="op">}</span>
+        <span class="op">}</span>
+      <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+        <span class="va">new_met</span> <span class="op">&lt;-</span> <span class="va">met</span>
+      <span class="op">}</span>
       <span class="co"># Save weather and apsimx file into Rds format</span>
-      <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">met</span> <span class="kw">=</span> <span class="no">new_met</span>, <span class="kw">apsimx</span> <span class="kw">=</span> <span class="no">apsimx_model_new</span>, <span class="kw">met_file</span> <span class="kw">=</span> <span class="no">met_file</span>), <span class="kw">file</span> <span class="kw">=</span> <span class="no">file_name</span>)
-    }
-  } <span class="kw">else</span> {
+      <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>met <span class="op">=</span> <span class="va">new_met</span>, apsimx <span class="op">=</span> <span class="va">apsimx_model_new</span>, met_file <span class="op">=</span> <span class="va">met_file</span><span class="op">)</span>, file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span>
+    <span class="op">}</span>
+  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
     <span class="co"># In case of single simulation</span>
-    <span class="no">apsimx_model_new</span> <span class="kw">&lt;-</span> <span class="no">apsimx_model_temp</span>
-    <span class="no">apsimx_model_new</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/insert_model.html">insert_model</a></span>(<span class="no">apsimx_model_new</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>), <span class="no">sims</span><span class="kw">[[</span><span class="no">j</span>]]$<span class="no">node</span>)
-
+    <span class="va">apsimx_model_new</span> <span class="op">&lt;-</span> <span class="va">apsimx_model_temp</span>
+    <span class="va">apsimx_model_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/insert_model.html">insert_model</a></span><span class="op">(</span><span class="va">apsimx_model_new</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="va">sims</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">node</span><span class="op">)</span>
+    
     <span class="co"># Get weather data</span>
-    <span class="no">met</span> <span class="kw">&lt;-</span> <span class="kw">NULL</span>
-    <span class="no">met_file</span> <span class="kw">&lt;-</span> <span class="kw">NULL</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/conditions.html">tryCatch</a></span>({
-      <span class="no">met_file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_metfile.html">get_metfile</a></span>(<span class="no">apsimx_model_new</span>)
-      <span class="no">met_path</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span>(<span class="no">file</span>), <span class="no">met_file</span>)
-      <span class="no">met</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">met_path</span>)
-    }, <span class="kw">error</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">e</span>){
-
-    })
-
+    <span class="va">met</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
+    <span class="va">met_file</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/conditions.html">tryCatch</a></span><span class="op">(</span><span class="op">{</span>
+      <span class="va">met_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_metfile.html">get_metfile</a></span><span class="op">(</span><span class="va">apsimx_model_new</span><span class="op">)</span>
+      <span class="va">met_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>, <span class="va">met_file</span><span class="op">)</span>
+      <span class="va">met</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">met_path</span><span class="op">)</span>
+    <span class="op">}</span>, error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">{</span>
+      
+    <span class="op">}</span><span class="op">)</span>
+    
     <span class="co"># Save weather and apsimx file into Rds format</span>
-    <span class="no">base_name</span> <span class="kw">&lt;-</span> <span class="no">sims</span><span class="kw">[[</span><span class="no">j</span>]]$<span class="no">node</span>$<span class="no">Name</span>
-    <span class="no">file_name</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">out</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">base_name</span>, <span class="st">".Rds"</span>))
-    <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">met</span> <span class="kw">=</span> <span class="no">met</span>, <span class="kw">apsimx</span> <span class="kw">=</span> <span class="no">apsimx_model_new</span>, <span class="kw">met_file</span> <span class="kw">=</span> <span class="no">met_file</span>), <span class="kw">file</span> <span class="kw">=</span> <span class="no">file_name</span>)
-
-  }
-}</pre></body></html></div>
+    <span class="va">base_name</span> <span class="op">&lt;-</span> <span class="va">sims</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span>
+    <span class="va">file_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">out</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">base_name</span>, <span class="st">".Rds"</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>met <span class="op">=</span> <span class="va">met</span>, apsimx <span class="op">=</span> <span class="va">apsimx_model_new</span>, met_file <span class="op">=</span> <span class="va">met_file</span><span class="op">)</span>, file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span>
+    
+  <span class="op">}</span>
+<span class="op">}</span></code></pre></div>
 <p>Finally wheat.apsimx is split into 885 treatments.</p>
 </div>
 <div id="generate-the-parameter-spaces-and-prepare-the-task-list-for-parallel-calculation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#generate-the-parameter-spaces-and-prepare-the-task-list-for-parallel-calculation" class="anchor"></a>Generate the parameter spaces and prepare the task list for parallel calculation</h2>
 <p>In this page, we will optimize two parameters in the leaf appearance rate i.e. base phyllochron (<code>[Phenology].Phyllochron.BasePhyllochron.FixedValue</code>) and photoperiod effect (<code>[Phenology].Phyllochron.PhotoPeriodEffect.XYPairs.Y</code>). The parameter range is determined by expert experience or possible values in the current wheat model. The internal should make sure there are enough accuracy for the target traits.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co"># Define list of parameter with specified range and interval</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Define list of parameter with specified range and interval</span>
 <span class="co"># Expand grid for all combinations</span>
-<span class="no">parameters</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">`[Phenology].Phyllochron.BasePhyllochron.FixedValue`</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">60</span>, <span class="fl">130</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fl">1</span>)),
-          <span class="kw">`[Phenology].Phyllochron.PhotoPeriodEffect.XYPairs.Y`</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">1</span>, <span class="fl">2</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fl">0.02</span>), <span class="st">",1,1"</span>)) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span>()</pre></body></html></div>
+<span class="va">parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>`[Phenology].Phyllochron.BasePhyllochron.FixedValue` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">130</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,
+          `[Phenology].Phyllochron.PhotoPeriodEffect.XYPairs.Y` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, by <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span>, <span class="st">",1,1"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>A single simulation takes less than 1 s to run in the APSIM GUI (APSIMNG.exe), but about 5 s in the command lines (Modeles.exe) as the overhead to load all required libraries. It would be much more efficient to combine multiple simulations in a single apsimx file (e.g. 200 simulations take about 150 s).</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># Define the group size in a single apsimx file</span>
-<span class="no">size</span> <span class="kw">&lt;-</span> <span class="fl">200</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Define the group size in a single apsimx file</span>
+<span class="va">size</span> <span class="op">&lt;-</span> <span class="fl">200</span>
 
 <span class="co"># Calculate the number of groups</span>
-<span class="no">group</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">parameters</span>)/<span class="no">size</span>))
+<span class="va">group</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">parameters</span><span class="op">)</span><span class="op">/</span><span class="va">size</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Create names for each virtual cultivar</span>
 <span class="co"># Assign the group value</span>
-<span class="no">parameters</span> <span class="kw">&lt;-</span> <span class="no">parameters</span> <span class="kw">%&gt;%</span>
-  <span class="fu">mutate</span>(<span class="kw">name</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"GS"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span>(<span class="fu">n</span>()), <span class="st">"GN"</span>),
-         <span class="kw">group</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="no">group</span>, <span class="kw">each</span> <span class="kw">=</span> <span class="no">size</span> ,
-                      <span class="kw">length.out</span> <span class="kw">=</span> <span class="fu">n</span>())) <span class="kw">%&gt;%</span>
-  <span class="fu">pivot_longer</span>(<span class="kw">cols</span> <span class="kw">=</span> <span class="fu">starts_with</span>(<span class="st">"["</span>), <span class="kw">names_to</span> <span class="kw">=</span> <span class="st">"parameter"</span>)
+<span class="va">parameters</span> <span class="op">&lt;-</span> <span class="va">parameters</span> <span class="op">%&gt;%</span> 
+  <span class="fu">mutate</span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"GS"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="st">"GN"</span><span class="op">)</span>,
+         group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">group</span>, each <span class="op">=</span> <span class="va">size</span> , 
+                      length.out <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu">starts_with</span><span class="op">(</span><span class="st">"["</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"parameter"</span><span class="op">)</span> 
 
 <span class="co"># The parameters can be stored for later use, but ignore for this post</span>
 <span class="co"># saveRDS(parameters, file = "parameters.Rds)</span>
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">parameters</span>), <span class="kw">caption</span> <span class="kw">=</span> <span class="st">"Sample of parameters"</span>)</pre></body></html></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">parameters</span><span class="op">)</span>, caption <span class="op">=</span> <span class="st">"Sample of parameters"</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <caption>Sample of parameters</caption>
 <thead><tr class="header">
@@ -399,14 +403,274 @@ $( document ).ready(function() {
       cal_runtime();
   });
 });
-</script><div id="develop-scripts-to-run-individual-task-on-htcondor" class="section level3">
+</script><p>Scheduling task on the cluster (parallel computing) is out of the topic in this page. The total number of tasks equals the number of treatments x number of genotype groups. In general, all tasks can be treated as embarrassingly parallel (i.e. no interaction among tasks). The output of individual task can be saved in a single file. In the following section, R scripts are developed to run a task on HTCondor and can be modified to adapt to other types of cluters.</p>
+<div id="develop-scripts-to-run-individual-task-on-htcondor" class="section level3">
 <h3 class="hasAnchor">
 <a href="#develop-scripts-to-run-individual-task-on-htcondor" class="anchor"></a>Develop scripts to run individual task on HTCondor</h3>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+
+<span class="co"># Run jobs under condor -----------------------------------</span>
+<span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"C:/Users/zhe00a/Documents/test"</span><span class="op">)</span>
+<span class="va">sim_title</span> <span class="op">&lt;-</span> <span class="st">'gid=ptq_1,Experiment=Callington-TOS_6,EmergenceDate=2019-05-27,ColName=TOS,ColValue=6'</span>
+<span class="co"># sim_title &lt;- 'gid=release_1,Experiment=12JuneeJames-1-100'</span>
+<span class="co"># sim_title &lt;- 'gid=release_1,Experiment=Mouse-Removal_0.00_Date_2002-09-10'</span>
+<span class="co"># sim_title &lt;- 'gid=release_1,Experiment=APS2-TOS_1'</span>
+<span class="co"># sim_title &lt;- 'gid=release_1,Experiment=Yucheng02'</span>
+
+<span class="va">file_prefix</span> <span class="op">&lt;-</span> <span class="st">'375e780cabcc4bb7f00f5a9887faa9c8'</span>
+
+<span class="va">args</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/commandArgs.html">commandArgs</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span>
+
+<span class="va">sim_title</span> <span class="op">&lt;-</span> <span class="va">args</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
+<span class="va">file_prefix</span> <span class="op">&lt;-</span> <span class="va">args</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>
+
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">RAPSIM</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">methods</span><span class="op">)</span>
+<span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"r-packages/rapsimng/R/"</span><span class="op">)</span>
+<span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">path</span>, <span class="va">list.files</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">files</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">files</span>, <span class="va">source</span><span class="op">)</span><span class="op">)</span>
+<span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"parameters.rds"</span><span class="op">)</span>
+
+
+<span class="va">sim_factors</span> <span class="op">&lt;-</span> <span class="fu">splitTitle</span><span class="op">(</span><span class="va">sim_title</span><span class="op">)</span>
+<span class="va">model_type</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">$</span><span class="va">groups</span><span class="op">[</span><span class="va">info</span><span class="op">$</span><span class="va">groups</span><span class="op">$</span><span class="va">gid</span> <span class="op">==</span> <span class="va">sim_factors</span><span class="op">$</span><span class="va">gid</span>,<span class="op">]</span>
+<span class="va">parameters</span> <span class="op">&lt;-</span> <span class="va">info</span><span class="op">[[</span><span class="va">model_type</span><span class="op">$</span><span class="va">model</span><span class="op">]</span><span class="op">]</span>
+<span class="va">parameters</span> <span class="op">&lt;-</span> <span class="va">parameters</span><span class="op">[</span><span class="va">parameters</span><span class="op">$</span><span class="va">group</span> <span class="op">==</span> <span class="va">model_type</span><span class="op">$</span><span class="va">group</span>,<span class="op">]</span>
+
+<span class="co">#parameters &lt;- parameters[1:4,]</span>
+
+<span class="va">new_cultivars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">parameters</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>
+
+<span class="va">filename</span> <span class="op">&lt;-</span> <span class="va">sim_factors</span><span class="op">$</span><span class="va">Experiment</span>
+<span class="co"># Create a new data.frame for CAMP parameter</span>
+
+<span class="co">#camp_geno &lt;- camp_geno[1:10,]</span>
+<span class="va">input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">filename</span>, <span class="st">'.Rds'</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">sim_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">filename</span>, <span class="st">'.apsimx'</span><span class="op">)</span>
+<span class="va">sim_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">file_prefix</span>, <span class="st">'.apsimx'</span><span class="op">)</span>
+<span class="co"># Update cultivars in the apsimx file</span>
+<span class="va">apsimx_all</span> <span class="op">&lt;-</span> <span class="va">input</span><span class="op">$</span><span class="va">apsimx</span>
+<span class="co"># remove experiment</span>
+<span class="va">exp_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_node.html">search_node</a></span><span class="op">(</span><span class="va">apsimx_all</span>, `$type` <span class="op">=</span> <span class="st">"Models.Factorial.Experiment, Models"</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">exp_node</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">apsimx_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/remove_model.html">remove_model</a></span><span class="op">(</span><span class="va">apsimx_all</span>, <span class="va">exp_node</span><span class="op">$</span><span class="va">path</span><span class="op">)</span>
+<span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+    <span class="va">sim_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_node.html">search_node</a></span><span class="op">(</span><span class="va">apsimx_all</span>, `$type` <span class="op">=</span> <span class="st">"Models.Core.Simulation, Models"</span><span class="op">)</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">sim_node</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">apsimx_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/remove_model.html">remove_model</a></span><span class="op">(</span><span class="va">apsimx_all</span>, <span class="va">sim_node</span><span class="op">$</span><span class="va">path</span><span class="op">)</span>
+    <span class="op">}</span>
+<span class="op">}</span>
+<span class="va">remove_nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"[Replacements].HarvestReport"</span>,
+                  <span class="st">"[Replacements].MaxLeafSize"</span>,
+                  <span class="st">"[Replacements].MaxLeafSizeReport"</span>,
+                  <span class="st">"[Replacements].SowingReport"</span>,
+                  <span class="st">"[Replacements].DailyReport"</span><span class="op">)</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">remove_nodes</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">node_remove</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">apsimx_all</span>, <span class="va">remove_nodes</span><span class="op">[</span><span class="va">j</span><span class="op">]</span><span class="op">)</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">node_remove</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">apsimx_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/remove_model.html">remove_model</a></span><span class="op">(</span><span class="va">apsimx_all</span>, <span class="va">node_remove</span><span class="op">$</span><span class="va">path</span><span class="op">)</span>
+    <span class="op">}</span>
+<span class="op">}</span>
+<span class="co"># new_daily &lt;- read_apsimx("report_daily.json")</span>
+<span class="co"># replacements_node &lt;- search_path(apsimx_all, "[Replacements]")</span>
+<span class="co"># apsimx_all &lt;- insert_model(apsimx_all, replacements_node$path, list(new_daily))</span>
+
+<span class="co"># apsimx_all &lt;- remove_model(apsimx_all, replacements_node$path)</span>
+<span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">start</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span><span class="op">(</span><span class="op">)</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">new_cultivars</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    
+    <span class="co">#parameters &lt;- parameters[1:600,]</span>
+  
+    <span class="va">apsimx</span> <span class="op">&lt;-</span> <span class="va">input</span><span class="op">$</span><span class="va">apsimx</span>
+    
+    <span class="co"># Add new what models</span>
+    <span class="va">wheat_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Wheat-"</span>, <span class="va">model_type</span><span class="op">$</span><span class="va">model</span>, <span class="st">".json"</span><span class="op">)</span><span class="op">)</span>
+    <span class="va">wheat_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">wheat_model</span>, <span class="st">"[Wheat]"</span><span class="op">)</span>
+    <span class="va">wheat_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_node.html">search_node</a></span><span class="op">(</span><span class="va">apsimx</span>, `$type` <span class="op">=</span> <span class="st">"Models.PMF.Plant, Models"</span>,
+                              ResourceName <span class="op">=</span> <span class="st">"Wheat"</span>,
+                              Name <span class="op">=</span> <span class="st">"Wheat"</span><span class="op">)</span>
+    <span class="va">apsimx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/replace_model.html">replace_model</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="va">wheat_node</span><span class="op">$</span><span class="va">path</span>, <span class="va">wheat_model</span><span class="op">$</span><span class="va">node</span><span class="op">)</span>
+
+    <span class="va">cultivars_tmp</span> <span class="op">&lt;-</span> <span class="st">"hartog"</span>
+    <span class="co"># Check whether have emergence date</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">sim_factors</span><span class="op">$</span><span class="va">EmergenceDate</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">sowing_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="st">"[Sowing]"</span><span class="op">)</span>
+        <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">sowing_node</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+            <span class="va">sowing_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="st">"[SowingRule]"</span><span class="op">)</span>
+        <span class="op">}</span>
+        
+        <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">sowing_node</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+            <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"No sowing node"</span><span class="op">)</span>
+        <span class="op">}</span>
+        <span class="co"># Set new parameter file</span>
+        <span class="va">paras</span> <span class="op">&lt;-</span> <span class="va">sowing_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Parameters</span>
+        <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">paras</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+            <span class="kw">if</span><span class="op">(</span><span class="va">paras</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Key</span> <span class="op">==</span> <span class="st">"FilePath"</span><span class="op">)</span> <span class="op">{</span>
+                <span class="va">paras</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Value</span> <span class="op">&lt;-</span> <span class="st">"EmergenceDates.csv"</span>
+                <span class="kw">break</span>
+            <span class="op">}</span>
+        <span class="op">}</span>
+        <span class="va">sowing_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Parameters</span> <span class="op">&lt;-</span> <span class="va">paras</span>
+        <span class="va">apsimx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/replace_model.html">replace_model</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="va">sowing_node</span><span class="op">$</span><span class="va">path</span>, <span class="va">sowing_node</span><span class="op">$</span><span class="va">node</span><span class="op">)</span>
+        <span class="va">emergence_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+        <span class="va">emergence_dates</span><span class="op">[[</span><span class="va">sim_factors</span><span class="op">$</span><span class="va">ColName</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sim_factors</span><span class="op">$</span><span class="va">ColValue</span>
+        <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">cultivars_tmp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+            <span class="va">emergence_dates</span><span class="op">[[</span><span class="va">cultivars_tmp</span><span class="op">[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sim_factors</span><span class="op">$</span><span class="va">EmergenceDate</span>
+        <span class="op">}</span>
+        <span class="va">emergence_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">emergence_dates</span><span class="op">)</span>
+        <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">emergence_dates</span>, <span class="st">"EmergenceDates.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+    <span class="op">}</span>
+    
+    <span class="co"># Clean parameters in cultivars</span>
+    <span class="va">cultivars_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="st">"[Cultivars]"</span><span class="op">)</span>
+    <span class="va">cultivars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_node.html">search_node</a></span><span class="op">(</span><span class="va">apsimx</span>, `$type` <span class="op">=</span> <span class="st">"Models.PMF.Cultivar, Models"</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    
+    <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">cultivars</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">cultivars</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Command</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+        <span class="va">apsimx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/replace_model.html">replace_model</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="va">cultivars</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">path</span>, <span class="va">cultivars</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">node</span><span class="op">)</span>
+    <span class="op">}</span>
+    <span class="co">#apsimx &lt;- remove_model(apsimx, cultivars_node$path)</span>
+     
+    
+    
+    <span class="co"># Update factors to use only one cultivar</span>
+    <span class="va">cv_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="st">"[Permutation].Cv"</span><span class="op">)</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">cv_node</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">cv_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="st">"[Factors].Cultivar"</span><span class="op">)</span>
+        <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">cv_node</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+            
+            <span class="va">cv_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="st">"[Factors].Permutation.Cultivar"</span><span class="op">)</span>
+            <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">cv_node</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+                <span class="co">#stop("No permutation.Cv model")</span>
+            <span class="op">}</span>
+        <span class="op">}</span>
+    <span class="op">}</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">cv_node</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+        
+        <span class="va">old_spec</span> <span class="op">&lt;-</span> <span class="va">cv_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Specification</span>
+        <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"^(.+ *= *)(.+)"</span>, <span class="va">old_spec</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+            <span class="va">new_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"^(.+ *= *)(.+)"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"\\1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">cultivars_tmp</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span><span class="op">)</span>, 
+                             <span class="va">old_spec</span><span class="op">)</span>
+            <span class="va">cv_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Specification</span> <span class="op">&lt;-</span> <span class="va">new_spec</span>
+        <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">cv_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Children</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span><span class="op">{</span>
+            <span class="co"># Assume the similar operations</span>
+            <span class="va">old_opt</span> <span class="op">&lt;-</span> <span class="va">cv_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Children</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
+            <span class="va">new_opts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+            <span class="va">j</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+            <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">cultivars_tmp</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+                <span class="va">new_opt</span> <span class="op">&lt;-</span> <span class="va">old_opt</span>
+                <span class="va">new_opt</span><span class="op">$</span><span class="va">Name</span> <span class="op">&lt;-</span> <span class="va">cultivars_tmp</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>
+                <span class="va">k</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+                <span class="kw">for</span> <span class="op">(</span><span class="va">k</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">new_opt</span><span class="op">$</span><span class="va">Operation</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+                    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">'^.+cultivar:"([a-zA-Z_]+)".+$'</span>, <span class="va">new_opt</span><span class="op">$</span><span class="va">Operation</span><span class="op">[[</span><span class="va">k</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Action</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+                        <span class="va">new_opt</span><span class="op">$</span><span class="va">Operation</span><span class="op">[[</span><span class="va">k</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Action</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">'^(.+cultivar:")([a-zA-Z_]+)(".+)$'</span>, 
+                                                              <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"\\1"</span>, <span class="va">cultivars_tmp</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, <span class="st">"\\3"</span><span class="op">)</span>, <span class="va">new_opt</span><span class="op">$</span><span class="va">Operation</span><span class="op">[[</span><span class="va">k</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Action</span><span class="op">)</span>
+                    <span class="op">}</span>
+                <span class="op">}</span>
+                <span class="va">new_opts</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">new_opt</span>
+            <span class="op">}</span>
+            <span class="va">cv_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Children</span> <span class="op">&lt;-</span> <span class="va">new_opts</span>
+        <span class="op">}</span>
+        <span class="va">apsimx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/replace_model.html">replace_model</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="va">cv_node</span><span class="op">$</span><span class="va">path</span>, <span class="va">cv_node</span><span class="op">$</span><span class="va">node</span><span class="op">)</span> 
+    <span class="op">}</span>
+    <span class="co"># Replace parameters</span>
+    <span class="va">parameters_i</span> <span class="op">&lt;-</span> <span class="va">parameters</span><span class="op">[</span><span class="va">parameters</span><span class="op">$</span><span class="va">name</span> <span class="op">%in%</span> <span class="va">new_cultivars</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,<span class="op">]</span>
+    <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">parameters_i</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">apsimx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_parameter_value.html">set_parameter_value</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="va">parameters_i</span><span class="op">$</span><span class="va">parameter</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, <span class="va">parameters_i</span><span class="op">$</span><span class="va">value</span><span class="op">[</span><span class="va">j</span><span class="op">]</span><span class="op">)</span>
+    <span class="op">}</span>
+    
+    <span class="co"># Remove all old report</span>
+    <span class="va">reports_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="fu"><a href="../reference/search_node.html">search_node</a></span><span class="op">(</span><span class="va">apsimx</span>, `$type` <span class="op">=</span> <span class="st">"Models.Report, Models"</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+
+    <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">reports_node</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">apsimx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/remove_model.html">remove_model</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="va">reports_node</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">path</span><span class="op">)</span>
+    <span class="op">}</span>
+    <span class="co"># Remove max leaf size</span>
+    <span class="va">reports_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="fu"><a href="../reference/search_node.html">search_node</a></span><span class="op">(</span><span class="va">apsimx</span>, `$type` <span class="op">=</span> <span class="st">"Models.Manager, Models"</span>, 
+                                    Name <span class="op">=</span> <span class="st">"MaxLeafSize"</span>,
+                                    all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+    
+    <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">reports_node</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">apsimx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/remove_model.html">remove_model</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="va">reports_node</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">path</span><span class="op">)</span>
+    <span class="op">}</span>
+    
+    <span class="va">new_daily</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="st">"report_daily.json"</span><span class="op">)</span>
+    <span class="va">harvest_report_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_node.html">search_node</a></span><span class="op">(</span><span class="va">apsimx</span>,  `$type`<span class="op">=</span> <span class="st">"Models.Core.Zone, Models"</span><span class="op">)</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">harvest_report_node</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">apsimx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/insert_model.html">insert_model</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="va">harvest_report_node</span><span class="op">$</span><span class="va">path</span>, <span class="va">new_daily</span><span class="op">)</span>
+    <span class="op">}</span>
+    
+    <span class="co"># Change the name</span>
+    <span class="va">sim_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_node.html">search_node</a></span><span class="op">(</span><span class="va">apsimx</span>, `$type` <span class="op">=</span> <span class="st">"Models.Core.Simulation, Models"</span><span class="op">)</span>
+    <span class="va">sim_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">new_cultivars</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"Base"</span><span class="op">)</span>
+    <span class="va">apsimx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/replace_model.html">replace_model</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="va">sim_node</span><span class="op">$</span><span class="va">path</span>, <span class="va">sim_node</span><span class="op">$</span><span class="va">node</span><span class="op">)</span>
+    <span class="va">exp_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_node.html">search_node</a></span><span class="op">(</span><span class="va">apsimx</span>, `$type` <span class="op">=</span> <span class="st">"Models.Factorial.Experiment, Models"</span><span class="op">)</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">exp_node</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">exp_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span> <span class="op">&lt;-</span> <span class="va">new_cultivars</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>
+        <span class="va">apsimx_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/append_model.html">append_model</a></span><span class="op">(</span><span class="va">apsimx_all</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">exp_node</span><span class="op">$</span><span class="va">node</span><span class="op">)</span><span class="op">)</span>
+    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+        <span class="va">apsimx_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/append_model.html">append_model</a></span><span class="op">(</span><span class="va">apsimx_all</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">sim_node</span><span class="op">$</span><span class="va">node</span><span class="op">)</span><span class="op">)</span>
+    <span class="op">}</span>
+    
+<span class="op">}</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proc.time.html">proc.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">start</span><span class="op">)</span>
+<span class="co"># Remove the old files</span>
+<span class="va">old_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">file_prefix</span>, 
+                    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">".db"</span>, <span class="st">".apsimx.bak"</span>,
+                      <span class="st">".DailyReport.csv"</span>,
+                      <span class="st">".HarvestReport.csv"</span>, 
+                      <span class="st">".apsimx"</span>, <span class="st">".Rds"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="va">old_files</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">old_files</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/write_apsimx.html">write_apsimx</a></span><span class="op">(</span><span class="va">apsimx_all</span>, <span class="va">sim_name</span><span class="op">)</span><span class="op">)</span>
+
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">met</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">input</span><span class="op">$</span><span class="va">met</span> <span class="op">&lt;-</span> <span class="va">input</span><span class="op">$</span><span class="va">met</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"Powered"</span>, <span class="va">input</span><span class="op">$</span><span class="va">met</span><span class="op">)</span><span class="op">]</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">met</span>, <span class="va">input</span><span class="op">$</span><span class="va">met_file</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="va">models_path</span> <span class="op">&lt;-</span> <span class="st">"apsimx/Models.exe"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/run_models.html">run_models</a></span><span class="op">(</span><span class="va">models_path</span>, <span class="va">sim_name</span>, csv <span class="op">=</span> <span class="cn">TRUE</span>, parallel <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"."</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">file_prefix</span>, <span class="st">"\\.DailyReport\\.csv"</span><span class="op">)</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">new_cultivars</span><span class="op">)</span><span class="op">)</span>
+    <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">new_cultivars</span>, 
+                      Clock.Today <span class="op">=</span> <span class="va">tmp</span>,
+                      Wheat.Leaf.AppearedCohortNo <span class="op">=</span> <span class="va">tmp</span>,
+                      Wheat.Phenology.HaunStage <span class="op">=</span> <span class="va">tmp</span>,
+                      Wheat.Structure.LeafTipsAppeared <span class="op">=</span> <span class="va">tmp</span><span class="op">)</span>
+<span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+    <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>
+    <span class="va">out</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"^ *(GS\\d+GN).*"</span>, <span class="st">"\\1"</span>, <span class="va">out</span><span class="op">$</span><span class="va">SimulationName</span><span class="op">)</span>
+    <span class="co">#out$name &lt;- new_cultivars[i]</span>
+    <span class="va">out</span> <span class="op">&lt;-</span> <span class="va">out</span><span class="op">[</span><span class="va">out</span><span class="op">$</span><span class="va">Wheat.Phenology.HaunStage</span> <span class="op">&lt;=</span> <span class="fl">8</span> <span class="op">&amp;</span> <span class="va">out</span><span class="op">$</span><span class="va">Wheat.Phenology.HaunStage</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span>
+                   <span class="va">out</span><span class="op">$</span><span class="va">Wheat.Phenology.Stage</span> <span class="op">&lt;=</span> <span class="fl">6.2</span>,<span class="op">]</span>
+    <span class="va">out</span> <span class="op">&lt;-</span> <span class="va">out</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> 
+        <span class="st">"name"</span>,
+        <span class="st">"Clock.Today"</span>,
+        <span class="st">"Wheat.Leaf.AppearedCohortNo"</span>,
+        <span class="st">"Wheat.Phenology.HaunStage"</span>,
+        <span class="st">"Wheat.Structure.LeafTipsAppeared"</span>
+    <span class="op">)</span><span class="op">]</span>
+    <span class="va">out</span><span class="op">$</span><span class="va">Clock.Today</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">Clock.Today</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="va">out</span><span class="op">$</span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">model_type</span><span class="op">$</span><span class="va">model</span>
+<span class="va">out</span><span class="op">$</span><span class="va">Experiment</span> <span class="op">&lt;-</span> <span class="va">sim_factors</span><span class="op">$</span><span class="va">Experiment</span>
+<span class="va">out</span><span class="op">$</span><span class="va">EmergenceDate</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">sim_factors</span><span class="op">$</span><span class="va">EmergenceDate</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">out</span><span class="op">$</span><span class="va">EmergenceDate</span> <span class="op">&lt;-</span> <span class="va">sim_factors</span><span class="op">$</span><span class="va">EmergenceDate</span>
+<span class="op">}</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">out</span>, file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">'%s.Rds'</span>, <span class="va">file_prefix</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
-</div>
-<div id="merge-all-results-for-each-individual-experiment" class="section level2">
-<h2 class="hasAnchor">
-<a href="#merge-all-results-for-each-individual-experiment" class="anchor"></a>Merge all results for each individual experiment</h2>
 </div>
 <div id="merge-all-results-for-each-individual-genotype" class="section level2">
 <h2 class="hasAnchor">
@@ -433,7 +697,7 @@ $( document ).ready(function() {
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
