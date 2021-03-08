@@ -496,35 +496,6 @@ $( document ).ready(function() {
                               Name <span class="op">=</span> <span class="st">"Wheat"</span><span class="op">)</span>
     <span class="va">apsimx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/replace_model.html">replace_model</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="va">wheat_node</span><span class="op">$</span><span class="va">path</span>, <span class="va">wheat_model</span><span class="op">$</span><span class="va">node</span><span class="op">)</span>
 
-    <span class="va">cultivars_tmp</span> <span class="op">&lt;-</span> <span class="st">"hartog"</span>
-    <span class="co"># Check whether have emergence date</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">sim_factors</span><span class="op">$</span><span class="va">EmergenceDate</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-        <span class="va">sowing_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="st">"[Sowing]"</span><span class="op">)</span>
-        <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">sowing_node</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
-            <span class="va">sowing_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="st">"[SowingRule]"</span><span class="op">)</span>
-        <span class="op">}</span>
-        
-        <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">sowing_node</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
-            <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"No sowing node"</span><span class="op">)</span>
-        <span class="op">}</span>
-        <span class="co"># Set new parameter file</span>
-        <span class="va">paras</span> <span class="op">&lt;-</span> <span class="va">sowing_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Parameters</span>
-        <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">paras</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-            <span class="kw">if</span><span class="op">(</span><span class="va">paras</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Key</span> <span class="op">==</span> <span class="st">"FilePath"</span><span class="op">)</span> <span class="op">{</span>
-                <span class="va">paras</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Value</span> <span class="op">&lt;-</span> <span class="st">"EmergenceDates.csv"</span>
-                <span class="kw">break</span>
-            <span class="op">}</span>
-        <span class="op">}</span>
-        <span class="va">sowing_node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Parameters</span> <span class="op">&lt;-</span> <span class="va">paras</span>
-        <span class="va">apsimx</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/replace_model.html">replace_model</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="va">sowing_node</span><span class="op">$</span><span class="va">path</span>, <span class="va">sowing_node</span><span class="op">$</span><span class="va">node</span><span class="op">)</span>
-        <span class="va">emergence_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
-        <span class="va">emergence_dates</span><span class="op">[[</span><span class="va">sim_factors</span><span class="op">$</span><span class="va">ColName</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sim_factors</span><span class="op">$</span><span class="va">ColValue</span>
-        <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">cultivars_tmp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-            <span class="va">emergence_dates</span><span class="op">[[</span><span class="va">cultivars_tmp</span><span class="op">[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sim_factors</span><span class="op">$</span><span class="va">EmergenceDate</span>
-        <span class="op">}</span>
-        <span class="va">emergence_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">emergence_dates</span><span class="op">)</span>
-        <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">emergence_dates</span>, <span class="st">"EmergenceDates.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-    <span class="op">}</span>
     
     <span class="co"># Clean parameters in cultivars</span>
     <span class="va">cultivars_node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">apsimx</span>, <span class="st">"[Cultivars]"</span><span class="op">)</span>
