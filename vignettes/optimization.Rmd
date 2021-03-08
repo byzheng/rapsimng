@@ -341,55 +341,66 @@ Scheduling task on the cluster (parallel computing) is out of the topic in this 
 
 ### Develop scripts to run individual task on HTCondor
 
+HTCondor is configured to use all desktops when they are idle in CSIRO. Each task is independently run in the remote computer. My setup of HTCondor passes two parameters for each task (i.e. title of simulation and output file name). The scripts below are developed used basic R functions to reduce the file size when R transfers to remote computers.
+
+There are many ways to setup how to sow a cultivar in APSIM NG, so that it is not easy to create a new factor Cultivar for any simualtions. Alternatively, we add a whole wheat model under paddock or field and replace the default parameter values in the model. 
 
 ```{r run-task-htcondor, eval=FALSE}
-
-
 # Run jobs under condor -----------------------------------
-rm(list = ls())
-setwd("C:/Users/zhe00a/Documents/test")
-sim_title <- 'gid=ptq_1,Experiment=Callington-TOS_6,EmergenceDate=2019-05-27,ColName=TOS,ColValue=6'
-# sim_title <- 'gid=release_1,Experiment=12JuneeJames-1-100'
-# sim_title <- 'gid=release_1,Experiment=Mouse-Removal_0.00_Date_2002-09-10'
-# sim_title <- 'gid=release_1,Experiment=APS2-TOS_1'
-# sim_title <- 'gid=release_1,Experiment=Yucheng02'
-
+# For test purpose only
+sim_title <- 'group=1,Experiment=APS2-TOS_1'
 file_prefix <- '375e780cabcc4bb7f00f5a9887faa9c8'
 
+# arguments from the task
 args <- commandArgs(TRUE)
-
 sim_title <- args[[1]]
 file_prefix <- args[[2]]
 
-library(RAPSIM)
+# Load required packages
 library(methods)
+# rapsimng depends on tidyverse package which has lots of other dependencey. A few basic functions are used in the scripts, so all source codes of rapsimng package is passed to HTCondor
 path <- c("r-packages/rapsimng/R/")
 files <- lapply(path, list.files, full.names = TRUE)
 files <- unlist(files)
 invisible(lapply(files, source))
-info <- readRDS("parameters.rds")
 
+# Read the parameter file generated before
+parameters <- readRDS("parameters.rds")
 
+splitTitle <- function (title, split = ",")  {
+    temp <- strsplit(title, paste0(" *", split, " *"))[[1]]
+    temp <- strsplit(temp, " *= *")
+    temp <- as.data.frame(t(as.data.frame(temp)))
+    row.names(temp) <- seq(length = nrow(temp))
+    names(temp) <- c("name", "value")
+    res <- as.character(temp$value)
+    names(res) <- as.character(temp$name)
+    res <- as.data.frame(t(as.data.frame(res)))
+    for (i in seq(ncol(res))) {
+        res[[i]] <- as.character(res[[i]])
+    }
+    return(res)
+}
+
+# Split the simulation title
 sim_factors <- splitTitle(sim_title)
-model_type <- info$groups[info$groups$gid == sim_factors$gid,]
-parameters <- info[[model_type$model]]
-parameters <- parameters[parameters$group == model_type$group,]
+# Get the parameter for this task
+group_idx <- as.numeric(sim_factors$group)
+parameters <- parameters[parameters$group == group_idx,]
 
-#parameters <- parameters[1:4,]
-
+# List of new cultivars
 new_cultivars <- unique(parameters$name)
 
+# Get the experimetn name
 filename <- sim_factors$Experiment
-# Create a new data.frame for CAMP parameter
-
-#camp_geno <- camp_geno[1:10,]
+# Read the combined apsimx and met file which generated before
 input <- readRDS(paste0(filename, '.Rds'))
-
 sim_name <- paste0(filename, '.apsimx')
 sim_name <- paste0(file_prefix, '.apsimx')
-# Update cultivars in the apsimx file
+
+# Create a new apsimx file to store all virtual genotypes
 apsimx_all <- input$apsimx
-# remove experiment
+# remove experiment or simulation node for an empty apsimx. 
 exp_node <- search_node(apsimx_all, `$type` = "Models.Factorial.Experiment, Models")
 if (length(exp_node) > 0) {
     apsimx_all <- remove_model(apsimx_all, exp_node$path)
@@ -399,6 +410,7 @@ if (length(exp_node) > 0) {
         apsimx_all <- remove_model(apsimx_all, sim_node$path)
     }
 }
+# Remove the unused replacements in the wheat.apsimx
 remove_nodes <- c("[Replacements].HarvestReport",
                   "[Replacements].MaxLeafSize",
                   "[Replacements].MaxLeafSizeReport",
@@ -410,21 +422,16 @@ for (j in seq(along = remove_nodes)) {
         apsimx_all <- remove_model(apsimx_all, node_remove$path)
     }
 }
-# new_daily <- read_apsimx("report_daily.json")
-# replacements_node <- search_path(apsimx_all, "[Replacements]")
-# apsimx_all <- insert_model(apsimx_all, replacements_node$path, list(new_daily))
 
-# apsimx_all <- remove_model(apsimx_all, replacements_node$path)
+# Create a new apsimx file for each virtual genotype
 i <- 1
 start <- proc.time()
 for (i in seq(along = new_cultivars)) {
-    
-    #parameters <- parameters[1:600,]
-  
+    # Get from template
     apsimx <- input$apsimx
     
-    # Add new what models
-    wheat_model <- read_apsimx(paste0("Wheat-", model_type$model, ".json"))
+    # Replace the wheat plant with wheat.json
+    wheat_model <- read_apsimx("Wheat.json")
     wheat_model <- search_path(wheat_model, "[Wheat]")
     wheat_node <- search_node(apsimx, `$type` = "Models.PMF.Plant, Models",
                               ResourceName = "Wheat",
@@ -432,7 +439,7 @@ for (i in seq(along = new_cultivars)) {
     apsimx <- replace_model(apsimx, wheat_node$path, wheat_model$node)
 
     
-    # Clean parameters in cultivars
+    # Clean parameters in cultivars as we will use the default parameter values
     cultivars_node <- search_path(apsimx, "[Cultivars]")
     cultivars <- search_node(apsimx, `$type` = "Models.PMF.Cultivar, Models", all = TRUE)
     
@@ -440,22 +447,19 @@ for (i in seq(along = new_cultivars)) {
         cultivars[[j]]$node$Command <- list()
         apsimx <- replace_model(apsimx, cultivars[[j]]$path, cultivars[[j]]$node)
     }
-    #apsimx <- remove_model(apsimx, cultivars_node$path)
-     
     
     
-    # Update factors to use only one cultivar
+    # Remove extra levels in the Cv or Cultivar factor to use only one cultivar
     cv_node <- search_path(apsimx, "[Permutation].Cv")
     if (length(cv_node) == 0) {
         cv_node <- search_path(apsimx, "[Factors].Cultivar")
         if (length(cv_node) == 0) {
             
             cv_node <- search_path(apsimx, "[Factors].Permutation.Cultivar")
-            if (length(cv_node) == 0) {
-                #stop("No permutation.Cv model")
-            }
         }
     }
+    # Use hartog as the template cultivar
+    cultivars_tmp <- "hartog"
     if (length(cv_node) > 0) {
         
         old_spec <- cv_node$node$Specification
@@ -484,7 +488,7 @@ for (i in seq(along = new_cultivars)) {
         }
         apsimx <- replace_model(apsimx, cv_node$path, cv_node$node) 
     }
-    # Replace parameters
+    # Replace default parameter values
     parameters_i <- parameters[parameters$name %in% new_cultivars[i],]
     for (j in seq(along = parameters_i[[1]])) {
         apsimx <- set_parameter_value(apsimx, parameters_i$parameter[j], parameters_i$value[j])
@@ -496,7 +500,7 @@ for (i in seq(along = new_cultivars)) {
     for (j in seq(along = reports_node)) {
         apsimx <- remove_model(apsimx, reports_node[[j]]$path)
     }
-    # Remove max leaf size
+    # Remove max leaf size: A bug in the current APSIM NG
     reports_node <- rev(search_node(apsimx, `$type` = "Models.Manager, Models", 
                                     Name = "MaxLeafSize",
                                     all = TRUE))
@@ -505,17 +509,19 @@ for (i in seq(along = new_cultivars)) {
         apsimx <- remove_model(apsimx, reports_node[[j]]$path)
     }
     
+    # Add a new daily report
     new_daily <- read_apsimx("report_daily.json")
     harvest_report_node <- search_node(apsimx,  `$type`= "Models.Core.Zone, Models")
     if (length(harvest_report_node) > 0) {
         apsimx <- insert_model(apsimx, harvest_report_node$path, new_daily)
     }
     
-    # Change the name
+    # Change experiment and simulation name
     sim_node <- search_node(apsimx, `$type` = "Models.Core.Simulation, Models")
     sim_node$node$Name <- paste0(new_cultivars[i], "Base")
     apsimx <- replace_model(apsimx, sim_node$path, sim_node$node)
     exp_node <- search_node(apsimx, `$type` = "Models.Factorial.Experiment, Models")
+    # Add new apsimx into the whole apsimx file.
     if (length(exp_node) > 0) {
         exp_node$node$Name <- new_cultivars[i]
         apsimx_all <- append_model(apsimx_all, 1, list(exp_node$node))
@@ -526,7 +532,7 @@ for (i in seq(along = new_cultivars)) {
 }
 
 print(proc.time() - start)
-# Remove the old files
+# Remove the old files 
 old_files <- paste0(file_prefix, 
                     c(".db", ".apsimx.bak",
                       ".DailyReport.csv",
@@ -534,16 +540,20 @@ old_files <- paste0(file_prefix,
                       ".apsimx", ".Rds"))
 a <- file.remove(old_files[file.exists(old_files)])
 
+# Write new apsimx into disk
 system.time(write_apsimx(apsimx_all, sim_name))
 
+# Write weather file if exists
 if (!is.null(input$met)) {
     input$met <- input$met[!grepl("Powered", input$met)]
     writeLines(input$met, input$met_file)
 }
 
+# Run apsimx file
 models_path <- "apsimx/Models.exe"
 system.time(run_models(models_path, sim_name, csv = TRUE, parallel = FALSE))
 
+# Read output
 file <- list.files(".", paste0(file_prefix, "\\.DailyReport\\.csv"))
 if (length(file) != 1) {
     tmp <- rep(NA, length(new_cultivars))
@@ -568,24 +578,349 @@ if (length(file) != 1) {
     out$Clock.Today <- as.Date(out$Clock.Today)
 }
 
-out$model <- model_type$model
+# Add experiment for post processing
 out$Experiment <- sim_factors$Experiment
-out$EmergenceDate <- NA
-if (!is.null(sim_factors$EmergenceDate)) {
-    out$EmergenceDate <- sim_factors$EmergenceDate
+# Save the result
+saveRDS(out, file=sprintf('%s.Rds', file_prefix))
+```
+
+Outputs for all tasks are stored in to shared drive. 
+
+
+
+It is not necessary to use parallel codes in the following steps, but parallel calculation does improve performance. `run_parallel` is a wrap function to run a fun in parallel in different platform. 
+```{r parallel-wrap, eval=FALSE}
+run_parallel <- function (x, fun, cpus = parallel::detectCores() - 1, ...) 
+{
+    cl <- snow::getMPIcluster()
+    args = commandArgs(trailingOnly = TRUE)
+    if (!is.null(cl)) {
+        r <- snow::parLapply(cl, x, fun, ...)
+    }
+    else if (length(args) > 0) {
+        idx <- as.numeric(args[1])
+        if (idx <= length(x)) {
+            fun(idx, ...)
+        }
+        r <- NULL
+    }
+    else {
+        library(snowfall)
+        sfInit(cpus = cpus, parallel = TRUE, slaveOutfile = "tmp.txt")
+        r <- sfLapply(x, fun, ...)
+        sfStop()
+    }
+    r
+}
+```
+
+
+## Merge simulated values of all treatments for the target cultivars.
+
+All outputs in previous are merged into a single file for each cultivar for optimization.
+
+
+In step 1, all groups of virtual genotypes in each treatment are merged into individual file (fst format is used).
+
+
+```{r merge-treatment, eval=FALSE}
+# All apsimx files (experiment) generated before
+experiments <- list.files("Simulations/", full.names = TRUE)
+
+# Output folder for this step
+out_folder <- "Experiment/"
+if (!dir.exists(out_folder)) {
+  dir.create(out_folder, recursive = TRUE)
 }
 
-saveRDS(out, file=sprintf('%s.Rds', file_prefix))
+base <- "path-to-htcondor-output"
+i <- 1
+par_merge <- function(i, experiments, base, out_folder) {
+  out_file <- paste0(out_folder, experiments[i], ".fst") 
+  if (file.exists(out_file)) {
+    return(invisible(NULL))
+  }
+  library(tidyverse)
+  files <- file.path(base, experiments[i]) %>% 
+    list.files(full.names = TRUE)  
+  res <- list()
+  for (j in seq(along = files)) {
+    tryCatch({
+      r <- readRDS(files[j])
+      r$Clock.Today <- as.Date(r$Clock.Today)
+      res[[j]] <- r
+    }, error = function(e) {
+      file.remove(files[i])
+    })
+  }
+  res <- bind_rows(res)
+  out_file %>% 
+    fst::write_fst(res, .)
+  return(invisible())
+}
+
+run_parallel(seq(along = experiments), par_merge, experiments = experiments, base = base, out_folder = out_folder)
 
 
 ```
 
+In step 2, all treatments for each cultivar is further merged into individual file. The observations can be red from wheat.db file after running wheat.apsimx
 
 
-## Merge all results for each individual genotype
+```{r read-obs, eval=FALSE}
+
+# It takes some times to read the big database so it would be better to save results in a Rds file and read it later. 
+read_obs <- function(npi = TRUE) {
+  file <- "Wheat.db"
+  con <- dbConnect(RSQLite::SQLite(), file)
+  simulations <- dbReadTable(con, "_Simulations") %>% tibble()
+  sowing_report <- dbReadTable(con, "SowingReport") %>% tibble()
+  factors <- dbReadTable(con, "_Factors")
+  daily_report <- dbReadTable(con, "DailyObsPred") %>% tibble()
+  dbDisconnect(con)
+  
+  daily_report <- daily_report %>% 
+    select(SimulationID,
+           Clock.Today, 
+           Observed.Wheat.Leaf.AppearedCohortNo,
+           Predicted.Wheat.Leaf.AppearedCohortNo,
+           Predicted.Wheat.Phenology.HaunStage,
+           Observed.Wheat.Phenology.HaunStage,
+           Observed.Wheat.Structure.LeafTipsAppeared,
+           Predicted.Wheat.Structure.LeafTipsAppeared)
+  daily_report <- daily_report %>% 
+      pivot_longer(cols = c(starts_with("Observed"), starts_with("Predicted"))) %>% 
+    filter(!is.na(value)) %>% 
+    mutate(type = gsub("^(Observed|Predicted)\\..+$", "\\1", name),
+           trait = gsub("^(Observed|Predicted)\\.(.+)$", "\\2", name)) %>% 
+    select(-name) %>% 
+    group_by(SimulationID, Clock.Today, type, trait) %>% 
+    mutate(sample = seq_len(n())) %>% 
+    pivot_wider(names_from = "type",
+                values_from = "value") %>% 
+    filter(!is.na(Observed))
+
+  obs <- sowing_report %>%
+    select(SimulationID, Genotype = Wheat.SowingData.Cultivar) %>%
+    left_join(simulations,
+              by = c("SimulationID" = "ID")) %>%
+    mutate(Genotype = tolower(Genotype)) %>%
+    tbl_df() %>%
+    right_join(daily_report %>% tbl_df(), by = "SimulationID") %>% 
+    left_join(factors %>% tbl_df() %>%
+                select(-FolderName, -CheckpointID) %>%  
+                distinct(), by = "SimulationID")
+    obs <- obs %>% 
+        filter(Genotype %in% cultivars$Name) %>% 
+        group_by(SimulationID, Genotype, Name, FolderName, Clock.Today,
+                 trait, ExperimentName, FactorName, FactorValue) %>% 
+        summarise(Observed = mean(Observed),
+                  Predicted = mean(Predicted), .groups = "drop") %>% 
+        mutate(Clock.Today = as.Date(as.numeric(as.Date(Clock.Today)), origin = "1970-1-1"))
+    obs
+}
+
+```
+
+
+```{r merge-genotype, eval=FALSE}
+# Read observations for list of genotype
+obs <- read_obs()
+genotypes <- tolower(unique(obs$Genotype)) %>% sort()
+# output folder for this step
+out_folder <- "Genotype/"
+if (!dir.exists(out_folder)) {
+  dir.create(out_folder, recursive = TRUE)
+}
+i <- 1
+par_merge <- function(i, genotypes, obs, out_folder) {
+  library(tidyverse)
+  library(rapsimng)
+  # Check whether output file exists
+  out_file <- paste0(out_folder, genotypes[i], '.fst')
+  if (file.exists(out_file)) {
+    return(invisible())
+  }
+  # Get the experiment name and match experiments with observations for this genotype
+  sim_files <- list.files('Experiment//',
+                          full.names = TRUE)
+  sim_exp_names <- tools::file_path_sans_ext(gsub("(_|-)", "", basename(sim_files)))
+  sim_exp_names <- tools::file_path_sans_ext(basename(sim_files))
+  sim_exp_names2 <- gsub("-", "\\.*", sim_exp_names)
+  sim_exp_names2 <- gsub("_", "\\.*", sim_exp_names2)
+  obs_i <- obs %>% 
+    filter(Genotype == genotypes[i])
+  exps_i <- obs_i %>% 
+    select(Name, FolderName, ExperimentName) %>% 
+    distinct()
+  exps <- gsub("(_|-)", "", unique(obs_i$Name))
+  
+  # Read the simulated file and merge together
+  res <- list()
+  j <- 1
+  for (j in seq(along = exps_i$Name)) {
+    k <- 1
+    target_sim_exp <- NULL
+    for (k in seq(along = sim_exp_names)) {
+      if (grepl(sim_exp_names2[k], gsub("-", "", exps_i$Name[j]))) {
+        target_sim_exp <- sim_exp_names[k]
+      }
+    }
+    if (is.null(target_sim_exp)) {
+      stop("Not found the target experiment or simulation")
+    }
+    
+    sim_file_i <- sim_files[match(target_sim_exp, sim_exp_names)]
+    if (length(sim_file_i) != 1) {
+      stop("Not found or multiple records")
+    }
+    r <- fst::read_fst(sim_file_i) %>% tibble()
+    
+    r$SimulationName <- exps_i$Name[j]
+    res[[j]] <- r
+    rm(r)
+    gc(verbose = FALSE)
+  }  
+  res <- bind_rows(res)
+  gc()
+  # Write into disk
+  fst::write_fst(res, out_file)
+  rm(res)  
+  gc()
+  return(invisible())
+}
+
+run_parallel(seq(along = genotypes), par_merge, 
+              genotypes = genotypes, obs = obs, out_folder = out_folder)
+
+```
 
 ## Optimize the genotypic parameters for each genotype
 
+```{r optimization-par, eval=FALSE}
+# Read obs
+obs <- read_obs()
+obs <- obs %>% 
+  select(-FactorValue, -FactorName) %>% 
+  distinct()
+# Get genotype list
+genotypes <- tolower(unique(obs$Genotype)) %>% sort()
+# Output folder
+out_folder <- "Optimization/"
+if (!dir.exists(out_folder)) {
+  dir.create(out_folder, recursive = TRUE)
+}
+
+par_opt <- function(i, genotypes, obs, out_folder) {
+  # Check output folder
+  out_file_predicted <- paste0(out_folder, genotypes[i], '.Rds')
+  if (file.exists(out_file_predicted)) {
+    return(invisible())
+  }
+  
+  # Read the simulated outputs
+  out_file <- paste0("Genotype/", genotypes[i], '.fst')
+  sim <- fst::read_fst(out_file) %>% tibble()
+  # Remove Huan stage is more than 7
+  sim <- sim %>% 
+    filter(Wheat.Phenology.HaunStage <= 7)
+  gc()
+  
+  # Join observations with simulated outputs
+  obs2 <- obs %>% 
+    filter(Genotype == genotypes[i]) %>% 
+    select(trait, Observed, SimulationName = Name, Clock.Today) %>% 
+    mutate(trait = paste0(trait, "_Obs")) %>% 
+    pivot_wider(names_from = "trait", values_from = "Observed") 
+  if (!has_name(obs2, "Wheat.Leaf.AppearedCohortNo_Obs")) {
+    obs2$Wheat.Leaf.AppearedCohortNo_Obs <- NA_integer_
+  }
+  if (!has_name(obs2, "Wheat.Phenology.HaunStage_Obs")) {
+    obs2$Wheat.Phenology.HaunStage_Obs <- NA_integer_
+  }
+  if (!has_name(obs2, "Wheat.Structure.LeafTipsAppeared_Sim")) {
+    obs2$Wheat.Structure.LeafTipsAppeared_Obs <- NA_integer_
+  }
+  df <- obs2 %>% right_join(sim, by = c("SimulationName", "Clock.Today")) 
+  
+  rm(sim)
+  # Calculate rmse, 
+  rmse <- function(Wheat.Leaf.AppearedCohortNo_Obs, 
+                   Wheat.Phenology.HaunStage_Obs, 
+                   Wheat.Structure.LeafTipsAppeared_Obs,
+                   Wheat.Leaf.AppearedCohortNo_Sim, 
+                   Wheat.Phenology.HaunStage_Sim, 
+                   Wheat.Structure.LeafTipsAppeared_Sim) {
+   
+   
+    obs2 <- c(Wheat.Leaf.AppearedCohortNo_Obs, 
+              Wheat.Phenology.HaunStage_Obs, 
+              Wheat.Structure.LeafTipsAppeared_Obs)
+    sim2 <- c(Wheat.Leaf.AppearedCohortNo_Sim, 
+              Wheat.Phenology.HaunStage_Sim, 
+              Wheat.Structure.LeafTipsAppeared_Sim)
+    if (sum(is.na(sim2)) > 0) {
+      return (NA)
+    }
+    pos <- !is.na(obs2)
+    obs2 <- obs2[pos]
+    sim2 <- sim2[pos]
+    Metrics::rmse(obs2, sim2) 
+  }
+  
+  # Calculate the RMSE
+  rmse_sum <- df %>% 
+    group_by(name) %>% 
+    summarise(rmse = rmse(Wheat.Leaf.AppearedCohortNo_Obs, 
+                          Wheat.Phenology.HaunStage_Obs, 
+                          Wheat.Structure.LeafTipsAppeared_Obs,
+                         Wheat.Leaf.AppearedCohortNo, 
+                         Wheat.Phenology.HaunStage, 
+                         Wheat.Structure.LeafTipsAppeared),
+              .groups = "keep")
+  # Get best combinations with minimum RMSE and the predicted value
+  predicted <- rmse_sum %>% 
+    ungroup() %>% 
+    filter(rmse == min(rmse, na.rm = TRUE)) %>% 
+    ungroup() %>% 
+    left_join(df) %>% 
+    mutate(experiment_type = ifelse(Experiment %in% cal_treatments[[j]], "Calibration", "Validation")) %>% 
+    select(SimulationName, Clock.Today, name, rmse, experiment_type,
+           Wheat.Leaf.AppearedCohortNo_Sim = Wheat.Leaf.AppearedCohortNo,
+           Wheat.Phenology.HaunStage_Sim = Wheat.Phenology.HaunStage, 
+           Wheat.Structure.LeafTipsAppeared_SIm = Wheat.Structure.LeafTipsAppeared) %>% 
+    pivot_longer(cols = ends_with("_Sim"), names_to = "trait", 
+                 values_to = "Predicted2") %>% 
+    mutate(trait = gsub("_Sim", "", trait))
+  
+  
+  
+  rm(rmse_sum)
+  rm(df)
+  gc()
+  # Matched the predicted with observed values
+  obs_i <- obs %>% 
+    filter(Genotype == genotypes[i]) %>% 
+    rename(SimulationName = Name) %>% 
+    right_join(predicted) %>% 
+    filter(!is.na(Observed))
+  # Save output
+  saveRDS(obs_i, file = out_file_predicted)
+ 
+}
+
+run_parallel(seq(along = genotypes), par_opt,
+              genotypes = genotypes, obs = obs, out_folder = out_folder)
+
+```
+
+In the last step, the optimized parameter values and predictions can be merged.
+
+```{r merge-opt, eval=FALSE}
+df <- "Optimization/" %>% 
+  list.files(full.names = TRUE) %>% 
+  map_df(readRDS)
+```
 
 
 
