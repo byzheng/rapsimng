@@ -18,6 +18,8 @@ knitr::opts_chunk$set(
 library(knitr)
 ```
 
+
+
 Optimization of parameter values in the crop model is the key step to utilise models to simulate the field experiments. However, it is time consuming to calibrate lots of cultivars using observations from multiple experiments.
 
 In this page, I presented a method using factorial simulations to calibrate and validate the leaf appearance process for wheat validation set in the [APSIM Next Generation](https://github.com/APSIMInitiative/ApsimX/). All 77 cultivars are simultaneously calibrated and validated in this process. The  method heavily depends on the available CPU resources and infrastructure of cluster which might not be suitable for every situation. The codes in this page might not be reproducible. 
@@ -56,7 +58,7 @@ The input is the wheatp.apsimx and associated weather files. The output is the s
 APSIM NG provides a feature to generate .apsimx files from a single .apsim file through right clicking the root node. 
 
 ```{r apsimng-generate, out.width="40%", echo=FALSE, fig.align='center'}
-knitr::include_graphics("figures/apsimng-generate-simulations.png")
+knitr::include_graphics("./figures/apsimng-generate-simulations.png")
 ```
 
 ```{r spit-apsimx, eval=FALSE}
@@ -212,34 +214,127 @@ for (j in seq(along = sims)) {
 
 ```
 
+Finally wheat.apsimx is split into 885 treatments.  
+
 ## Generate the parameter spaces and prepare the task list for parallel calculation
 
 In this page, we will optimize two parameters in the leaf appearance rate i.e. base phyllochron (`[Phenology].Phyllochron.BasePhyllochron.FixedValue`) and photoperiod effect (`[Phenology].Phyllochron.PhotoPeriodEffect.XYPairs.Y`). The parameter range is determined by expert experience or possible values in the current wheat model. The internal should make sure there are enough accuracy for the target traits. 
 
 ```{r parameter-space}
+# Define list of parameter with specified range and interval
+# Expand grid for all combinations
 parameters <- list(`[Phenology].Phyllochron.BasePhyllochron.FixedValue` = as.character(seq(60, 130, by = 1)),
           `[Phenology].Phyllochron.PhotoPeriodEffect.XYPairs.Y` = paste0(seq(1, 2, by = 0.02), ",1,1")) %>% 
     expand.grid()
 ```
 
+A single simulation takes less than 1 s to run in the APSIM GUI (APSIMNG.exe), but about 5 s in the command lines (Modeles.exe) as the overhead to load all required libraries. It would be much more efficient to combine multiple simulations in a single apsimx file (e.g. 200 simulations take about 150 s). 
 
 ```{r parameter-into-task}
-group <- seq(1, ceiling(nrow(parameters)/200))
+# Define the group size in a single apsimx file
+size <- 200
 
+# Calculate the number of groups
+group <- seq(1, ceiling(nrow(parameters)/size))
+
+# Create names for each virtual cultivar
+# Assign the group value
 parameters <- parameters %>% 
   mutate(name = paste0("GS", seq_len(n()), "GN"),
          group = rep(group, each = size , 
                       length.out = n())) %>% 
   pivot_longer(cols = starts_with("["), names_to = "parameter") 
 
-knitr::kable(head(parameters))
+# The parameters can be stored for later use, but ignore for this post
+# saveRDS(parameters, file = "parameters.Rds)
+knitr::kable(head(parameters), caption = "Sample of parameters")
 ```
 
 
-## Develop scripts to run individual tasks
-
-
 ## Run all tasks in cluster to collect results
+
+
+This step is time-consuming and depends on the available CPUs. The total runtime can be calculated by number of treatments x number of virtual genotype groups x runtime of individual task / available CPUs. I used HTCondor deployed in CSIRO in which there are more 10, 000 available cores, but can normally utilize 5, 000 cores.
+
+
+```{r results='asis', echo=FALSE}
+# htmltools::tags$script(src = "https://code.jquery.com/jquery-3.2.1.min.js")
+# htmltools::tags$link(
+#   rel="stylesheet",
+#   href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
+#   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm",
+#   crossorigin="anonymous")
+# 
+# htmltools::tags$script(
+#   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js",
+#   integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q",
+#   crossorigin="anonymous")
+# htmltools::tags$script(
+# src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js",
+# integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl",
+# crossorigin="anonymous")
+```
+
+
+```{=html}
+
+<div class="input-group input-group-sm mb-3">
+  <div class="input-group-prepend col-5">
+    <span class="input-group-text col-12">Number of treatments</span>
+  </div>
+  <input name="total-run-time" type="text" id="treatments" value=885 class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+</div>
+<div class="input-group input-group-sm mb-3">
+  <div class="input-group-prepend col-5">
+    <span class="input-group-text col-12">Number of genotype groups</span>
+  </div>
+  <input name="total-run-time" type="text" id="genotype-groups" value=37 class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+</div>
+<div class="input-group input-group-sm mb-3">
+  <div class="input-group-prepend col-5">
+    <span class="input-group-text col-12">Runtime of individual task</span>
+  </div>
+  <input name="total-run-time" type="text" id="runtime-individual" value=150 class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+  <div class="input-group-append">
+    <span class="input-group-text">seconds</span>
+  </div>
+</div>
+<div class="input-group input-group-sm mb-3">
+  <div class="input-group-prepend col-5">
+    <span class="input-group-text col-12">Available CPUs</span>
+  </div>
+  <input name="total-run-time" type="text" id="cpus" value=5000 class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+</div>
+<div class="input-group input-group-sm mb-3">
+  <div class="input-group-prepend col-5">
+    <span class="input-group-text col-12">Total runtime</span>
+  </div>
+  <input name="total-run-time" type="text" id="final-runtime" class="form-control" aria-label="Small" disabled aria-describedby="inputGroup-sizing-sm">
+   <div class="input-group-append">
+    <span class="input-group-text">hours</span>
+  </div>
+</div>
+
+```
+
+
+```{js cal-runtime, class.source = "jsvis1", echo=FALSE}
+$( document ).ready(function() {
+  var cal_runtime = function() {
+    let n_treatments = parseFloat($("#treatments").val());
+    let n_genotype_group = parseFloat($("#genotype-groups").val());
+    let individual_runtime = parseFloat($("#runtime-individual").val());
+    let n_cpus = parseFloat($("#cpus").val());
+    let final_runtime = n_treatments * n_genotype_group * individual_runtime / n_cpus / 3600;
+    $("#final-runtime").val(final_runtime);
+  }
+  cal_runtime();
+  $("input[name='total-run-time']").change(function() {
+      cal_runtime();
+  });
+});
+```
+### Develop scripts to run individual task
 
 ## Merge all results for each individual experiment
 
