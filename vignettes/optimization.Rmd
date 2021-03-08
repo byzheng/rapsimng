@@ -254,7 +254,7 @@ knitr::kable(head(parameters), caption = "Sample of parameters")
 ## Run all tasks in cluster to collect results
 
 
-This step is time-consuming and depends on the available CPUs. The total runtime can be calculated by number of treatments x number of virtual genotype groups x runtime of individual task / available CPUs. I used HTCondor deployed in CSIRO in which there are more 10, 000 available cores, but can normally utilize 5, 000 cores.
+This step is time-consuming and depends on the available CPUs. The total runtime can be calculated by number of treatments x number of virtual genotype groups x runtime of individual task / available CPUs. I used HTCondor deployed in CSIRO in which there are more 10, 000 available cores, but can normally utilize 5, 000 cores. The inputs below can be used to calculate the total runtime.
 
 
 ```{r results='asis', echo=FALSE}
@@ -334,7 +334,10 @@ $( document ).ready(function() {
   });
 });
 ```
-### Develop scripts to run individual task
+
+
+
+### Develop scripts to run individual task on HTCondor
 
 ## Merge all results for each individual experiment
 
