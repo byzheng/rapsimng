@@ -1,0 +1,621 @@
+---
+title: "Optimization of APSIM NG using factorial simulations"
+author: Bangyou Zheng
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Optimization of APSIM NG using factorial simulations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(knitr)
+```
+
+
+
+Optimization of parameter values in the crop model is the key step to utilise models to simulate the field experiments. However, it is time consuming to calibrate lots of cultivars using observations from multiple experiments.
+
+In this page, I presented a method using factorial simulations to calibrate and validate the leaf appearance process for wheat validation set in the [APSIM Next Generation](https://github.com/APSIMInitiative/ApsimX/). All 77 cultivars are simultaneously calibrated and validated in this process. The  method heavily depends on the available CPU resources and infrastructure of cluster which might not be suitable for every situation. The codes in this page might not be reproducible. 
+
+
+The method of factorial simulations can be separated into multiple steps including
+
+* Split apsimx into individual simulations for each treatment except cultivar factor.
+* Generate parameter spaces and prepare task list for parallel calculation.
+* Run tasks using cluster to obtain simulated values for factorial simulations.
+* Merge simulated values of all treatments for the target cultivars.
+* Calibrate and validate the leaf appearance process through comparing simulated and observed values.
+
+
+
+```{r setup}
+# Load the required packages
+library(rapsimng)
+suppressPackageStartupMessages(library(tidyverse))
+```
+
+
+
+## Split apsimx into individual simulations
+
+Multiple experiments are used to test a crop model and organise into an apsimx file. It takes very long time to run a single apsimx file with lots of simulations (e.g. wheat.apsimx in the release contains more than 4000 simulations and takes more than 20 min to run all simulations). As we will run simulations in the parallel using multiple cores, the best practice is to split apsimx files into individual simulations.
+
+The cultivars will be replaced with virtual cultivars (i.e. new values in the parameter spaces). The real cultivars in the experiment can be ignored. Consequently, we only need to run simulations for all treatments except cultivars.  
+
+
+In this step, I assume all datasets have been configured in a single apsimx file (e.g. [Wheat.apsimx](https://raw.githubusercontent.com/APSIMInitiative/ApsimX/2a82f22208e1a9bd3d25b501457b43e507411b65/Tests/Validation/Wheat/Wheat.apsimx) in the APSIM NG Release). Experiments contain a factor Cv or Cultivar to specify all cultivars in the field experiments. All files are downloaded from internet. 
+
+
+The input is the wheatp.apsimx and associated weather files. The output is the split apsimx files merged with weather files and stored as Rds format. 
+
+APSIM NG provides a feature to generate .apsimx files from a single .apsim file through right clicking the root node. 
+
+
+
+```{r apsimng-generate, out.width="40%", echo=FALSE, fig.align='center'}
+knitr::include_graphics("figures/apsimng-generate-simulations.png")
+```
+
+```{r spit-apsimx, eval=FALSE}
+# Path to wheat.apsimx file
+file <- "Tests/Validation/Wheat/Wheat.apsimx"
+# Path to store the individual apsimx files
+out <- "Simulations/"
+# Factor in apsimx to specify cultivars
+cultivar_factor <- c("Cv", "Cultivar")
+
+# read apsimx file
+apsimx_model <- read_apsimx(file)
+
+# Create a template
+apsimx_model_temp <- apsimx_model
+# Remove unused models to save spaces
+remove_nodes <- c("[Simulations].Sensibility",
+                  "[Simulations].Validation",
+                  "[Simulations].TitlePage",
+                  "[Simulations].Introduction",
+                  "[DataStore].ExcelMultiInput",
+                  "[DataStore].DailyObsPred",
+                  "[DataStore].HarvestObsPred")
+for (j in seq(along = remove_nodes)) {
+  node_remove <- search_path(apsimx_model_temp, remove_nodes[j])
+  if (length(node_remove) > 0) {
+    apsimx_model_temp <- remove_model(apsimx_model_temp, node_remove$path)
+  }
+}
+
+# Get all simulations
+sims <- search_node(apsimx_model, all = TRUE, `$type` = "Models.Core.Simulation, Models")
+sims <- sims %>% discard(function(x) x$node$Name == "CO2TEBaseSimulation")
+print(map_chr(sims, function(x) x$node$Name))
+
+# Process each simulation by splitting into individual treatment if parent is Experiment or directly exporting in case of single simulation.
+for (j in seq(along = sims)) {
+  # Check whether the parent is experiment
+  parent <- get_parent(apsimx_model, sims[[j]]$path)
+  if (parent$node$`$type` == "Models.Factorial.Experiment, Models") {
+    exp_node <- parent$node
+    exp_name <- exp_node$Name
+    # Remove all figures as we don't need them
+    graphs <- search_node(exp_node, all = TRUE, 
+                          `$type` = "Models.Graph, Models")
+    for (k in rev(seq(along = graphs))) {
+      exp_node <- remove_model(exp_node, graphs[[k]]$path)
+    }
+    # Remove unused reports
+    remove_nodes <- c("[DailyReport]",
+                      "[MaxLeafSizeReport]",
+                      "[SowingReport]")
+    for (k in seq(along = remove_nodes)) {
+      node_remove <- search_path(exp_node, remove_nodes[k])
+      if (length(node_remove) > 0) {
+        exp_node <- remove_model(exp_node, node_remove$path)
+      }
+    }
+    # Create a new apsimx file from template
+    apsimx_model_exp <- apsimx_model_temp
+    apsimx_model_exp <- insert_model(apsimx_model_exp, c(1), exp_node)
+    # Get the met files
+    met <- NULL
+    met_file <- NULL
+    tryCatch({
+      met_file <- get_metfile(apsimx_model_exp)
+      met_path <- file.path(dirname(file), met_file)
+      met <- readLines(met_path)
+    }, error = function(e){
+      
+    })
+    # Further split apsimx by all factors except Cv
+    all_nodes <- apsimx_model_exp %>% 
+      search_path("[Factors]")
+    
+    # find out all combinations of all other nodes
+    simulations <- get_simulations(all_nodes$node)
+    
+    # Check whether Cv node exists
+    pos <- names(simulations) %in% cultivar_factor
+    if (sum(pos) == 0) {
+      warning("Cultivar factor doesn't exist for experiment ", exp_name)
+      #next()
+    }
+    # Generate all simulations for factors except cultivar
+    simulations <- simulations[!(names(simulations) %in% cultivar_factor)]
+    simulations <- expand.grid(simulations, stringsAsFactors = FALSE)
+    # Generate apsimx for each factor
+    for (m in seq_len(max(1, nrow(simulations)))) {
+      # In case of single simulation
+      if (nrow(simulations) == 0) {
+        model_factor_new <- all_nodes$node
+        base_name <- exp_name
+      } else {
+        # Keep the required factor
+        model_factor_new <- keep_simulations(all_nodes$node, as.list(simulations[m,,drop=FALSE]))
+        factor_name <- paste(paste0(names(simulations), "_", simulations[m,]), collapse = '_')
+        base_name <- paste0(exp_name, "-", factor_name)
+      }
+      # Generate a new apsimx
+      apsimx_model_new <- apsimx_model_exp
+      apsimx_model_new <- replace_model(apsimx_model_exp, 
+                                        all_nodes$path,
+                                        model_factor_new)
+      
+      # Combine weather and met file
+      #apsimx <- readLines(file_name)
+      file_name <- file.path(out, paste0(base_name, ".Rds"))
+      # Find the weather file
+      if (is.null(met)) {
+        treat_node <- search_path(apsimx_model_new, "[Permutation].Treat")
+        if (length(treat_node) > 0) {
+          if (length(treat_node$node$Children) > 1 ){
+            stop()
+          }
+          if (length(treat_node$node$Children[[1]]$Children) > 0) {
+            met_file <- treat_node$node$Children[[1]]$Children[[1]]$FileName
+            met_path <- file.path(dirname(file), met_file)
+            new_met <- readLines(met_path)
+          } else {
+            new_met <- NULL
+          }
+        }
+      } else {
+        new_met <- met
+      }
+      # Save weather and apsimx file into Rds format
+      saveRDS(list(met = new_met, apsimx = apsimx_model_new, met_file = met_file), file = file_name)
+    }
+  } else {
+    # In case of single simulation
+    apsimx_model_new <- apsimx_model_temp
+    apsimx_model_new <- insert_model(apsimx_model_new, c(1), sims[[j]]$node)
+    
+    # Get weather data
+    met <- NULL
+    met_file <- NULL
+    tryCatch({
+      met_file <- get_metfile(apsimx_model_new)
+      met_path <- file.path(dirname(file), met_file)
+      met <- readLines(met_path)
+    }, error = function(e){
+      
+    })
+    
+    # Save weather and apsimx file into Rds format
+    base_name <- sims[[j]]$node$Name
+    file_name <- file.path(out, paste0(base_name, ".Rds"))
+    saveRDS(list(met = met, apsimx = apsimx_model_new, met_file = met_file), file = file_name)
+    
+  }
+}
+
+```
+
+Finally wheat.apsimx is split into 885 treatments.  
+
+## Generate the parameter spaces and prepare the task list for parallel calculation
+
+In this page, we will optimize two parameters in the leaf appearance rate i.e. base phyllochron (`[Phenology].Phyllochron.BasePhyllochron.FixedValue`) and photoperiod effect (`[Phenology].Phyllochron.PhotoPeriodEffect.XYPairs.Y`). The parameter range is determined by expert experience or possible values in the current wheat model. The internal should make sure there are enough accuracy for the target traits. 
+
+```{r parameter-space}
+# Define list of parameter with specified range and interval
+# Expand grid for all combinations
+parameters <- list(`[Phenology].Phyllochron.BasePhyllochron.FixedValue` = as.character(seq(60, 130, by = 1)),
+          `[Phenology].Phyllochron.PhotoPeriodEffect.XYPairs.Y` = paste0(seq(1, 2, by = 0.02), ",1,1")) %>% 
+    expand.grid()
+```
+
+A single simulation takes less than 1 s to run in the APSIM GUI (APSIMNG.exe), but about 5 s in the command lines (Modeles.exe) as the overhead to load all required libraries. It would be much more efficient to combine multiple simulations in a single apsimx file (e.g. 200 simulations take about 150 s). 
+
+```{r parameter-into-task}
+# Define the group size in a single apsimx file
+size <- 200
+
+# Calculate the number of groups
+group <- seq(1, ceiling(nrow(parameters)/size))
+
+# Create names for each virtual cultivar
+# Assign the group value
+parameters <- parameters %>% 
+  mutate(name = paste0("GS", seq_len(n()), "GN"),
+         group = rep(group, each = size , 
+                      length.out = n())) %>% 
+  pivot_longer(cols = starts_with("["), names_to = "parameter") 
+
+# The parameters can be stored for later use, but ignore for this post
+# saveRDS(parameters, file = "parameters.Rds)
+knitr::kable(head(parameters), caption = "Sample of parameters")
+```
+
+
+## Run all tasks in cluster to collect results
+
+
+This step is time-consuming and depends on the available CPUs. The total runtime can be calculated by number of treatments x number of virtual genotype groups x runtime of individual task / available CPUs. I used HTCondor deployed in CSIRO in which there are more 10, 000 available cores, but can normally utilize 5, 000 cores. The inputs below can be used to calculate the total runtime.
+
+
+```{r results='asis', echo=FALSE}
+# htmltools::tags$script(src = "https://code.jquery.com/jquery-3.2.1.min.js")
+# htmltools::tags$link(
+#   rel="stylesheet",
+#   href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
+#   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm",
+#   crossorigin="anonymous")
+# 
+# htmltools::tags$script(
+#   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js",
+#   integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q",
+#   crossorigin="anonymous")
+# htmltools::tags$script(
+# src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js",
+# integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl",
+# crossorigin="anonymous")
+```
+
+
+```{=html}
+
+<div class="input-group input-group-sm mb-3">
+  <div class="input-group-prepend col-5">
+    <span class="input-group-text col-12">Number of treatments</span>
+  </div>
+  <input name="total-run-time" type="text" id="treatments" value=885 class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+</div>
+<div class="input-group input-group-sm mb-3">
+  <div class="input-group-prepend col-5">
+    <span class="input-group-text col-12">Number of genotype groups</span>
+  </div>
+  <input name="total-run-time" type="text" id="genotype-groups" value=37 class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+</div>
+<div class="input-group input-group-sm mb-3">
+  <div class="input-group-prepend col-5">
+    <span class="input-group-text col-12">Runtime of individual task</span>
+  </div>
+  <input name="total-run-time" type="text" id="runtime-individual" value=150 class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+  <div class="input-group-append">
+    <span class="input-group-text">seconds</span>
+  </div>
+</div>
+<div class="input-group input-group-sm mb-3">
+  <div class="input-group-prepend col-5">
+    <span class="input-group-text col-12">Available CPUs</span>
+  </div>
+  <input name="total-run-time" type="text" id="cpus" value=5000 class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+</div>
+<div class="input-group input-group-sm mb-3">
+  <div class="input-group-prepend col-5">
+    <span class="input-group-text col-12">Total runtime</span>
+  </div>
+  <input name="total-run-time" type="text" id="final-runtime" class="form-control" aria-label="Small" disabled aria-describedby="inputGroup-sizing-sm">
+   <div class="input-group-append">
+    <span class="input-group-text">hours</span>
+  </div>
+</div>
+
+```
+
+
+```{js cal-runtime, class.source = "jsvis1", echo=FALSE}
+$( document ).ready(function() {
+  var cal_runtime = function() {
+    let n_treatments = parseFloat($("#treatments").val());
+    let n_genotype_group = parseFloat($("#genotype-groups").val());
+    let individual_runtime = parseFloat($("#runtime-individual").val());
+    let n_cpus = parseFloat($("#cpus").val());
+    let final_runtime = n_treatments * n_genotype_group * individual_runtime / n_cpus / 3600;
+    $("#final-runtime").val(final_runtime);
+  }
+  cal_runtime();
+  $("input[name='total-run-time']").change(function() {
+      cal_runtime();
+  });
+});
+```
+
+Scheduling task on the cluster (parallel computing) is out of the topic in this page. The total number of tasks equals the number of treatments x number of genotype groups. In general, all tasks can be treated as embarrassingly parallel (i.e. no interaction among tasks). The output of individual task can be saved in a single file. In the following section, R scripts are developed to run a task on HTCondor and can be modified to adapt to other types of cluters. 
+
+### Develop scripts to run individual task on HTCondor
+
+
+```{r run-task-htcondor, eval=FALSE}
+
+
+# Run jobs under condor -----------------------------------
+rm(list = ls())
+setwd("C:/Users/zhe00a/Documents/test")
+sim_title <- 'gid=ptq_1,Experiment=Callington-TOS_6,EmergenceDate=2019-05-27,ColName=TOS,ColValue=6'
+# sim_title <- 'gid=release_1,Experiment=12JuneeJames-1-100'
+# sim_title <- 'gid=release_1,Experiment=Mouse-Removal_0.00_Date_2002-09-10'
+# sim_title <- 'gid=release_1,Experiment=APS2-TOS_1'
+# sim_title <- 'gid=release_1,Experiment=Yucheng02'
+
+file_prefix <- '375e780cabcc4bb7f00f5a9887faa9c8'
+
+args <- commandArgs(TRUE)
+
+sim_title <- args[[1]]
+file_prefix <- args[[2]]
+
+library(RAPSIM)
+library(methods)
+path <- c("r-packages/rapsimng/R/")
+files <- lapply(path, list.files, full.names = TRUE)
+files <- unlist(files)
+invisible(lapply(files, source))
+info <- readRDS("parameters.rds")
+
+
+sim_factors <- splitTitle(sim_title)
+model_type <- info$groups[info$groups$gid == sim_factors$gid,]
+parameters <- info[[model_type$model]]
+parameters <- parameters[parameters$group == model_type$group,]
+
+#parameters <- parameters[1:4,]
+
+new_cultivars <- unique(parameters$name)
+
+filename <- sim_factors$Experiment
+# Create a new data.frame for CAMP parameter
+
+#camp_geno <- camp_geno[1:10,]
+input <- readRDS(paste0(filename, '.Rds'))
+
+sim_name <- paste0(filename, '.apsimx')
+sim_name <- paste0(file_prefix, '.apsimx')
+# Update cultivars in the apsimx file
+apsimx_all <- input$apsimx
+# remove experiment
+exp_node <- search_node(apsimx_all, `$type` = "Models.Factorial.Experiment, Models")
+if (length(exp_node) > 0) {
+    apsimx_all <- remove_model(apsimx_all, exp_node$path)
+} else {
+    sim_node <- search_node(apsimx_all, `$type` = "Models.Core.Simulation, Models")
+    if (length(sim_node) > 0) {
+        apsimx_all <- remove_model(apsimx_all, sim_node$path)
+    }
+}
+remove_nodes <- c("[Replacements].HarvestReport",
+                  "[Replacements].MaxLeafSize",
+                  "[Replacements].MaxLeafSizeReport",
+                  "[Replacements].SowingReport",
+                  "[Replacements].DailyReport")
+for (j in seq(along = remove_nodes)) {
+    node_remove <- search_path(apsimx_all, remove_nodes[j])
+    if (length(node_remove) > 0) {
+        apsimx_all <- remove_model(apsimx_all, node_remove$path)
+    }
+}
+# new_daily <- read_apsimx("report_daily.json")
+# replacements_node <- search_path(apsimx_all, "[Replacements]")
+# apsimx_all <- insert_model(apsimx_all, replacements_node$path, list(new_daily))
+
+# apsimx_all <- remove_model(apsimx_all, replacements_node$path)
+i <- 1
+start <- proc.time()
+for (i in seq(along = new_cultivars)) {
+    
+    #parameters <- parameters[1:600,]
+  
+    apsimx <- input$apsimx
+    
+    # Add new what models
+    wheat_model <- read_apsimx(paste0("Wheat-", model_type$model, ".json"))
+    wheat_model <- search_path(wheat_model, "[Wheat]")
+    wheat_node <- search_node(apsimx, `$type` = "Models.PMF.Plant, Models",
+                              ResourceName = "Wheat",
+                              Name = "Wheat")
+    apsimx <- replace_model(apsimx, wheat_node$path, wheat_model$node)
+
+    cultivars_tmp <- "hartog"
+    # Check whether have emergence date
+    if (!is.null(sim_factors$EmergenceDate)) {
+        sowing_node <- search_path(apsimx, "[Sowing]")
+        if (length(sowing_node) == 0) {
+            sowing_node <- search_path(apsimx, "[SowingRule]")
+        }
+        
+        if (length(sowing_node) == 0) {
+            stop("No sowing node")
+        }
+        # Set new parameter file
+        paras <- sowing_node$node$Parameters
+        for (j in seq(along = paras)) {
+            if(paras[[j]]$Key == "FilePath") {
+                paras[[j]]$Value <- "EmergenceDates.csv"
+                break
+            }
+        }
+        sowing_node$node$Parameters <- paras
+        apsimx <- replace_model(apsimx, sowing_node$path, sowing_node$node)
+        emergence_dates <- list()
+        emergence_dates[[sim_factors$ColName]] <- sim_factors$ColValue
+        for (j in seq_len(length(cultivars_tmp))) {
+            emergence_dates[[cultivars_tmp[j]]] <- sim_factors$EmergenceDate
+        }
+        emergence_dates <- as.data.frame(emergence_dates)
+        write.csv(emergence_dates, "EmergenceDates.csv", row.names = FALSE)
+    }
+    
+    # Clean parameters in cultivars
+    cultivars_node <- search_path(apsimx, "[Cultivars]")
+    cultivars <- search_node(apsimx, `$type` = "Models.PMF.Cultivar, Models", all = TRUE)
+    
+    for (j in seq(along = cultivars)) {
+        cultivars[[j]]$node$Command <- list()
+        apsimx <- replace_model(apsimx, cultivars[[j]]$path, cultivars[[j]]$node)
+    }
+    #apsimx <- remove_model(apsimx, cultivars_node$path)
+     
+    
+    
+    # Update factors to use only one cultivar
+    cv_node <- search_path(apsimx, "[Permutation].Cv")
+    if (length(cv_node) == 0) {
+        cv_node <- search_path(apsimx, "[Factors].Cultivar")
+        if (length(cv_node) == 0) {
+            
+            cv_node <- search_path(apsimx, "[Factors].Permutation.Cultivar")
+            if (length(cv_node) == 0) {
+                #stop("No permutation.Cv model")
+            }
+        }
+    }
+    if (length(cv_node) > 0) {
+        
+        old_spec <- cv_node$node$Specification
+        if (grepl("^(.+ *= *)(.+)", old_spec)) {
+            new_spec <- gsub("^(.+ *= *)(.+)", paste0("\\1", paste(cultivars_tmp, collapse = ", ")), 
+                             old_spec)
+            cv_node$node$Specification <- new_spec
+        } else if (length(cv_node$node$Children) > 0){
+            # Assume the similar operations
+            old_opt <- cv_node$node$Children[[1]]
+            new_opts <- list()
+            j <- 1
+            for (j in seq(along = cultivars_tmp)) {
+                new_opt <- old_opt
+                new_opt$Name <- cultivars_tmp[j]
+                k <- 1
+                for (k in seq(along = new_opt$Operation)) {
+                    if (grepl('^.+cultivar:"([a-zA-Z_]+)".+$', new_opt$Operation[[k]]$Action)) {
+                        new_opt$Operation[[k]]$Action <- gsub('^(.+cultivar:")([a-zA-Z_]+)(".+)$', 
+                                                              paste0("\\1", cultivars_tmp[j], "\\3"), new_opt$Operation[[k]]$Action)
+                    }
+                }
+                new_opts[[j]] <- new_opt
+            }
+            cv_node$node$Children <- new_opts
+        }
+        apsimx <- replace_model(apsimx, cv_node$path, cv_node$node) 
+    }
+    # Replace parameters
+    parameters_i <- parameters[parameters$name %in% new_cultivars[i],]
+    for (j in seq(along = parameters_i[[1]])) {
+        apsimx <- set_parameter_value(apsimx, parameters_i$parameter[j], parameters_i$value[j])
+    }
+    
+    # Remove all old report
+    reports_node <- rev(search_node(apsimx, `$type` = "Models.Report, Models", all = TRUE))
+
+    for (j in seq(along = reports_node)) {
+        apsimx <- remove_model(apsimx, reports_node[[j]]$path)
+    }
+    # Remove max leaf size
+    reports_node <- rev(search_node(apsimx, `$type` = "Models.Manager, Models", 
+                                    Name = "MaxLeafSize",
+                                    all = TRUE))
+    
+    for (j in seq(along = reports_node)) {
+        apsimx <- remove_model(apsimx, reports_node[[j]]$path)
+    }
+    
+    new_daily <- read_apsimx("report_daily.json")
+    harvest_report_node <- search_node(apsimx,  `$type`= "Models.Core.Zone, Models")
+    if (length(harvest_report_node) > 0) {
+        apsimx <- insert_model(apsimx, harvest_report_node$path, new_daily)
+    }
+    
+    # Change the name
+    sim_node <- search_node(apsimx, `$type` = "Models.Core.Simulation, Models")
+    sim_node$node$Name <- paste0(new_cultivars[i], "Base")
+    apsimx <- replace_model(apsimx, sim_node$path, sim_node$node)
+    exp_node <- search_node(apsimx, `$type` = "Models.Factorial.Experiment, Models")
+    if (length(exp_node) > 0) {
+        exp_node$node$Name <- new_cultivars[i]
+        apsimx_all <- append_model(apsimx_all, 1, list(exp_node$node))
+    } else {
+        apsimx_all <- append_model(apsimx_all, 1, list(sim_node$node))
+    }
+    
+}
+
+print(proc.time() - start)
+# Remove the old files
+old_files <- paste0(file_prefix, 
+                    c(".db", ".apsimx.bak",
+                      ".DailyReport.csv",
+                      ".HarvestReport.csv", 
+                      ".apsimx", ".Rds"))
+a <- file.remove(old_files[file.exists(old_files)])
+
+system.time(write_apsimx(apsimx_all, sim_name))
+
+if (!is.null(input$met)) {
+    input$met <- input$met[!grepl("Powered", input$met)]
+    writeLines(input$met, input$met_file)
+}
+
+models_path <- "apsimx/Models.exe"
+system.time(run_models(models_path, sim_name, csv = TRUE, parallel = FALSE))
+
+file <- list.files(".", paste0(file_prefix, "\\.DailyReport\\.csv"))
+if (length(file) != 1) {
+    tmp <- rep(NA, length(new_cultivars))
+    out <- data.frame(name = new_cultivars, 
+                      Clock.Today = tmp,
+                      Wheat.Leaf.AppearedCohortNo = tmp,
+                      Wheat.Phenology.HaunStage = tmp,
+                      Wheat.Structure.LeafTipsAppeared = tmp)
+} else {
+    out <- read.csv(file)
+    out$name <- gsub("^ *(GS\\d+GN).*", "\\1", out$SimulationName)
+    #out$name <- new_cultivars[i]
+    out <- out[out$Wheat.Phenology.HaunStage <= 8 & out$Wheat.Phenology.HaunStage > 0 &
+                   out$Wheat.Phenology.Stage <= 6.2,]
+    out <- out[,c( 
+        "name",
+        "Clock.Today",
+        "Wheat.Leaf.AppearedCohortNo",
+        "Wheat.Phenology.HaunStage",
+        "Wheat.Structure.LeafTipsAppeared"
+    )]
+    out$Clock.Today <- as.Date(out$Clock.Today)
+}
+
+out$model <- model_type$model
+out$Experiment <- sim_factors$Experiment
+out$EmergenceDate <- NA
+if (!is.null(sim_factors$EmergenceDate)) {
+    out$EmergenceDate <- sim_factors$EmergenceDate
+}
+
+saveRDS(out, file=sprintf('%s.Rds', file_prefix))
+
+
+```
+
+
+
+## Merge all results for each individual genotype
+
+## Optimize the genotypic parameters for each genotype
+
+
+
+
+
