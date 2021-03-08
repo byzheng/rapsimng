@@ -431,35 +431,6 @@ for (i in seq(along = new_cultivars)) {
                               Name = "Wheat")
     apsimx <- replace_model(apsimx, wheat_node$path, wheat_model$node)
 
-    cultivars_tmp <- "hartog"
-    # Check whether have emergence date
-    if (!is.null(sim_factors$EmergenceDate)) {
-        sowing_node <- search_path(apsimx, "[Sowing]")
-        if (length(sowing_node) == 0) {
-            sowing_node <- search_path(apsimx, "[SowingRule]")
-        }
-        
-        if (length(sowing_node) == 0) {
-            stop("No sowing node")
-        }
-        # Set new parameter file
-        paras <- sowing_node$node$Parameters
-        for (j in seq(along = paras)) {
-            if(paras[[j]]$Key == "FilePath") {
-                paras[[j]]$Value <- "EmergenceDates.csv"
-                break
-            }
-        }
-        sowing_node$node$Parameters <- paras
-        apsimx <- replace_model(apsimx, sowing_node$path, sowing_node$node)
-        emergence_dates <- list()
-        emergence_dates[[sim_factors$ColName]] <- sim_factors$ColValue
-        for (j in seq_len(length(cultivars_tmp))) {
-            emergence_dates[[cultivars_tmp[j]]] <- sim_factors$EmergenceDate
-        }
-        emergence_dates <- as.data.frame(emergence_dates)
-        write.csv(emergence_dates, "EmergenceDates.csv", row.names = FALSE)
-    }
     
     # Clean parameters in cultivars
     cultivars_node <- search_path(apsimx, "[Cultivars]")
