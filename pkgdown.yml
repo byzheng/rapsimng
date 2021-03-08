@@ -3,6 +3,5 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   modify: modify.html
-  optimization: optimization.html
-last_built: 2021-03-08T03:57Z
+last_built: 2021-03-08T12:52Z
 
