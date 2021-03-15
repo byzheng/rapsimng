@@ -33,7 +33,7 @@ The data.frame requires three columns (i.e. parameter, value, name) and multiple
 phyllochron_para <- tibble(parameter = "[Phenology].Phyllochron.BasePhyllochron.FixedValue", 
                            value = seq(60, 130, by = 1)) %>% 
   mutate(name = paste0("Cultivar", seq_len(n())))
-
+head(phyllochron_para)
 ```
 
 The template is an apsimx file setup for the actual experiment or the specified environments (i.e. locations, sowing date or years). I assume there is a factor `Cv` for culivar in the `Permutation` model which specified the cultivar by `[Sowing].Script.CultivarName`.
@@ -54,6 +54,9 @@ if (length(node) == 0) {
 }
 new_value <- paste0("\\1", paste(phyllochron_para$name, collapse = ","))
 node$node$Specification <- gsub("(.+ *= *)(.+)$", new_value, node$node$Specification)
+
+node$node$Specification
+
 template <- replace_model(template, node$path, node$node)
 ```
 
