@@ -19,7 +19,14 @@
 
 ## Installation
 
-Currently on [Github](https://github.com/byzheng/rapsimng) only. Install with:
+Install from CRAN.
+
+```r
+install.packages('rapsimng')
+```
+
+
+Install the developing version from [Github](https://github.com/byzheng/rapsimng).
 
 ```r
 devtools::install_github('byzheng/rapsimng')
