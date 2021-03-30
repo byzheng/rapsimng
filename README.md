@@ -1,6 +1,6 @@
 # rapsimng
-
-![R-CMD-check](https://github.com/byzheng/rapsimng/workflows/R-CMD-check/badge.svg)
+[![](https://www.r-pkg.org/badges/version/rapsimng?color=green)](https://cran.r-project.org/package=rapsimng)
+![R-CMD-check](https://github.com/byzheng/rapsimng/workflows/R-CMD-check/badge.svg) 
 [![codecov](https://codecov.io/gh/byzheng/RApsimNG/branch/master/graph/badge.svg)](https://codecov.io/gh/byzheng/RApsimNG)
 
 [![](http://cranlogs.r-pkg.org/badges/grand-total/rapsimng?color=green)](https://cran.r-project.org/package=rapsimng)
