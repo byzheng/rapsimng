@@ -25,6 +25,13 @@ test_that("cultivar", {
     expect_equal(length(new_wheat2), 2)
     expect_equal(new_wheat2$node$Y[[2]], "1.1")
 
+    new_wheat <- set_parameter_value(
+        wheat,
+        "[Structure].CohortInitialisationStage", "Germination1")
+    new_wheat2 <- search_path(new_wheat, "[Structure]")
+    expect_equal(length(new_wheat2), 2)
+    expect_equal(new_wheat2$node$CohortInitialisationStage, "Germination1")
+
     expect_error({
         new_wheat <- set_parameter_value(
             wheat,

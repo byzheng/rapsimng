@@ -230,6 +230,7 @@ append_model <- function(l, path, model) {
 #'
 #' @examples
 #'  wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
+#'  # Replace fixed value
 #'  new_wheat <- set_parameter_value(wheat,
 #'   "[Structure].BranchingRate.PotentialBranchingRate.Reproductive.Zero.FixedValue",
 #'   1)
@@ -237,6 +238,7 @@ append_model <- function(l, path, model) {
 #'     "[Structure].BranchingRate.PotentialBranchingRate.Reproductive.Zero")
 #' new_wheat2$node$FixedValue
 #'
+#' # Replace xypairs
 #' new_wheat <- set_parameter_value(
 #'     wheat,
 #'     "[Structure].HeightModel.WaterStress.XYPairs.Y",
@@ -244,6 +246,11 @@ append_model <- function(l, path, model) {
 #' new_wheat2 <- search_path(new_wheat,
 #'     "[Structure].HeightModel.WaterStress.XYPairs")
 #' new_wheat2$node$Y
+#' # Replace the direct parameter in a node
+#' new_wheat <- set_parameter_value(wheat, "[Structure].CohortInitialisationStage", "Germination1")
+#'  new_wheat2 <- search_path(new_wheat, "[Structure]")
+#' new_wheat2$node$CohortInitialisationStage
+
 set_parameter_value <- function(l, parameter, value) {
     if (length(parameter) != 1) {
         stop("Require parameter has length 1")
@@ -282,7 +289,20 @@ set_parameter_value <- function(l, parameter, value) {
             p_node$node$Y <- as.list(new_values)
         }
     } else  {
-        stop("Cannot replace the parameter value for ", parameter)
+        # for node with special value
+        p_path <- gsub("^(.+)\\.([a-zA-Z0-9_]+)$", "\\1", parameter)
+        p_name <- gsub("^(.+)\\.([a-zA-Z0-9_]+)$", "\\2", parameter)
+        if (nchar(p_name) == 0 || nchar(p_name) == nchar(parameter)) {
+            stop("Parameter name is not found")
+        }
+        p_node <- search_path(l, p_path)
+        if (length(p_node) == 0) {
+            stop('Parameter (', parameter, ') is not found')
+        }
+        if (is.null(p_node$node[[p_name]])) {
+            stop('Parameter (', parameter, ') is not found')
+        }
+        p_node$node[[p_name]] <- value
     }
     l <- replace_model(l, p_node$path, p_node$node)
     l
