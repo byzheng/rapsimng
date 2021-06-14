@@ -96,16 +96,18 @@ update_cultivar <- function(l, df) {
         stop("'value' column is required in the data frame 'df'.")
     }
 
-    # Check the replacement node (assume the apsimx file)
-    replacements_node <- search_path(l, "[Replacements]")
 
-    if (length(replacements_node) == 0) {
-        replacements <- new_model("Core.Replacements")
-        l <- insert_model(l, 1, replacements)
-    }
-    replacements_node <- search_path(l, "[Replacements]")
     cultivar_node <- search_path(l, "[Cultivars]")
     if (length(cultivar_node) == 0) {
+        # Check the replacement node (assume the apsimx file)
+        replacements_node <- search_path(l, "[Replacements]")
+
+        if (length(replacements_node) == 0) {
+            replacements <- new_model("Core.Replacements")
+            l <- insert_model(l, 1, replacements)
+        }
+        replacements_node <- search_path(l, "[Replacements]")
+
         cultivar_model <- new_model("PMF.CultivarFolder", "Cultivars")
         l <- insert_model(l, replacements_node$path, cultivar_model)
     }
