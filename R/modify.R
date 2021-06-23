@@ -267,7 +267,8 @@ set_parameter_value <- function(l, parameter, value) {
         if (length(p_node) == 0) {
             stop('Parameter (', parameter, ') is not found')
         }
-        new_values <- strsplit(value, ",| ")[[1]]
+        new_values <- strsplit(value, ", *")[[1]]
+
         if (grepl("\\.X$", parameter)) {
             if (length(new_values) != length(p_node$node$X)) {
                 warning("New value doesn't match the length for old values. ",
@@ -287,7 +288,7 @@ set_parameter_value <- function(l, parameter, value) {
         p_name <- gsub("^(.+)\\.([a-zA-Z0-9]+)$", "\\2", parameter)
         if (nchar(p_name) == 0 || nchar(p_name) == nchar(parameter)) {
             stop("Parameter name is not found")
-        }        
+        }
         p_node <- search_path(l, p_path)
         if (length(p_node) == 0) {
             stop('Parameter (', parameter, ') is not found')
