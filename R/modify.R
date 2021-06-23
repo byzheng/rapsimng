@@ -271,13 +271,13 @@ set_parameter_value <- function(l, parameter, value) {
 
         if (grepl("\\.X$", parameter)) {
             if (length(new_values) != length(p_node$node$X)) {
-                warning("New value doesn't match the length for old values. ",
+                stop("New value doesn't match the length for old values. ",
                         "Expect: ", paste(p_node$node$X, collapse = ","))
             }
             p_node$node$X <- as.list(new_values)
         } else if (grepl("\\.Y$", parameter)) {
             if (length(new_values) != length(p_node$node$Y)) {
-                warning("New value doesn't match the length for old values. ",
+                stop("New value doesn't match the length for old values. ",
                         "Expect: ", paste(p_node$node$Y, collapse = ","))
             }
             p_node$node$Y <- as.list(new_values)
