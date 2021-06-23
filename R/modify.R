@@ -267,7 +267,7 @@ set_parameter_value <- function(l, parameter, value) {
         if (length(p_node) == 0) {
             stop('Parameter (', parameter, ') is not found')
         }
-        new_values <- strsplit(value, ", *")[[1]]
+        new_values <- strsplit(value, " *, *")[[1]]
 
         if (grepl("\\.X$", parameter)) {
             if (length(new_values) != length(p_node$node$X)) {
