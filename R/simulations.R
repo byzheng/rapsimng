@@ -97,7 +97,10 @@ get_simulations <- function(l) {
   factors <- get_factors(l)$factors$Children
   res <- list()
   for (i in seq(along = factors)) {
-    res[[as.character(factors[[i]]$Name)]] <- get_levels(factors[[i]])
+      if (factors[[i]]$`$type` == "Models.Memo, Models") {
+        next
+      }
+      res[[as.character(factors[[i]]$Name)]] <- get_levels(factors[[i]])
   }
   res
 }
