@@ -18,6 +18,8 @@ get_levels <- function(f) {
   } else {
     stop("Not supported factor")
   }
+  r <- gsub("\\n", "", r)
+  r <- gsub("\\r", "", r)
   return(r)
 }
 
