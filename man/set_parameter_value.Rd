@@ -21,7 +21,6 @@ Set a parameter with a new value
 }
 \examples{
  wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
- # Replace fixed value
  new_wheat <- set_parameter_value(wheat,
   "[Structure].BranchingRate.PotentialBranchingRate.Reproductive.Zero.FixedValue",
   1)
@@ -29,7 +28,6 @@ new_wheat2 <- search_path(new_wheat,
     "[Structure].BranchingRate.PotentialBranchingRate.Reproductive.Zero")
 new_wheat2$node$FixedValue
 
-# Replace xypairs
 new_wheat <- set_parameter_value(
     wheat,
     "[Structure].HeightModel.WaterStress.XYPairs.Y",
@@ -37,8 +35,4 @@ new_wheat <- set_parameter_value(
 new_wheat2 <- search_path(new_wheat,
     "[Structure].HeightModel.WaterStress.XYPairs")
 new_wheat2$node$Y
-# Replace the direct parameter in a node
-new_wheat <- set_parameter_value(wheat, "[Structure].CohortInitialisationStage", "Germination1")
- new_wheat2 <- search_path(new_wheat, "[Structure]")
-new_wheat2$node$CohortInitialisationStage
 }

@@ -9,3 +9,7 @@
 * New functions to set parameter value by path
 * Several bug fixes
 
+# RApsimNG 0.3.0
+
+* Several bug fixes
+
