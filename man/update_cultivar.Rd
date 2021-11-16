@@ -4,12 +4,15 @@
 \alias{update_cultivar}
 \title{Title Update the cultivar parameters}
 \usage{
-update_cultivar(l, df)
+update_cultivar(l, df, add = TRUE)
 }
 \arguments{
 \item{l}{The list of apsimx file}
 
 \item{df}{A data frame for new parameters with three columns, i.e. name, parameter and value.}
+
+\item{add}{Whether to add extra nodes (e.g. replacements, Cultivars folder
+and new cultivar)}
 }
 \value{
 The modified apsimx file

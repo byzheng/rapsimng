@@ -16,7 +16,7 @@ BugReports: https://github.com/byzheng/rapsimng/issues
 Encoding: UTF-8
 Depends: R (>= 3.5.0)
 Imports: jsonlite, tibble, magrittr, tidyr, dplyr, rlang
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: 
     testthat,
     knitr,
