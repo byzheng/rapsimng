@@ -174,65 +174,92 @@ that has the name 'Soil' that is in scope</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>wheat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_apsimx.html'>read_apsimx</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"Wheat.json"</span>, package <span class='op'>=</span> <span class='st'>"rapsimng"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># Return empty list if not found</span>
-<span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>"[Simulations1]"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; list()</div><div class='input'><span class='co'># Search root path</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; [1] "Simulations"</div><div class='input'><span class='co'># Level one</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations.Wheat1'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='co'># Level two</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations.Wheat'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1 1</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; [1] "Wheat"</div><div class='input'><span class='co'># Level three</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations.Wheat.BranchingRate'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations.Wheat.Structure'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1 1 4</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; [1] "Structure"</div><div class='input'><span class='co'># Level four</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations.Wheat.Structure.BranchingRate'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1 1 4 1</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; [1] "BranchingRate"</div><div class='input'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations.Wheat.Structure.BranchingRate1'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='co'># scoped</span>
-<span class='co'># Root path</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Simulations1]'</span><span class='op'>)</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Simulations]'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; [1] "Simulations"</div><div class='input'><span class='co'># Level two</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Simulations].Wheat1'</span><span class='op'>)</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Simulations1].Wheat'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Whea]'</span><span class='op'>)</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Wheat]'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1 1</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; [1] "Wheat"</div><div class='input'><span class='co'># Level three</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Wheat].BranchingRate'</span><span class='op'>)</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Wheat].Structure'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1 1 4</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; [1] "Structure"</div><div class='input'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Structure]'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1 1 4</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; [1] "Structure"</div><div class='input'><span class='co'># Level four</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Structure].BranchingRate'</span><span class='op'>)</span>
-<span class='va'>a</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1 1 4 1</div><div class='input'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span>
-</div><div class='output co'>#&gt; [1] "BranchingRate"</div><div class='input'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Structure].BranchingRate1'</span><span class='op'>)</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Structure1].BranchingRate'</span><span class='op'>)</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>wheat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_apsimx.html'>read_apsimx</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"Wheat.json"</span>, package <span class='op'>=</span> <span class='st'>"rapsimng"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># Return empty list if not found</span></span>
+<span class='r-in'><span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>"[Simulations1]"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> list()</span>
+<span class='r-in'><span class='co'># Search root path</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Simulations"</span>
+<span class='r-in'><span class='co'># Level one</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations.Wheat1'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='co'># Level two</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations.Wheat'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 1</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Wheat"</span>
+<span class='r-in'><span class='co'># Level three</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations.Wheat.BranchingRate'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations.Wheat.Structure'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 1 4</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Structure"</span>
+<span class='r-in'><span class='co'># Level four</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations.Wheat.Structure.BranchingRate'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 1 4 1</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "BranchingRate"</span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'.Simulations.Wheat.Structure.BranchingRate1'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='co'># scoped</span></span>
+<span class='r-in'><span class='co'># Root path</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Simulations1]'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Simulations]'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Simulations"</span>
+<span class='r-in'><span class='co'># Level two</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Simulations].Wheat1'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Simulations1].Wheat'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Whea]'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Wheat]'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 1</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Wheat"</span>
+<span class='r-in'><span class='co'># Level three</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Wheat].BranchingRate'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Wheat].Structure'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 1 4</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Structure"</span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Structure]'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 1 4</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Structure"</span>
+<span class='r-in'><span class='co'># Level four</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Structure].BranchingRate'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 1 4 1</span>
+<span class='r-in'><span class='va'>a</span><span class='op'>$</span><span class='va'>node</span><span class='op'>$</span><span class='va'>Name</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "BranchingRate"</span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Structure].BranchingRate1'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>search_path</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Structure1].BranchingRate'</span><span class='op'>)</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

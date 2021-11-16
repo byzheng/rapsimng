@@ -159,24 +159,27 @@
     <p>The modified list with new value</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>wheat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_apsimx.html'>read_apsimx</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"wheat.apsimx"</span>, package <span class='op'>=</span> <span class='st'>"rapsimng"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>replacements</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_model.html'>new_model</a></span><span class='op'>(</span><span class='st'>"Core.Replacements"</span><span class='op'>)</span>
-<span class='va'>wheat_new</span> <span class='op'>&lt;-</span> <span class='fu'>insert_model</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='fl'>1</span>, <span class='va'>replacements</span><span class='op'>)</span>
-<span class='va'>replacements_node</span> <span class='op'>&lt;-</span> <span class='fu'><a href='search_path.html'>search_path</a></span><span class='op'>(</span><span class='va'>wheat_new</span>, <span class='st'>".Simulations.Replacements"</span><span class='op'>)</span>
-<span class='va'>replacements_node</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1 3</div><div class='input'><span class='co'># Add a cultivar folder under replacements</span>
-<span class='va'>cultivar_folder</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_model.html'>new_model</a></span><span class='op'>(</span><span class='st'>"PMF.CultivarFolder"</span>, <span class='st'>"Cultivars"</span><span class='op'>)</span>
-<span class='va'>wheat_new</span> <span class='op'>&lt;-</span> <span class='fu'>insert_model</span><span class='op'>(</span><span class='va'>wheat_new</span>, <span class='va'>replacements_node</span><span class='op'>$</span><span class='va'>path</span>, <span class='va'>cultivar_folder</span><span class='op'>)</span>
-<span class='va'>cultivar_folder_node</span> <span class='op'>&lt;-</span> <span class='fu'><a href='search_path.html'>search_path</a></span><span class='op'>(</span><span class='va'>wheat_new</span>,
-                                    <span class='st'>".Simulations.Replacements.Cultivars"</span><span class='op'>)</span>
-<span class='va'>cultivar_folder_node</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1 3 1</div><div class='input'><span class='co'># Add an new cultivar</span>
-<span class='va'>cultivar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_model.html'>new_model</a></span><span class='op'>(</span><span class='st'>"PMF.Cultivar"</span>, <span class='st'>"Hartog"</span><span class='op'>)</span>
-<span class='va'>wheat_new</span> <span class='op'>&lt;-</span> <span class='fu'>insert_model</span><span class='op'>(</span><span class='va'>wheat_new</span>, <span class='va'>cultivar_folder_node</span><span class='op'>$</span><span class='va'>path</span>, <span class='va'>cultivar</span><span class='op'>)</span>
-<span class='va'>cultivar_node</span> <span class='op'>&lt;-</span> <span class='fu'><a href='search_path.html'>search_path</a></span><span class='op'>(</span><span class='va'>wheat_new</span>,
-                             <span class='st'>".Simulations.Replacements.Cultivars.Hartog"</span><span class='op'>)</span>
-<span class='va'>cultivar_node</span><span class='op'>$</span><span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] 1 3 1 1</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>wheat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_apsimx.html'>read_apsimx</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"wheat.apsimx"</span>, package <span class='op'>=</span> <span class='st'>"rapsimng"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>replacements</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_model.html'>new_model</a></span><span class='op'>(</span><span class='st'>"Core.Replacements"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>wheat_new</span> <span class='op'>&lt;-</span> <span class='fu'>insert_model</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='fl'>1</span>, <span class='va'>replacements</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>replacements_node</span> <span class='op'>&lt;-</span> <span class='fu'><a href='search_path.html'>search_path</a></span><span class='op'>(</span><span class='va'>wheat_new</span>, <span class='st'>".Simulations.Replacements"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>replacements_node</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 3</span>
+<span class='r-in'><span class='co'># Add a cultivar folder under replacements</span></span>
+<span class='r-in'><span class='va'>cultivar_folder</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_model.html'>new_model</a></span><span class='op'>(</span><span class='st'>"PMF.CultivarFolder"</span>, <span class='st'>"Cultivars"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>wheat_new</span> <span class='op'>&lt;-</span> <span class='fu'>insert_model</span><span class='op'>(</span><span class='va'>wheat_new</span>, <span class='va'>replacements_node</span><span class='op'>$</span><span class='va'>path</span>, <span class='va'>cultivar_folder</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cultivar_folder_node</span> <span class='op'>&lt;-</span> <span class='fu'><a href='search_path.html'>search_path</a></span><span class='op'>(</span><span class='va'>wheat_new</span>,</span>
+<span class='r-in'>                                    <span class='st'>".Simulations.Replacements.Cultivars"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cultivar_folder_node</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 3 1</span>
+<span class='r-in'><span class='co'># Add an new cultivar</span></span>
+<span class='r-in'><span class='va'>cultivar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_model.html'>new_model</a></span><span class='op'>(</span><span class='st'>"PMF.Cultivar"</span>, <span class='st'>"Hartog"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>wheat_new</span> <span class='op'>&lt;-</span> <span class='fu'>insert_model</span><span class='op'>(</span><span class='va'>wheat_new</span>, <span class='va'>cultivar_folder_node</span><span class='op'>$</span><span class='va'>path</span>, <span class='va'>cultivar</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cultivar_node</span> <span class='op'>&lt;-</span> <span class='fu'><a href='search_path.html'>search_path</a></span><span class='op'>(</span><span class='va'>wheat_new</span>,</span>
+<span class='r-in'>                             <span class='st'>".Simulations.Replacements.Cultivars.Hartog"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cultivar_node</span><span class='op'>$</span><span class='va'>path</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 3 1 1</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

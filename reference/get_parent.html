@@ -155,573 +155,574 @@
     <p>A new list for parent</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>wheat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_apsimx.html'>read_apsimx</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"Wheat.json"</span>, package <span class='op'>=</span> <span class='st'>"rapsimng"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'><a href='search_path.html'>search_path</a></span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Structure].BranchingRate'</span><span class='op'>)</span>
-<span class='fu'>get_parent</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='va'>a</span><span class='op'>$</span><span class='va'>path</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $node
-#&gt; $node$`$type`
-#&gt; [1] "Models.PMF.Struct.Structure, Models"
-#&gt; 
-#&gt; $node$CohortInitialisationStage
-#&gt; [1] "Germination"
-#&gt; 
-#&gt; $node$LeafInitialisationStage
-#&gt; [1] "Emergence"
-#&gt; 
-#&gt; $node$Name
-#&gt; [1] "Structure"
-#&gt; 
-#&gt; $node$Children
-#&gt; $node$Children[[1]]
-#&gt; $node$Children[[1]]$`$type`
-#&gt; [1] "Models.Functions.MultiplyFunction, Models"
-#&gt; 
-#&gt; $node$Children[[1]]$Name
-#&gt; [1] "BranchingRate"
-#&gt; 
-#&gt; $node$Children[[1]]$Children
-#&gt; $node$Children[[1]]$Children[[1]]
-#&gt; $node$Children[[1]]$Children[[1]]$`$type`
-#&gt; [1] "Models.Functions.PhaseLookup, Models"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Name
-#&gt; [1] "PotentialBranchingRate"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$`$type`
-#&gt; [1] "Models.Functions.PhaseLookupValue, Models"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Start
-#&gt; [1] "Emergence"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$End
-#&gt; [1] "TerminalSpikelet"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Name
-#&gt; [1] "Vegetative"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$`$type`
-#&gt; [1] "Models.Functions.LinearInterpolationFunction, Models"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Name
-#&gt; [1] "PotentialBranchingRate"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$`$type`
-#&gt; [1] "Models.Functions.XYPairs, Models"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[1]]
-#&gt; [1] 1
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[2]]
-#&gt; [1] 2
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[3]]
-#&gt; [1] 3
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[4]]
-#&gt; [1] 4
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[5]]
-#&gt; [1] 5
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[6]]
-#&gt; [1] 6
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[7]]
-#&gt; [1] 7
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[8]]
-#&gt; [1] 8
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[1]]
-#&gt; [1] 0
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[2]]
-#&gt; [1] 0
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[3]]
-#&gt; [1] 1
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[4]]
-#&gt; [1] 2
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[5]]
-#&gt; [1] 5
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[6]]
-#&gt; [1] 7
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[7]]
-#&gt; [1] 15
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[8]]
-#&gt; [1] 23
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Name
-#&gt; [1] "XYPairs"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children
-#&gt; list()
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$`$type`
-#&gt; [1] "Models.Functions.VariableReference, Models"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$VariableName
-#&gt; [1] "[Structure].LeafTipsAppeared"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$Name
-#&gt; [1] "XValue"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$Children
-#&gt; list()
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[1]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$`$type`
-#&gt; [1] "Models.Functions.PhaseLookupValue, Models"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Start
-#&gt; [1] "TerminalSpikelet"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$End
-#&gt; [1] "HarvestRipe"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Name
-#&gt; [1] "Reproductive"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Children
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$`$type`
-#&gt; [1] "Models.Functions.Constant, Models"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$FixedValue
-#&gt; [1] 0
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$Units
-#&gt; NULL
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$Name
-#&gt; [1] "Zero"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$Children
-#&gt; list()
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Children[[2]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[1]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]
-#&gt; $node$Children[[1]]$Children[[2]]$`$type`
-#&gt; [1] "Models.Functions.MinimumFunction, Models"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Name
-#&gt; [1] "StressFactors"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$`$type`
-#&gt; [1] "Models.Functions.LinearInterpolationFunction, Models"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Name
-#&gt; [1] "CoverEffect"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$`$type`
-#&gt; [1] "Models.Functions.XYPairs, Models"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$X
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$X[[1]]
-#&gt; [1] 0
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$X[[2]]
-#&gt; [1] 0.1
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$X[[3]]
-#&gt; [1] 0.3
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Y
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Y[[1]]
-#&gt; [1] 1
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Y[[2]]
-#&gt; [1] 1
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Y[[3]]
-#&gt; [1] 0
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Name
-#&gt; [1] "XYPairs"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Children
-#&gt; list()
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$`$type`
-#&gt; [1] "Models.Functions.VariableReference, Models"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$VariableName
-#&gt; [1] "[Leaf].CoverTotal"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$Name
-#&gt; [1] "XValue"
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$Children
-#&gt; list()
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Children[[1]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Children[[2]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[1]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[1]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[2]]
-#&gt; $node$Children[[2]]$`$type`
-#&gt; [1] "Models.PMF.Struct.HeightFunction, Models"
-#&gt; 
-#&gt; $node$Children[[2]]$Name
-#&gt; [1] "HeightModel"
-#&gt; 
-#&gt; $node$Children[[2]]$Children
-#&gt; $node$Children[[2]]$Children[[1]]
-#&gt; $node$Children[[2]]$Children[[1]]$`$type`
-#&gt; [1] "Models.Functions.LinearInterpolationFunction, Models"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Name
-#&gt; [1] "PotentialHeight"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$`$type`
-#&gt; [1] "Models.Functions.XYPairs, Models"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$X
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[1]]
-#&gt; [1] 3
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[2]]
-#&gt; [1] 4
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[3]]
-#&gt; [1] 5
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[4]]
-#&gt; [1] 6
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[5]]
-#&gt; [1] 7
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[6]]
-#&gt; [1] 8
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[7]]
-#&gt; [1] 9
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$Y
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[1]]
-#&gt; [1] 10
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[2]]
-#&gt; [1] 200
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[3]]
-#&gt; [1] 200
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[4]]
-#&gt; [1] 1000
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[5]]
-#&gt; [1] 1000
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[6]]
-#&gt; [1] 1000
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[7]]
-#&gt; [1] 1000
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$Name
-#&gt; [1] "XYPairs"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$Children
-#&gt; list()
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[1]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[2]]
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[2]]$`$type`
-#&gt; [1] "Models.Functions.VariableReference, Models"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[2]]$VariableName
-#&gt; [1] "[Phenology].Stage"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[2]]$Name
-#&gt; [1] "XValue"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[2]]$Children
-#&gt; list()
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[2]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[2]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Children[[2]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[1]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]
-#&gt; $node$Children[[2]]$Children[[2]]$`$type`
-#&gt; [1] "Models.Functions.LinearInterpolationFunction, Models"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Name
-#&gt; [1] "WaterStress"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]$`$type`
-#&gt; [1] "Models.Functions.XYPairs, Models"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]$X
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]$X[[1]]
-#&gt; [1] 0.3
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]$X[[2]]
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]$Y
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]$Y[[1]]
-#&gt; [1] 0
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]$Y[[2]]
-#&gt; [1] 1
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]$Name
-#&gt; [1] "XYPairs"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]$Children
-#&gt; list()
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[1]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[2]]
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[2]]$`$type`
-#&gt; [1] "Models.Functions.VariableReference, Models"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[2]]$VariableName
-#&gt; [1] "[Leaf].Fw"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[2]]$Name
-#&gt; [1] "XValue"
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[2]]$Children
-#&gt; list()
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[2]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[2]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Children[[2]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Children[[2]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; $node$Children[[2]]$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Children[[2]]$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; 
-#&gt; $node$IncludeInDocumentation
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$Enabled
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $node$ReadOnly
-#&gt; [1] FALSE
-#&gt; 
-#&gt; 
-#&gt; $path
-#&gt; [1] 1 1 4
-#&gt; </div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>wheat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_apsimx.html'>read_apsimx</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"Wheat.json"</span>, package <span class='op'>=</span> <span class='st'>"rapsimng"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'><a href='search_path.html'>search_path</a></span><span class='op'>(</span><span class='va'>wheat</span>, <span class='st'>'[Structure].BranchingRate'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>get_parent</span><span class='op'>(</span><span class='va'>wheat</span>, <span class='va'>a</span><span class='op'>$</span><span class='va'>path</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.PMF.Struct.Structure, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$CohortInitialisationStage</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Germination"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$LeafInitialisationStage</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Emergence"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Structure"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.MultiplyFunction, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "BranchingRate"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.PhaseLookup, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "PotentialBranchingRate"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.PhaseLookupValue, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Start</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Emergence"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$End</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "TerminalSpikelet"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Vegetative"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.LinearInterpolationFunction, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "PotentialBranchingRate"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.XYPairs, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[4]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[5]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[6]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[7]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$X[[8]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[4]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[5]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[6]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[7]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 15</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Y[[8]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 23</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "XYPairs"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> list()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.VariableReference, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$VariableName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "[Structure].LeafTipsAppeared"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "XValue"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> list()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Children[[2]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Children[[1]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[1]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.PhaseLookupValue, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Start</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "TerminalSpikelet"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$End</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "HarvestRipe"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Reproductive"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.Constant, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$FixedValue</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$Units</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Zero"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> list()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Children[[1]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Children[[2]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[1]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.MinimumFunction, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "StressFactors"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.LinearInterpolationFunction, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "CoverEffect"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.XYPairs, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$X</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$X[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$X[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$X[[3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Y</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Y[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Y[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Y[[3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "XYPairs"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> list()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[1]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.VariableReference, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$VariableName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "[Leaf].CoverTotal"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "XValue"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> list()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Children[[2]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Children[[1]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Children[[2]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[1]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.PMF.Struct.HeightFunction, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "HeightModel"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.LinearInterpolationFunction, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "PotentialHeight"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.XYPairs, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$X</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[4]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[5]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[6]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$X[[7]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$Y</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 10</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 200</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[3]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 200</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[4]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[5]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[6]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$Y[[7]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "XYPairs"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> list()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[1]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[2]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.VariableReference, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[2]]$VariableName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "[Phenology].Stage"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[2]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "XValue"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[2]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> list()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[2]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[2]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Children[[2]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[1]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.LinearInterpolationFunction, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "WaterStress"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.XYPairs, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]$X</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]$X[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]$X[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]$Y</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]$Y[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]$Y[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "XYPairs"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> list()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[1]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[2]]$`$type`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Models.Functions.VariableReference, Models"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[2]]$VariableName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "[Leaf].Fw"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[2]]$Name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "XValue"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[2]]$Children</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> list()</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[2]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[2]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Children[[2]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Children[[2]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Children[[2]]$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$IncludeInDocumentation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$Enabled</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $node$ReadOnly</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $path</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 1 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
