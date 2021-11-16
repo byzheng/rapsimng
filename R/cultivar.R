@@ -66,6 +66,8 @@ get_cultivar <- function(l, alias = TRUE) {
 #'
 #' @param l The list of apsimx file
 #' @param df A data frame for new parameters with three columns, i.e. name, parameter and value.
+#' @param add Whether to add extra nodes (e.g. replacements, Cultivars folder
+#'  and new cultivar)
 #'
 #' @return The modified apsimx file
 #' @export
@@ -82,7 +84,7 @@ get_cultivar <- function(l, alias = TRUE) {
 #' wheat_cultivar <- update_cultivar(wheat, df)
 #' hartog <- search_path(wheat_cultivar, "[Replacements].Hartog")
 #' hartog$path
-update_cultivar <- function(l, df) {
+update_cultivar <- function(l, df, add = TRUE) {
 
     if (is.null(df$name)) {
         stop("'name' column is required in the data frame 'df'.")
@@ -96,30 +98,30 @@ update_cultivar <- function(l, df) {
         stop("'value' column is required in the data frame 'df'.")
     }
 
+    if (add == TRUE) {
+        cultivar_node <- search_path(l, "[Cultivars]")
+        if (length(cultivar_node) == 0) {
+            # Check the replacement node (assume the apsimx file)
+            replacements_node <- search_path(l, "[Replacements]")
 
-    cultivar_node <- search_path(l, "[Cultivars]")
-    if (length(cultivar_node) == 0) {
-        # Check the replacement node (assume the apsimx file)
-        replacements_node <- search_path(l, "[Replacements]")
+            if (length(replacements_node) == 0) {
+                replacements <- new_model("Core.Replacements")
+                l <- insert_model(l, 1, replacements)
+            }
+            replacements_node <- search_path(l, "[Replacements]")
 
-        if (length(replacements_node) == 0) {
-            replacements <- new_model("Core.Replacements")
-            l <- insert_model(l, 1, replacements)
+            cultivar_model <- new_model("PMF.CultivarFolder", "Cultivars")
+            l <- insert_model(l, replacements_node$path, cultivar_model)
         }
-        replacements_node <- search_path(l, "[Replacements]")
 
-        cultivar_model <- new_model("PMF.CultivarFolder", "Cultivars")
-        l <- insert_model(l, replacements_node$path, cultivar_model)
+        # define the root node:
+        # Cultivars or Replacemens
+        # Check whether cultivar node exists
+        root_node <- search_path(l, "[Cultivars]")
+        if (length(root_node) == 0) {
+            root_node <- search_path(l, "[Replacements]")
+        }
     }
-
-    # define the root node:
-    # Cultivars or Replacemens
-    # Check whether cultivar node exists
-    root_node <- search_path(l, "[Cultivars]")
-    if (length(root_node) == 0) {
-        root_node <- search_path(l, "[Replacements]")
-    }
-
     cultivars_name <- unique(df$name)
     i <- 1
     for (i in seq(along = cultivars_name)) {
@@ -145,12 +147,16 @@ update_cultivar <- function(l, df) {
             l <- replace_model(l, cultivar_node$path,
                                cultivar_model)
         } else {
-            # Create a new one if not existing
-            cultivar_model <- new_model("PMF.Cultivar", cultivars_name[i])
-            cultivar_model$Command <- commands
-            # Insert new model
-            l <- insert_model(l, root_node$path,
-                              cultivar_model)
+            if (add == TRUE) {
+                # Create a new one if not existing
+                cultivar_model <- new_model("PMF.Cultivar", cultivars_name[i])
+                cultivar_model$Command <- commands
+                # Insert new model
+                l <- insert_model(l, root_node$path,
+                                  cultivar_model)
+            } else {
+                warning("Cultivar ", cultivars_name[i], " cannot be found.")
+            }
         }
 
     }
