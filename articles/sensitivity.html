@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rapsimng</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -67,7 +63,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/byzheng/rapsimng/">
+  <a href="https://github.com/byzheng/rapsimng/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -88,7 +84,7 @@
       <h1 data-toc-skip>Generate apsimx file for sensitivity analysis</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/byzheng/rapsimng/blob/master/vignettes/sensitivity.Rmd"><code>vignettes/sensitivity.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/byzheng/rapsimng/blob/HEAD/vignettes/sensitivity.Rmd" class="external-link"><code>vignettes/sensitivity.Rmd</code></a></small>
       <div class="hidden name"><code>sensitivity.Rmd</code></div>
 
     </div>
@@ -96,50 +92,50 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rapsimng.bangyou.me/">rapsimng</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rapsimng.bangyou.me/" class="external-link">rapsimng</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span></code></pre></div>
 <p>Sensitivity analysis is conducted to check output variations when a parameter is changed. This post is to show how to conduct sensitivity analysis using rapsimng package using factorial simulations.</p>
 <p>We use the base phyllochron as an example to demonstrate how to generate a new apsimx file from a template.</p>
 <p>The base phyllochron is a key parameter for wheat phelonogy and leaf appearance rate. The range of base phyllochron is from 60 to 130 degree days.</p>
 <p>The data.frame requires three columns (i.e. parameter, value, name) and multiple parameters can be specified here.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">phyllochron_para</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>parameter <span class="op">=</span> <span class="st">"[Phenology].Phyllochron.BasePhyllochron.FixedValue"</span>, 
-                           value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">130</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Cultivar"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">phyllochron_para</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 6 × 3</span>
-<span class="co">#&gt;   parameter                                          value name     </span>
-<span class="co">#&gt;   &lt;chr&gt;                                              &lt;dbl&gt; &lt;chr&gt;    </span>
-<span class="co">#&gt; 1 [Phenology].Phyllochron.BasePhyllochron.FixedValue    60 Cultivar1</span>
-<span class="co">#&gt; 2 [Phenology].Phyllochron.BasePhyllochron.FixedValue    61 Cultivar2</span>
-<span class="co">#&gt; 3 [Phenology].Phyllochron.BasePhyllochron.FixedValue    62 Cultivar3</span>
-<span class="co">#&gt; 4 [Phenology].Phyllochron.BasePhyllochron.FixedValue    63 Cultivar4</span>
-<span class="co">#&gt; 5 [Phenology].Phyllochron.BasePhyllochron.FixedValue    64 Cultivar5</span>
-<span class="co">#&gt; 6 [Phenology].Phyllochron.BasePhyllochron.FixedValue    65 Cultivar6</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">phyllochron_para</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>parameter <span class="op">=</span> <span class="st">"[Phenology].Phyllochron.BasePhyllochron.FixedValue"</span>, </span>
+<span>                           value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">130</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Cultivar"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">phyllochron_para</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
+<span><span class="co">#&gt;   parameter                                          value name     </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> [Phenology].Phyllochron.BasePhyllochron.FixedValue    60 Cultivar1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> [Phenology].Phyllochron.BasePhyllochron.FixedValue    61 Cultivar2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> [Phenology].Phyllochron.BasePhyllochron.FixedValue    62 Cultivar3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> [Phenology].Phyllochron.BasePhyllochron.FixedValue    63 Cultivar4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> [Phenology].Phyllochron.BasePhyllochron.FixedValue    64 Cultivar5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> [Phenology].Phyllochron.BasePhyllochron.FixedValue    65 Cultivar6</span></span></code></pre></div>
 <p>The template is an apsimx file setup for the actual experiment or the specified environments (i.e. locations, sowing date or years). I assume there is a factor <code>Cv</code> for culivar in the <code>Permutation</code> model which specified the cultivar by <code>[Sowing].Script.CultivarName</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><code>update_cultivar</code> can be used to add the list of cultivars in the <code>Replacements</code>. The <code>Specification</code> in the <code>Permutation.Cv</code> can be replace with new values.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/update_cultivar.html">update_cultivar</a></span><span class="op">(</span><span class="va">template</span>, <span class="va">phyllochron_para</span><span class="op">)</span>
-
-<span class="va">node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">template</span>, <span class="st">"[Permutation].Cv"</span><span class="op">)</span>    
-<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">node</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"[Permutation].Cv is not found"</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">new_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"\\1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">phyllochron_para</span><span class="op">$</span><span class="va">name</span>, collapse <span class="op">=</span> <span class="st">","</span><span class="op">)</span><span class="op">)</span>
-<span class="va">node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Specification</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"(.+ *= *)(.+)$"</span>, <span class="va">new_value</span>, <span class="va">node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Specification</span><span class="op">)</span>
-
-<span class="va">node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Specification</span>
-<span class="co">#&gt; [1] "[Sowing].Script.CultivarName = Cultivar1,Cultivar2,Cultivar3,Cultivar4,Cultivar5,Cultivar6,Cultivar7,Cultivar8,Cultivar9,Cultivar10,Cultivar11,Cultivar12,Cultivar13,Cultivar14,Cultivar15,Cultivar16,Cultivar17,Cultivar18,Cultivar19,Cultivar20,Cultivar21,Cultivar22,Cultivar23,Cultivar24,Cultivar25,Cultivar26,Cultivar27,Cultivar28,Cultivar29,Cultivar30,Cultivar31,Cultivar32,Cultivar33,Cultivar34,Cultivar35,Cultivar36,Cultivar37,Cultivar38,Cultivar39,Cultivar40,Cultivar41,Cultivar42,Cultivar43,Cultivar44,Cultivar45,Cultivar46,Cultivar47,Cultivar48,Cultivar49,Cultivar50,Cultivar51,Cultivar52,Cultivar53,Cultivar54,Cultivar55,Cultivar56,Cultivar57,Cultivar58,Cultivar59,Cultivar60,Cultivar61,Cultivar62,Cultivar63,Cultivar64,Cultivar65,Cultivar66,Cultivar67,Cultivar68,Cultivar69,Cultivar70,Cultivar71"</span>
-
-<span class="va">template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/replace_model.html">replace_model</a></span><span class="op">(</span><span class="va">template</span>, <span class="va">node</span><span class="op">$</span><span class="va">path</span>, <span class="va">node</span><span class="op">$</span><span class="va">node</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/update_cultivar.html">update_cultivar</a></span><span class="op">(</span><span class="va">template</span>, <span class="va">phyllochron_para</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">node</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">template</span>, <span class="st">"[Permutation].Cv"</span><span class="op">)</span>    </span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">node</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"[Permutation].Cv is not found"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">new_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"\\1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">phyllochron_para</span><span class="op">$</span><span class="va">name</span>, collapse <span class="op">=</span> <span class="st">","</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Specification</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"(.+ *= *)(.+)$"</span>, <span class="va">new_value</span>, <span class="va">node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Specification</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">node</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Specification</span></span>
+<span><span class="co">#&gt; [1] "[Sowing].Script.CultivarName = Cultivar1,Cultivar2,Cultivar3,Cultivar4,Cultivar5,Cultivar6,Cultivar7,Cultivar8,Cultivar9,Cultivar10,Cultivar11,Cultivar12,Cultivar13,Cultivar14,Cultivar15,Cultivar16,Cultivar17,Cultivar18,Cultivar19,Cultivar20,Cultivar21,Cultivar22,Cultivar23,Cultivar24,Cultivar25,Cultivar26,Cultivar27,Cultivar28,Cultivar29,Cultivar30,Cultivar31,Cultivar32,Cultivar33,Cultivar34,Cultivar35,Cultivar36,Cultivar37,Cultivar38,Cultivar39,Cultivar40,Cultivar41,Cultivar42,Cultivar43,Cultivar44,Cultivar45,Cultivar46,Cultivar47,Cultivar48,Cultivar49,Cultivar50,Cultivar51,Cultivar52,Cultivar53,Cultivar54,Cultivar55,Cultivar56,Cultivar57,Cultivar58,Cultivar59,Cultivar60,Cultivar61,Cultivar62,Cultivar63,Cultivar64,Cultivar65,Cultivar66,Cultivar67,Cultivar68,Cultivar69,Cultivar70,Cultivar71"</span></span>
+<span></span>
+<span><span class="va">template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/replace_model.html">replace_model</a></span><span class="op">(</span><span class="va">template</span>, <span class="va">node</span><span class="op">$</span><span class="va">path</span>, <span class="va">node</span><span class="op">$</span><span class="va">node</span><span class="op">)</span></span></code></pre></div>
 <p>Finally the new model can be write into file system and run with APSIM NG. Uncomment the sections below, update the path to <code>Models.exe</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># write_apsimx(template, "new-path.apsimx")</span>
-<span class="co"># models_path &lt;- "path-to-Models.exe"</span>
-<span class="co"># run_models(models_path, sim_name, csv = TRUE, parallel = FALSE)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># write_apsimx(template, "new-path.apsimx")</span></span>
+<span><span class="co"># models_path &lt;- "path-to-Models.exe"</span></span>
+<span><span class="co"># run_models(models_path, sim_name, csv = TRUE, parallel = FALSE)</span></span></code></pre></div>
 <p>The example in this post can be modified into parallel codes for sensivity analysis in the large scales.</p>
   </div>
 
@@ -152,11 +148,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Bangyou Zheng.</p>
+  <p></p>
+<p>Developed by Bangyou Zheng.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>
@@ -164,6 +162,8 @@
 
   
 
+
+  
 
   </body>
 </html>

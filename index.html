@@ -22,6 +22,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -34,23 +36,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rapsimng</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -70,7 +66,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/byzheng/rapsimng/">
+  <a href="https://github.com/byzheng/rapsimng/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -87,124 +83,132 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="rapsimng" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#rapsimng" class="anchor"></a>rapsimng</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="rapsimng">rapsimng<a class="anchor" aria-label="anchor" href="#rapsimng"></a>
+</h1></div>
 
-<p><a href="https://cran.r-project.org/package=rapsimng"><img src="http://cranlogs.r-pkg.org/badges/grand-total/rapsimng?color=green"></a> <a href="https://cran.r-project.org/package=rapsimng"><img src="http://cranlogs.r-pkg.org/badges/last-month/rapsimng?color=green"></a> <a href="https://cran.r-project.org/package=rapsimng"><img src="http://cranlogs.r-pkg.org/badges/last-week/rapsimng?color=green"></a></p>
-<p><a href="https://rapsimng.bangyou.me">rapsimng</a> package is designed to modify and run the *.apsimx simulations using R in <a href="https://www.apsim.info/">APSIM Next Generation</a>.</p>
-<div id="features" class="section level2">
-<h2 class="hasAnchor">
-<a href="#features" class="anchor"></a>Features</h2>
-<ul>
-<li>Find elements in the *.apsimx file</li>
-</ul>
+<p><a href="https://cran.r-project.org/package=rapsimng" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/grand-total/rapsimng?color=green"></a> <a href="https://cran.r-project.org/package=rapsimng" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/last-month/rapsimng?color=green"></a> <a href="https://cran.r-project.org/package=rapsimng" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/last-week/rapsimng?color=green"></a></p>
+<p><a href="https://rapsimng.bangyou.me" class="external-link">rapsimng</a> package is designed to modify and run the *.apsimx simulations using R in <a href="https://www.apsim.info/" class="external-link">APSIM Next Generation</a>.</p>
+<div class="section level2">
+<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
+</h2>
+<ul><li>Find elements in the *.apsimx file</li></ul>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>Install from CRAN.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'rapsimng'</span><span class="op">)</span></code></pre></div>
-<p>Install the developing version from <a href="https://github.com/byzheng/rapsimng">Github</a>.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'rapsimng'</span><span class="op">)</span></span></code></pre></div>
+<p>Install the developing version from <a href="https://github.com/byzheng/rapsimng" class="external-link">Github</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'byzheng/rapsimng'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'byzheng/rapsimng'</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="read-apsimx-file" class="section level2">
-<h2 class="hasAnchor">
-<a href="#read-apsimx-file" class="anchor"></a>Read APSIMX file</h2>
-<p>The <code>wheat.apsimx</code> in the validation dataset of APSIM NG is used as an example. Function <code>read_apsimx</code> is used to read <code>*.apsimx</code> file through <code><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html">jsonlite::read_json</a></code> and returns as a list.</p>
+<div class="section level2">
+<h2 id="read-apsimx-file">Read APSIMX file<a class="anchor" aria-label="anchor" href="#read-apsimx-file"></a>
+</h2>
+<p>The <code>wheat.apsimx</code> in the validation dataset of APSIM NG is used as an example. Function <code>read_apsimx</code> is used to read <code>*.apsimx</code> file through <code><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html" class="external-link">jsonlite::read_json</a></code> and returns as a list.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.</span>
-<span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span>
-<span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.</span></span>
+<span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span></span>
+<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="search-by-of-apsim-ng" class="section level2">
-<h2 class="hasAnchor">
-<a href="#search-by-of-apsim-ng" class="anchor"></a>Search by of APSIM NG</h2>
+<div class="section level2">
+<h2 id="search-by-of-apsim-ng">Search by of APSIM NG<a class="anchor" aria-label="anchor" href="#search-by-of-apsim-ng"></a>
+</h2>
 <p>A node in the apsimx file can be found using the path specification in APSIM NG.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">potential</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">m</span>,
-    path <span class="op">=</span> <span class="st">'[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate'</span><span class="op">)</span>
-<span class="va">potential</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">potential</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/search_path.html">search_path</a></span><span class="op">(</span><span class="va">m</span>,</span>
+<span>    path <span class="op">=</span> <span class="st">'[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate'</span><span class="op">)</span></span>
+<span><span class="va">potential</span></span></code></pre></div>
 </div>
-<div id="modify-a-found-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#modify-a-found-model" class="anchor"></a>Modify a found model</h2>
+<div class="section level2">
+<h2 id="modify-a-found-model">Modify a found model<a class="anchor" aria-label="anchor" href="#modify-a-found-model"></a>
+</h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">new_model</span> <span class="op">&lt;-</span> <span class="va">potential</span><span class="op">$</span><span class="va">node</span>
-<span class="va">new_model</span><span class="op">$</span><span class="va">XProperty</span> <span class="op">&lt;-</span> <span class="st">'NewVariable'</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">new_model</span> <span class="op">&lt;-</span> <span class="va">potential</span><span class="op">$</span><span class="va">node</span></span>
+<span><span class="va">new_model</span><span class="op">$</span><span class="va">XProperty</span> <span class="op">&lt;-</span> <span class="st">'NewVariable'</span></span></code></pre></div>
 </div>
-<div id="replace-the-new-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#replace-the-new-model" class="anchor"></a>Replace the new model</h2>
+<div class="section level2">
+<h2 id="replace-the-new-model">Replace the new model<a class="anchor" aria-label="anchor" href="#replace-the-new-model"></a>
+</h2>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">new</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/replace_model.html">replace_model</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">potential</span><span class="op">$</span><span class="va">path</span>, <span class="va">new_model</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">new</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/replace_model.html">replace_model</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">potential</span><span class="op">$</span><span class="va">path</span>, <span class="va">new_model</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="save-into-a-new-apsimx-file" class="section level2">
-<h2 class="hasAnchor">
-<a href="#save-into-a-new-apsimx-file" class="anchor"></a>Save into a new apsimx file</h2>
+<div class="section level2">
+<h2 id="save-into-a-new-apsimx-file">Save into a new apsimx file<a class="anchor" aria-label="anchor" href="#save-into-a-new-apsimx-file"></a>
+</h2>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/write_apsimx.html">write_apsimx</a></span><span class="op">(</span><span class="va">new</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">'.json'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/write_apsimx.html">write_apsimx</a></span><span class="op">(</span><span class="va">new</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">'.json'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="run-apsimx-file" class="section level2">
-<h2 class="hasAnchor">
-<a href="#run-apsimx-file" class="anchor"></a>Run apsimx file</h2>
-<p>A function <code>run_models</code> is wrapped for APSIM NG <code>Models.exe</code> in the command line and can be called to run apsimx files. See <a href="https://apsimnextgeneration.netlify.app/">APSIM website</a> for documentation.</p>
+<div class="section level2">
+<h2 id="run-apsimx-file">Run apsimx file<a class="anchor" aria-label="anchor" href="#run-apsimx-file"></a>
+</h2>
+<p>A function <code>run_models</code> is wrapped for APSIM NG <code>Models.exe</code> in the command line and can be called to run apsimx files. See <a href="https://apsimnextgeneration.netlify.app/" class="external-link">APSIM website</a> for documentation.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=rapsimng">https://​cloud.r-project.org/​package=rapsimng</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/byzheng/rapsimng/">https://​github.com/​byzheng/​rapsimng/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/byzheng/rapsimng/issues">https://​github.com/​byzheng/​rapsimng/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=rapsimng" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/byzheng/rapsimng/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/byzheng/rapsimng/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing rapsimng</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Bangyou Zheng <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=rapsimng"><img src="https://www.r-pkg.org/badges/version/rapsimng?color=green"></a></li>
-<li><a href="https://codecov.io/gh/byzheng/RApsimNG"><img src="https://codecov.io/gh/byzheng/RApsimNG/branch/master/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://cran.r-project.org/package=rapsimng" class="external-link"><img src="https://www.r-pkg.org/badges/version/rapsimng?color=green"></a></li>
+<li><a href="https://codecov.io/gh/byzheng/RApsimNG" class="external-link"><img src="https://codecov.io/gh/byzheng/RApsimNG/branch/master/graph/badge.svg" alt="codecov"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Bangyou Zheng.</p>
+  <p></p>
+<p>Developed by Bangyou Zheng.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>
@@ -212,6 +216,8 @@
 
   
 
+
+  
 
   </body>
 </html>
