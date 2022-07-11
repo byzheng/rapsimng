@@ -67,9 +67,12 @@ read_report <- function(file, report) {
     }
     simulations <- DBI::dbReadTable(con, "_Simulations") %>% tibble::tibble()
     table_con <- DBI::dbReadTable(con, report) %>% tibble::tibble()
+    common_cols <- c("SimulationID" = "ID")
+    if (rlang::has_name(table_con, "FolderName")) {
+        common_cols <- c(common_cols, "FolderName")
+    }
     table_con <- table_con %>%
-        dplyr::left_join(simulations,
-                         by = c("SimulationID" = "ID", "FolderName"))
+        dplyr::left_join(simulations, by = common_cols)
     DBI::dbDisconnect(con)
     table_con
 }
