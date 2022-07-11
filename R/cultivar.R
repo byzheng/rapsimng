@@ -99,7 +99,9 @@ update_cultivar <- function(l, df, add = TRUE) {
     }
 
     if (add == TRUE) {
-        cultivar_node <- search_path(l, "[Cultivars]")
+        cultivar_node <- search_node(l, `$type` = "Models.PMF.CultivarFolder, Models",
+                                     all = FALSE)
+        #cultivar_node <- search_path(l, "[Cultivars]")
         if (length(cultivar_node) == 0) {
             # Check the replacement node (assume the apsimx file)
             replacements_node <- search_path(l, "[Replacements]")
@@ -117,7 +119,9 @@ update_cultivar <- function(l, df, add = TRUE) {
         # define the root node:
         # Cultivars or Replacemens
         # Check whether cultivar node exists
-        root_node <- search_path(l, "[Cultivars]")
+        root_node <- search_node(l, `$type` = "Models.PMF.CultivarFolder, Models",
+                    all = FALSE)
+        # root_node <- search_path(l, "[Cultivars]")
         if (length(root_node) == 0) {
             root_node <- search_path(l, "[Replacements]")
         }
