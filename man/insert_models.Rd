@@ -20,7 +20,7 @@ The modified list with new value
 Insert models into apsimx
 }
 \examples{
-wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+wheat <- read_apsimx(system.file("extdata/wheat.apsimx", package = "rapsimng"))
 replacements <- new_model("Core.Replacements")
 wheat_new <- insert_model(wheat, 1, replacements)
 replacements_node <- search_path(wheat_new, ".Simulations.Replacements")

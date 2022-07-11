@@ -19,7 +19,7 @@ A new list with removed simulations.
 Keep simulations for a factorial experiment
 }
 \examples{
-wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+wheat <- read_apsimx(system.file("extdata/wheat.apsimx", package = "rapsimng"))
 permutation <- search_path(wheat, path = "[Factors].Permutation")
 permutation_new <- keep_simulations(permutation$node, list(V = "2"))
 get_simulations(permutation_new)

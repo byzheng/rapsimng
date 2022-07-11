@@ -40,7 +40,7 @@ The `wheat.apsimx` in the validation dataset of APSIM NG  is used as an example.
 
 ```r
 # Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.
-file <- system.file("wheat.apsimx", package = "rapsimng")
+file <- system.file("extdata/wheat.apsimx", package = "rapsimng")
 m <- read_apsimx(file)
 
 ```

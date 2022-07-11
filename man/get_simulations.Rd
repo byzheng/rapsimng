@@ -16,7 +16,7 @@ A list with Factor as name and Levels as values
 Get simulations for a factorial experiment
 }
 \examples{
-wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+wheat <- read_apsimx(system.file("extdata/wheat.apsimx", package = "rapsimng"))
 permutation <- search_path(wheat, path = "[Factors].Permutation")
 get_simulations(permutation$node)
 }

@@ -1,7 +1,7 @@
 suppressPackageStartupMessages(library(testthat))
 test_that("Walking json tree", {
     # Read wheat.json
-    wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
+    wheat <- read_apsimx(system.file("extdata/Wheat.json", package = "rapsimng"))
 
     a <- search_node(wheat, Name = "Simulations")
     expect_error(get_parent(wheat, 1))

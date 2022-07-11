@@ -24,7 +24,7 @@ The existing cultivar parameters are updated. New cultivar
 is created.
 }
 \examples{
-wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+wheat <- read_apsimx(system.file("extdata/wheat.apsimx", package = "rapsimng"))
 # Update cultivars
 df <- data.frame(name = rep("Hartog", 3),
                  parameter = c("[Phenology].MinimumLeafNumber.FixedValue",

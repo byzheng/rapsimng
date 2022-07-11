@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @examples
-#' file <- system.file("wheat.apsimx", package = "rapsimng")
+#' file <- system.file("extdata/wheat.apsimx", package = "rapsimng")
 #' m <- read_apsimx(file)
 read_apsimx <- function(path) {
 

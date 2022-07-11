@@ -18,7 +18,7 @@ The met file name in a experiment
 Get the met file name for an experiment
 }
 \examples{
-wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+wheat <- read_apsimx(system.file("extdata/wheat.apsimx", package = "rapsimng"))
 exp <- search_path(wheat, path = "[Experiment]")
 get_metfile(exp)
 }

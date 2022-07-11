@@ -1,6 +1,6 @@
 suppressPackageStartupMessages(library(testthat))
 test_that("cultivar", {
-    wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
+    wheat <- read_apsimx(system.file("extdata/Wheat.json", package = "rapsimng"))
 
 
 
@@ -111,7 +111,7 @@ test_that("cultivar", {
 
     # Insert a model
     # Add a new replacements
-    wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+    wheat <- read_apsimx(system.file("extdata/wheat.apsimx", package = "rapsimng"))
     replacements <- new_model("Core.Replacements")
     wheat_replacement <- insert_model(wheat, 1, replacements)
     replacements_node <- search_path(wheat_replacement, ".Simulations.Replacements")

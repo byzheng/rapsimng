@@ -23,7 +23,7 @@ A list with node and path if all equals to FALSE (default)
 Find element(s) in  apsimx file
 }
 \examples{
-wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
+wheat <- read_apsimx(system.file("extdata/wheat.json", package = "rapsimng"))
 # Return empty list if not found
 search_node(wheat, Name = "Simulations1")
 # Find root level

@@ -1,9 +1,9 @@
 
 get_node <- function(l) {
-    if (class(l) == "apsimxNode") {
+    if (methods::is(l, "apsimxNode")) {
         l <- l$node
     }
-    if (class(l) != "list") {
+    if (!methods::is(l, "list")) {
         stop("A list object is required.")
     }
     l
@@ -19,7 +19,7 @@ get_node <- function(l) {
 #' #'
 #' #' @export
 #' #' @examples
-#' #' file <- system.file("wheat.apsimx", package = "rapsimng")
+#' #' file <- system.file("extdata/wheat.apsimx", package = "rapsimng")
 #' #' m <- read_apsimx(file)
 #' #' potential <- search_path(m,
 #' #'    path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')

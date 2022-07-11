@@ -1,7 +1,7 @@
 suppressPackageStartupMessages(library(testthat))
 test_that("Search all nodes", {
     # Read wheat.apsimx
-    wheat <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+    wheat <- read_apsimx(system.file("extdata/wheat.apsimx", package = "rapsimng"))
 
     permutation <- search_path(wheat, path = "[Experiment].Factors")
     expect_equal(length(permutation), 2)
@@ -53,13 +53,8 @@ test_that("Search all nodes", {
     expect_error(keep_simulations(permutation, list(Cv = c("Axe", "Janz"))))
     expect_error(keep_simulations(list(1), list(Cv = c("Axe", "Janz"))))
 
-    # Test non-permutation factors
-    permutation <- search_path(wheat, path = "[Experiment1].Factors")
-    expect_equal(length(permutation), 2)
-    expect_error(get_simulations(permutation$node))
-
     # Test met name
     exp <- search_path(wheat, path = "[Experiment]")
     metfile <- get_metfile(exp)
-    expect_equal(metfile, "%root%\\Examples\\WeatherFiles\\Dalby.met")
+    expect_equal(metfile, "example.met")
 })

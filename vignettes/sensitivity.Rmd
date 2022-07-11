@@ -39,7 +39,7 @@ head(phyllochron_para)
 The template is an apsimx file setup for the actual experiment or the specified environments (i.e. locations, sowing date or years). I assume there is a factor `Cv` for culivar in the `Permutation` model which specified the cultivar by `[Sowing].Script.CultivarName`.
 
 ```{r}
-template <- read_apsimx(system.file("wheat.apsimx", package = "rapsimng"))
+template <- read_apsimx(system.file("extdata/wheat.apsimx", package = "rapsimng"))
 ```
 
 

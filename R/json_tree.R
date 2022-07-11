@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-#' wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
+#' wheat <- read_apsimx(system.file("extdata/wheat.json", package = "rapsimng"))
 #' a <- search_path(wheat, '[Structure].BranchingRate')
 #' get_parent(wheat, a$path)
 get_parent <- function(l, path) {

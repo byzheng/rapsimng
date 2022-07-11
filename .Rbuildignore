@@ -5,7 +5,6 @@ cran-comments.md
 ^LICENSE.md$
 ^CRAN-RELEASE$
 ^NEWS.md$
-.*\.db
 .*\.bak
 .*\.db-shm
 .*\.db-wal

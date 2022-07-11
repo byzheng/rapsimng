@@ -1,7 +1,7 @@
 Package: rapsimng
 Type: Package
 Title: APSIM Next Generation
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: person("Bangyou", "Zheng", 
                email = "bangyou.zheng@csiro.au", 
                role = c("aut", "cre"))
@@ -15,11 +15,18 @@ URL: https://rapsimng.bangyou.me/,
 BugReports: https://github.com/byzheng/rapsimng/issues
 Encoding: UTF-8
 Depends: R (>= 3.5.0)
-Imports: jsonlite, tibble, magrittr, tidyr, dplyr, rlang
+Imports: jsonlite, 
+    tibble, 
+    magrittr, 
+    dplyr, 
+    rlang,
+    DBI,
+    RSQLite
 RoxygenNote: 7.1.2
 Suggests: 
     testthat,
     knitr,
     rmarkdown,
-    tidyverse
+    tidyverse,
+    methods
 VignetteBuilder: knitr

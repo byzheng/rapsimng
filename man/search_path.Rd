@@ -37,7 +37,7 @@ that has the name 'Soil' that is in scope
 }
 
 \examples{
-wheat <- read_apsimx(system.file("Wheat.json", package = "rapsimng"))
+wheat <- read_apsimx(system.file("extdata/wheat.json", package = "rapsimng"))
 # Return empty list if not found
 search_path(wheat, "[Simulations1]")
 # Search root path
