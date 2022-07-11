@@ -58,6 +58,9 @@
     <loc>/reference/keep_simulations.html</loc>
   </url>
   <url>
+    <loc>/reference/list_report.html</loc>
+  </url>
+  <url>
     <loc>/reference/minimum_apsimng.html</loc>
   </url>
   <url>
@@ -65,6 +68,9 @@
   </url>
   <url>
     <loc>/reference/read_apsimx.html</loc>
+  </url>
+  <url>
+    <loc>/reference/read_report.html</loc>
   </url>
   <url>
     <loc>/reference/remove_model.html</loc>
