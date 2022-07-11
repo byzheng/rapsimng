@@ -29,7 +29,7 @@ install.packages('rapsimng')
 Install the developing version from [Github](https://github.com/byzheng/rapsimng).
 
 ```r
-devtools::install_github('byzheng/rapsimng')
+remotes::install_github('byzheng/rapsimng')
 ```
 
 
