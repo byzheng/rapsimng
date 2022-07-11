@@ -29,6 +29,10 @@ reference:
   desc: "Functions for cultivar."
 - contents:
   - ends_with("_cultivar")
+- title: "Report"
+  desc: "Functions for report."
+- contents:
+  - ends_with("_report")
 - title: "Utilities"
   desc: "Utility functions."
 - contents:
