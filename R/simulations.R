@@ -127,7 +127,7 @@ get_simulations <- function(l) {
 #'                                     list(V = "1", Cv = c("Axe", "Bolac")))
 #' get_simulations(permutation_new)
 keep_simulations <- function(l, s) {
-  if (class(s) != "list") {
+  if (!methods::is(s, "list")) {
     stop("s requires as a list")
   }
 

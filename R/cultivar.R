@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-#' wheat <- read_apsimx(system.file("extdata/wheat.json", package = "rapsimng"))
+#' wheat <- read_apsimx(system.file("extdata/Wheat.json", package = "rapsimng"))
 #' get_cultivar(wheat)
 #' get_cultivar(wheat, alias = FALSE)
 #'
