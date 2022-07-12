@@ -103,111 +103,91 @@ that has the name 'Soil' that is in scope</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">wheat</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/wheat.json"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in readBin(structure(4L, class = c("file", "connection"), conn_id = &lt;pointer: 0x64d&gt;),     raw(0), 32768L):</span> can only read from a binary connection</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">wheat</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/Wheat.json"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Return empty list if not found</span></span></span>
 <span class="r-in"><span><span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">"[Simulations1]"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
 <span class="r-in"><span><span class="co"># Search root path</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'.Simulations'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in search_path(wheat, ".Simulations"):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Simulations"</span>
 <span class="r-in"><span><span class="co"># Level one</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'.Simulations.Wheat1'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in search_path(wheat, ".Simulations.Wheat1"):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="co"># Level two</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'.Simulations.Wheat'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in search_path(wheat, ".Simulations.Wheat"):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 1</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Wheat"</span>
 <span class="r-in"><span><span class="co"># Level three</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'.Simulations.Wheat.BranchingRate'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in search_path(wheat, ".Simulations.Wheat.BranchingRate"):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'.Simulations.Wheat.Structure'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in search_path(wheat, ".Simulations.Wheat.Structure"):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 1 4</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Structure"</span>
 <span class="r-in"><span><span class="co"># Level four</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'.Simulations.Wheat.Structure.BranchingRate'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in search_path(wheat, ".Simulations.Wheat.Structure.BranchingRate"):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 1 4 1</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "BranchingRate"</span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'.Simulations.Wheat.Structure.BranchingRate1'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in search_path(wheat, ".Simulations.Wheat.Structure.BranchingRate1"):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="co"># scoped</span></span></span>
 <span class="r-in"><span><span class="co"># Root path</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Simulations1]'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Simulations]'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Simulations"</span>
 <span class="r-in"><span><span class="co"># Level two</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Simulations].Wheat1'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Simulations1].Wheat'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Whea]'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Wheat]'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 1</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Wheat"</span>
 <span class="r-in"><span><span class="co"># Level three</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Wheat].BranchingRate'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Wheat].Structure'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 1 4</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Structure"</span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Structure]'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 1 4</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Structure"</span>
 <span class="r-in"><span><span class="co"># Level four</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Structure].BranchingRate'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">path</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 1 4 1</span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">node</span><span class="op">$</span><span class="va">Name</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'a' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "BranchingRate"</span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Structure].BranchingRate1'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">search_path</span><span class="op">(</span><span class="va">wheat</span>, <span class="st">'[Structure1].BranchingRate'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_search_node(l, conds, ele_names, max_depth, 1, all = all):</span> object 'wheat' not found</span>
 </code></pre></div>
     </div>
   </div>
