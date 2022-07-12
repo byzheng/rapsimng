@@ -20,7 +20,7 @@ A list with replaced value
 Set a parameter with a new value
 }
 \examples{
- wheat <- read_apsimx(system.file("extdata/wheat.json", package = "rapsimng"))
+ wheat <- read_apsimx(system.file("extdata/Wheat.json", package = "rapsimng"))
  new_wheat <- set_parameter_value(wheat,
   "[Structure].BranchingRate.PotentialBranchingRate.Reproductive.Zero.FixedValue",
   1)

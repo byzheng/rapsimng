@@ -20,7 +20,7 @@ The modified list with new value
 Replace a model with new values
 }
 \examples{
-wheat <- read_apsimx(system.file("extdata/wheat.json", package = "rapsimng"))
+wheat <- read_apsimx(system.file("extdata/Wheat.json", package = "rapsimng"))
 
 a <- search_path(wheat, '[Wheat].Phenology.ThermalTime')
 a$node$Children[[1]]$X[[2]] <- 27
