@@ -34,7 +34,7 @@
 #' @return The modified list with new value
 #' @export
 #' @examples
-#' wheat <- read_apsimx(system.file("extdata/wheat.json", package = "rapsimng"))
+#' wheat <- read_apsimx(system.file("extdata/Wheat.json", package = "rapsimng"))
 #'
 #' a <- search_path(wheat, '[Wheat].Phenology.ThermalTime')
 #' a$node$Children[[1]]$X[[2]] <- 27
@@ -62,7 +62,7 @@ replace_model <- function(l, path, model) {
 #' @return The modified list with new value
 #' @export
 #' @examples
-#' wheat <- read_apsimx(system.file("extdata/wheat.json", package = "rapsimng"))
+#' wheat <- read_apsimx(system.file("extdata/Wheat.json", package = "rapsimng"))
 #' a <- search_path(wheat, '[Wheat].Phenology.ThermalTime')
 #' wheat_new <- remove_model(wheat, a$path)
 #' b <- search_path(wheat_new, '[Wheat].Phenology.ThermalTime')
@@ -229,7 +229,7 @@ append_model <- function(l, path, model) {
 #' @export
 #'
 #' @examples
-#'  wheat <- read_apsimx(system.file("extdata/wheat.json", package = "rapsimng"))
+#'  wheat <- read_apsimx(system.file("extdata/Wheat.json", package = "rapsimng"))
 #'  new_wheat <- set_parameter_value(wheat,
 #'   "[Structure].BranchingRate.PotentialBranchingRate.Reproductive.Zero.FixedValue",
 #'   1)
