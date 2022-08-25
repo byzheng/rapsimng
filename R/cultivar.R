@@ -133,7 +133,8 @@ update_cultivar <- function(l, df, add = TRUE) {
         commands <- paste0(df_cultivar$parameter, " = ", df_cultivar$value)
         # Search whether the cultivar existing
         cultivar_node <- search_path(l, paste0("[", cultivars_name[i], "]"))
-        if (length(cultivar_node) != 0) {
+        if (length(cultivar_node) != 0 &&
+            cultivar_node$node$`$type` == "Models.PMF.Cultivar, Models") {
             # overwrite in case the cultivar existing
             cultivar_model <- cultivar_node$node
             commands_old <- cultivar_model$Command
