@@ -4,7 +4,7 @@
 \alias{update_cultivar}
 \title{Title Update the cultivar parameters}
 \usage{
-update_cultivar(l, df, add = TRUE)
+update_cultivar(l, df, add = TRUE, use_folder = TRUE)
 }
 \arguments{
 \item{l}{The list of apsimx file}
@@ -13,6 +13,8 @@ update_cultivar(l, df, add = TRUE)
 
 \item{add}{Whether to add extra nodes (e.g. replacements, Cultivars folder
 and new cultivar)}
+
+\item{use_folder}{use cultivar folder to add new cultivars}
 }
 \value{
 The modified apsimx file

@@ -68,6 +68,7 @@ get_cultivar <- function(l, alias = TRUE) {
 #' @param df A data frame for new parameters with three columns, i.e. name, parameter and value.
 #' @param add Whether to add extra nodes (e.g. replacements, Cultivars folder
 #'  and new cultivar)
+#' @param use_folder use cultivar folder to add new cultivars
 #'
 #' @return The modified apsimx file
 #' @export
@@ -84,7 +85,7 @@ get_cultivar <- function(l, alias = TRUE) {
 #' wheat_cultivar <- update_cultivar(wheat, df)
 #' hartog <- search_path(wheat_cultivar, "[Replacements].Hartog")
 #' hartog$path
-update_cultivar <- function(l, df, add = TRUE) {
+update_cultivar <- function(l, df, add = TRUE, use_folder = TRUE) {
 
     if (is.null(df$name)) {
         stop("'name' column is required in the data frame 'df'.")
@@ -110,10 +111,12 @@ update_cultivar <- function(l, df, add = TRUE) {
                 replacements <- new_model("Core.Replacements")
                 l <- insert_model(l, 1, replacements)
             }
-            replacements_node <- search_path(l, "[Replacements]")
+            if (use_folder) {
+                replacements_node <- search_path(l, "[Replacements]")
 
-            cultivar_model <- new_model("PMF.CultivarFolder", "Cultivars")
-            l <- insert_model(l, replacements_node$path, cultivar_model)
+                cultivar_model <- new_model("PMF.CultivarFolder", "Cultivars")
+                l <- insert_model(l, replacements_node$path, cultivar_model)
+            }
         }
 
         # define the root node:
