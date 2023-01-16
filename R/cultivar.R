@@ -114,7 +114,14 @@ update_cultivar <- function(l, df, add = TRUE, use_folder = TRUE) {
             if (use_folder) {
                 replacements_node <- search_path(l, "[Replacements]")
 
-                cultivars_node <- search_path(l, "[Replacements].Cultivars")
+                cultivars_path <- c("[Replacements].Cultivars",
+                                    "[Replacements].CultivarFolder")
+                for (i in seq(along = cultivars_path)) {
+                    cultivars_node <- search_path(l, cultivars_path[i])
+                    if (length(cultivars_node) > 0) {
+                        break
+                    }
+                }
                 if (length(cultivars_node) == 0) {
                     cultivar_model <- new_model("Core.Folder", "Cultivars")
                     l <- insert_model(l, replacements_node$path, cultivar_model)
