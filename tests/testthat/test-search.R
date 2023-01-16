@@ -7,9 +7,19 @@ test_that("Search all nodes", {
     a <- search_node(wheat, Name = "Simulations1")
     expect_equal(length(a), 0)
     expect_equal(a, list())
+
+    a <- search_node(wheat, Name = "simulations", case_insensitive = FALSE)
+    expect_equal(length(a), 0)
+    expect_equal(a, list())
+
     a <- search_node(wheat, Name = "Simulations")
     expect_equal(length(a), 2)
     expect_equal(a$path, 1)
+
+    a <- search_node(wheat, Name = "simulations")
+    expect_equal(length(a), 2)
+    expect_equal(a$path, 1)
+
 
     a <- search_node(wheat, Name = "Wheat")
     expect_equal(length(a), 2)
@@ -46,9 +56,20 @@ test_that("Search all nodes", {
     a <- search_path(wheat, '.Simulations1')
     expect_equal(length(a), 0)
     expect_equal(a, list())
+
+    a <- search_path(wheat, '.simulations', case_insensitive = FALSE)
+    expect_equal(length(a), 0)
+    expect_equal(a, list())
+
     a <- search_path(wheat, '.Simulations')
     expect_equal(length(a), 2)
     expect_equal(a$path, 1)
+
+    a <- search_path(wheat, '.simulations')
+    expect_equal(length(a), 2)
+    expect_equal(a$path, 1)
+
+
     # Level one
     a <- search_path(wheat, '.Simulations.Wheat1')
     expect_equal(length(a), 0)
