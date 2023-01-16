@@ -11,7 +11,10 @@ pkg_env <- new.env()
 
     file <- system.file("extdata/Models.Rds", package = "rapsimng")
     if (!file.exists(file)) {
-      stop("Models.xml doesn't exist.")
+      file <- "extdata/Models.Rds"
+      if (!file.exists(file)) {
+        stop("Models.xml doesn't exist.")
+      }
     }
     .rapsimng_models <- readRDS(file)
     assign(".rapsimng_models", .rapsimng_models, envir = pkg_env)

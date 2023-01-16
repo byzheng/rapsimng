@@ -114,19 +114,24 @@ update_cultivar <- function(l, df, add = TRUE, use_folder = TRUE) {
             if (use_folder) {
                 replacements_node <- search_path(l, "[Replacements]")
 
-                cultivar_model <- new_model("PMF.CultivarFolder", "CultivarFolder")
-                l <- insert_model(l, replacements_node$path, cultivar_model)
+                cultivars_node <- search_path(l, "[Replacements].Cultivars")
+                if (length(cultivars_node) == 0) {
+                    cultivar_model <- new_model("Core.Folder", "Cultivars")
+                    l <- insert_model(l, replacements_node$path, cultivar_model)
+                }
             }
         }
 
         # define the root node:
-        # Cultivars or Replacemens
+        # Cultivars or Replacements
         # Check whether cultivar node exists
-        root_node <- search_node(l, `$type` = "Models.PMF.CultivarFolder, Models",
-                    all = FALSE)
+        root_node <- search_path(l, "[Replacements]")
+        if (use_folder) {
+            root_node <- search_path(l, "[Replacements].Cultivars")
+        }
         # root_node <- search_path(l, "[Cultivars]")
         if (length(root_node) == 0) {
-            root_node <- search_path(l, "[Replacements]")
+            stop("Cannot find replacements")
         }
     }
     cultivars_name <- unique(df$name)
