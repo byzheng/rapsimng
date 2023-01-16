@@ -114,7 +114,7 @@ update_cultivar <- function(l, df, add = TRUE, use_folder = TRUE) {
             if (use_folder) {
                 replacements_node <- search_path(l, "[Replacements]")
 
-                cultivar_model <- new_model("PMF.CultivarFolder", "Cultivars")
+                cultivar_model <- new_model("PMF.CultivarFolder", "CultivarFolder")
                 l <- insert_model(l, replacements_node$path, cultivar_model)
             }
         }
