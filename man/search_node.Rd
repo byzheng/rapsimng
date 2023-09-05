@@ -4,7 +4,7 @@
 \alias{search_node}
 \title{Find element(s) in  apsimx file}
 \usage{
-search_node(l, all = FALSE, max_depth = 1e+06, ...)
+search_node(l, all = FALSE, max_depth = 1e+06, case_insensitive = TRUE, ...)
 }
 \arguments{
 \item{l}{The list of apsimx file}
@@ -12,6 +12,8 @@ search_node(l, all = FALSE, max_depth = 1e+06, ...)
 \item{all}{Whether to find all elements}
 
 \item{max_depth}{The maximum depth to search}
+
+\item{case_insensitive}{Whether case sensitive}
 
 \item{...}{Other names arguments for property to match}
 }

@@ -4,12 +4,14 @@
 \alias{search_path}
 \title{Find a model in the apsimx file using specified path}
 \usage{
-search_path(l, path)
+search_path(l, path, case_insensitive = TRUE)
 }
 \arguments{
 \item{l}{the list of apsimx file}
 
 \item{path}{The specified path (See details)}
+
+\item{case_insensitive}{Whether case sensitive}
 }
 \value{
 The list for the specified path.

@@ -8,6 +8,7 @@
 #' @param l The list of apsimx file
 #' @param all Whether to find all elements
 #' @param max_depth The maximum depth to search
+#' @param case_insensitive Whether case sensitive
 #' @param ... Other names arguments for property to match
 #'
 #' @return A list matching all criteria if all equals to TRUE,
@@ -37,16 +38,31 @@
 #'  a <- search_node(wheat, `$type` = "Models.PMF.Cultivar, Models", all = TRUE)
 #' length(a)
 
-search_node <- function(l, all = FALSE, max_depth = 1000000, ...) {
+search_node <- function(l, all = FALSE, max_depth = 1000000,
+                        case_insensitive = TRUE, ...) {
     conds <- list(...)
+    if (case_insensitive) {
+        conds <- lapply(conds, tolower)
+    }
     ele_names <- names(conds)
+
     if (!(!is.null(ele_names) && all(nchar(ele_names) > 0))) {
         stop('All elements should be named.')
     }
-    r_search_node <- function(l, conds, ele_names, max_depth, cdepth, cpath = 1, all = FALSE, result = list()){
+    r_search_node <- function(l, conds, ele_names, max_depth, cdepth,
+                              cpath = 1, all = FALSE, result = list(),
+                              case_insensitive = case_insensitive){
         check <- TRUE
         for (i in seq(along = conds)) {
-            check <- check && !is.null(l[[ele_names[i]]]) && l[[ele_names[i]]] == as.character(conds[i])
+            if (case_insensitive) {
+                check <- check && !is.null(l[[ele_names[i]]]) &&
+                    tolower(l[[ele_names[i]]]) == as.character(conds[i])
+
+            } else {
+                check <- check && !is.null(l[[ele_names[i]]]) &&
+                    l[[ele_names[i]]] == as.character(conds[i])
+            }
+
         }
         if (check) {
             # assign('l', l, .GlobalEnv)
@@ -68,12 +84,14 @@ search_node <- function(l, all = FALSE, max_depth = 1000000, ...) {
             for (i in seq(along = l$Children)) {
 
                 result <- r_search_node(l$Children[[i]], conds, ele_names, max_depth, cdepth + 1,
-                                     cpath = c(cpath, i), result = result)
+                                     cpath = c(cpath, i), result = result,
+                                     case_insensitive = case_insensitive)
             }
         }
         return (result)
     }
-    res <- r_search_node(l, conds, ele_names, max_depth, 1, all = all)
+    res <- r_search_node(l, conds, ele_names, max_depth, 1, all = all,
+                         case_insensitive = case_insensitive)
     if (length(res) == 0) {
         return (res)
     }
@@ -105,6 +123,7 @@ search_node <- function(l, all = FALSE, max_depth = 1000000, ...) {
 #'
 #' @param l the list of apsimx file
 #' @param path The specified path (See details)
+#' @param case_insensitive Whether case sensitive
 
 #' @return The list for the specified path.
 #' @export
@@ -168,7 +187,7 @@ search_node <- function(l, all = FALSE, max_depth = 1000000, ...) {
 #' a$node$Name
 #' a <- search_path(wheat, '[Structure].BranchingRate1')
 #' a <- search_path(wheat, '[Structure1].BranchingRate')
-search_path <- function(l, path) {
+search_path <- function(l, path, case_insensitive = TRUE) {
     if (length(path) != 1) {
         stop('Only one path is supported.')
     }
@@ -180,7 +199,7 @@ search_path <- function(l, path) {
     if (path_type == 'scoped') {
         name <- sub('^\\[(.*)\\].*', '\\1', path)
         path <- sub('^\\[(.*)\\](.*)', '\\2', path)
-        l <- search_node(l, Name = name)
+        l <- search_node(l, Name = name, case_insensitive = case_insensitive)
         if (is.null(l$node)) {
             return(list())
         }
@@ -197,7 +216,8 @@ search_path <- function(l, path) {
     current_node <- l
     for (i in seq_along(search_path_str)) {
         old_path <- current_node$path
-        current_node <- search_node(current_node$node, Name = search_path_str[i], max_depth = 1)
+        current_node <- search_node(current_node$node, Name = search_path_str[i], max_depth = 1,
+                                    case_insensitive = case_insensitive)
         if (is.null(current_node$node)) {
             return (list())
         }

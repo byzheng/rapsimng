@@ -69,6 +69,7 @@ get_cultivar <- function(l, alias = TRUE) {
 #' @param add Whether to add extra nodes (e.g. replacements, Cultivars folder
 #'  and new cultivar)
 #' @param use_folder use cultivar folder to add new cultivars
+#' @param cultivar_folder folder name for cultivars
 #'
 #' @return The modified apsimx file
 #' @export
@@ -85,7 +86,8 @@ get_cultivar <- function(l, alias = TRUE) {
 #' wheat_cultivar <- update_cultivar(wheat, df)
 #' hartog <- search_path(wheat_cultivar, "[Replacements].Hartog")
 #' hartog$path
-update_cultivar <- function(l, df, add = TRUE, use_folder = TRUE) {
+update_cultivar <- function(l, df, add = TRUE, use_folder = TRUE,
+                            cultivar_folder = "Cultivars") {
 
     if (is.null(df$name)) {
         stop("'name' column is required in the data frame 'df'.")
@@ -114,24 +116,34 @@ update_cultivar <- function(l, df, add = TRUE, use_folder = TRUE) {
             if (use_folder) {
                 replacements_node <- search_path(l, "[Replacements]")
 
-                cultivars_node <- search_path(l, "[Replacements].Cultivars")
+                cultivars_path <- c(sprintf("[Replacements].%s", cultivar_folder))
+                for (i in seq(along = cultivars_path)) {
+                    cultivars_node <- search_path(l, cultivars_path[i])
+                    if (length(cultivars_node) > 0) {
+                        break
+                    }
+                }
                 if (length(cultivars_node) == 0) {
-                    cultivar_model <- new_model("Core.Folder", "Cultivars")
+                    # Fix me with new version
+                    cultivar_model <- new_model("Core.Folder", cultivar_folder)
                     l <- insert_model(l, replacements_node$path, cultivar_model)
                 }
             }
-        }
 
-        # define the root node:
-        # Cultivars or Replacements
-        # Check whether cultivar node exists
-        root_node <- search_path(l, "[Replacements]")
-        if (use_folder) {
-            root_node <- search_path(l, "[Replacements].Cultivars")
-        }
-        # root_node <- search_path(l, "[Cultivars]")
-        if (length(root_node) == 0) {
-            stop("Cannot find replacements")
+
+            # define the root node:
+            # Cultivars or Replacements
+            # Check whether cultivar node exists
+            root_node <- search_path(l, "[Replacements]")
+            if (use_folder) {
+                root_node <- search_path(l, sprintf("[Replacements].%s", cultivar_folder))
+            }
+            # root_node <- search_path(l, "[Cultivars]")
+            if (length(root_node) == 0) {
+                stop("Cannot find replacements")
+            }
+        } else {
+            root_node <- cultivar_node
         }
     }
     cultivars_name <- unique(df$name)
