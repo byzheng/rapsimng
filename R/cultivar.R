@@ -102,7 +102,9 @@ update_cultivar <- function(l, df, add = TRUE, use_folder = TRUE,
     }
 
     if (add == TRUE) {
-        cultivar_node <- search_node(l, `$type` = "Models.PMF.CultivarFolder, Models",
+        cultivar_node <- search_node(l,
+                                     `$type` = "Models.Core.Folder, Models",
+                                     Name = cultivar_folder,
                                      all = FALSE)
         #cultivar_node <- search_path(l, "[Cultivars]")
         if (length(cultivar_node) == 0) {
