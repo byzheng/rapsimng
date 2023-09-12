@@ -106,6 +106,14 @@ update_cultivar <- function(l, df, add = TRUE, use_folder = TRUE,
                                      `$type` = "Models.Core.Folder, Models",
                                      Name = cultivar_folder,
                                      all = FALSE)
+        # compatible for old version
+        if (length(cultivar_node) == 0) {
+            cultivar_node <- search_node(l,
+                                         `$type` = "Models.PMF.CultivarFolder, Models",
+                                         Name = cultivar_folder,
+                                         all = FALSE)
+
+        }
         #cultivar_node <- search_path(l, "[Cultivars]")
         if (length(cultivar_node) == 0) {
             # Check the replacement node (assume the apsimx file)
