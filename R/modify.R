@@ -55,6 +55,28 @@ replace_model <- function(l, path, model) {
 }
 
 
+
+#' Disable models in apsimx
+#'
+#' @param l the list of apsimx file
+#' @param paths If numeric, the path returned by search_path or search_node. If character, the path supported by apsimx
+#' @return The modified list with new value
+#' @export
+#' @examples
+#' wheat <- read_apsimx(system.file("extdata/Wheat.json", package = "rapsimng"))
+#' a <- disable_models(wheat, '[Wheat].Phenology.ThermalTime')
+disable_models <- function(l, paths) {
+    i <- 1
+    for (i in seq(along = paths)) {
+        node_i <- search_path(l, paths[i])
+        node_i$node$Enabled <- FALSE
+        l <- replace_model(l, node_i$path, node_i$node)
+    }
+    return(l)
+}
+
+
+
 #' Remove a model with new values
 #'
 #' @param l the list of apsimx file

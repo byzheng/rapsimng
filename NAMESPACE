@@ -2,6 +2,7 @@
 
 export(append_model)
 export(available_models)
+export(disable_models)
 export(get_cultivar)
 export(get_metfile)
 export(get_parent)

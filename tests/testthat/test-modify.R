@@ -45,6 +45,10 @@ test_that("cultivar", {
 
     })
 
+    # Disable models
+    new_wheat <- disable_models(wheat, c("[Structure].HeightModel", "[Structure].BranchingRate"))
+
+
 
     new_wheat <- set_parameter_value(
         wheat,
@@ -108,6 +112,8 @@ test_that("cultivar", {
     cultivar <- new_model("PMF.Cultivar", "test")
     expect_equal(cultivar$Name, "test")
     expect_equal(cultivar$`$type`, "Models.PMF.Cultivar, Models")
+
+
 
     # Insert a model
     # Add a new replacements
