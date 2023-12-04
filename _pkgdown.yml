@@ -29,6 +29,7 @@ reference:
   desc: "Functions for modify apsimx file."
 - contents:
   - ends_with("_model")
+  - "disable_models"
   - "set_parameter_value"
 - title: "Run apsimx"
   desc: "Functions for run apsimx file."
