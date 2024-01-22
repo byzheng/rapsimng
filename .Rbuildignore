@@ -13,3 +13,5 @@ cran-comments.md
 ^pkgdown$
 ^\.github$
 ^script$
+^CRAN-SUBMISSION$
+^cran-comments\.md$
