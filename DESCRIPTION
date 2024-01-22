@@ -22,7 +22,7 @@ Imports: jsonlite,
     rlang,
     DBI,
     RSQLite
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.0
 Suggests: 
     testthat,
     knitr,

@@ -13,3 +13,8 @@
 
 * Several bug fixes
 
+# RApsimNG 0.4.2
+
+* Several bug fixes
+* Update the new version of APSIM NG
+* Update update_cultivar to add new cultivar parameters
