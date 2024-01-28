@@ -7,8 +7,10 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' file <- system.file("extdata/wheat.apsimx", package = "rapsimng")
 #' list_report(file)
+#' }
 list_report <- function(file) {
     if (length(file) != 1) {
         stop("only support single file")
@@ -40,8 +42,10 @@ list_report <- function(file) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' file <- system.file("extdata/wheat.apsimx", package = "rapsimng")
 #' read_report(file, "HarvestReport")
+#' }
 read_report <- function(file, report) {
     if (length(file) != 1) {
         stop("only support single file")

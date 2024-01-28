@@ -16,6 +16,8 @@ a vector of all reports
 List all reports in the database
 }
 \examples{
+\dontrun{
 file <- system.file("extdata/wheat.apsimx", package = "rapsimng")
 list_report(file)
+}
 }

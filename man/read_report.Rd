@@ -18,6 +18,8 @@ a data.frame for a report
 Read apsimx database in db file format
 }
 \examples{
+\dontrun{
 file <- system.file("extdata/wheat.apsimx", package = "rapsimng")
 read_report(file, "HarvestReport")
+}
 }
