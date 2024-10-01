@@ -160,7 +160,7 @@ update_cultivar <- function(l, df, add = TRUE, use_folder = TRUE,
     i <- 1
     for (i in seq(along = cultivars_name)) {
         df_cultivar <- df[df$name == cultivars_name[i],]
-        commands <- paste0(df_cultivar$parameter, " = ", df_cultivar$value)
+        commands <- as.list(paste0(df_cultivar$parameter, " = ", df_cultivar$value))
         # Search whether the cultivar existing
         cultivar_node <- search_path(l, paste0("[", cultivars_name[i], "]"))
         if (length(cultivar_node) != 0 &&
