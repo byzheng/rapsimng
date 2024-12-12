@@ -20,31 +20,31 @@ run_models <- function(models_exe, path,
                        ncpus = NULL,
                        verbose = FALSE) {
     if (!file.exists(models_exe)) {
-        stop("Models.exe does not exist")
+        stop(models_exe, " does not exist")
     }
     cmd <- paste0('"', models_exe, '" "', path, '"')
-    if (!is.null(pattern) && is.character(pattern)) {
-        cmd <- paste0(cmd, " ", "/SimulationNameRegexPattern:", pattern)
-    }
+    # if (!is.null(pattern) && is.character(pattern)) {
+    #     cmd <- paste0(cmd, " ", "--simulation-names ", pattern)
+    # }
     if (is.logical(csv) && csv) {
-        cmd <- paste0(cmd, " /Csv")
+        cmd <- paste0(cmd, " --csv")
     }
     if (verbose) {
-        cmd <- paste0(cmd, " /Verbose")
+        cmd <- paste0(cmd, " --verbose")
     }
     if (is.logical(recurse) && recurse) {
-        cmd <- paste0(cmd, " /Recurse")
+        cmd <- paste0(cmd, " --recursive")
     }
     if (is.logical(parallel) && !parallel) {
-        cmd <- paste0(cmd, " /SingleThreaded")
+        cmd <- paste0(cmd, " --single-threaded ")
     }
 
-    if (is.logical(parallel) && parallel) {
-        cmd <- paste0(cmd, " /MultiProcess")
-        if (!is.null(ncpus) && is.numeric(ncpus) && ncpus > 0) {
-            cmd <- paste0(cmd, " /NumberOfProcessors:", ncpus)
-        }
-    }
+    # if (is.logical(parallel) && parallel) {
+    #     cmd <- paste0(cmd, " /MultiProcess")
+    #     if (!is.null(ncpus) && is.numeric(ncpus) && ncpus > 0) {
+    #         cmd <- paste0(cmd, " /NumberOfProcessors:", ncpus)
+    #     }
+    # }
     r <- system(cmd, intern = FALSE)
     if (r != 0) {
         stop("Failed to run apsimx: ", path)
