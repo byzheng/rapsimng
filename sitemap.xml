@@ -1,105 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://rapsimng.bangyou.me/404.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/articles/modify.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/articles/sensitivity.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/append_model.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/available_models.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/disable_models.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/get_cultivar.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/get_metfile.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/get_parent.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/get_simulations.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/insert_model.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/insert_models.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/keep_simulations.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/list_report.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/minimum_apsimng.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/new_model.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/read_apsimx.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/read_report.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/remove_model.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/replace_model.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/run_models.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/search_node.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/search_path.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/set_parameter_value.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/test_apsimx.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/update_cultivar.html</loc>
-  </url>
-  <url>
-    <loc>https://rapsimng.bangyou.me/reference/write_apsimx.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://rapsimng.bangyou.me/404.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/LICENSE-text.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/articles/index.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/articles/modify.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/articles/sensitivity.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/authors.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/index.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/news/index.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/append_model.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/available_models.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/disable_models.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/get_cultivar.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/get_metfile.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/get_parent.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/get_simulations.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/index.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/insert_model.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/insert_models.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/keep_simulations.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/list_report.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/log_level.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/minimum_apsimng.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/new_model.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/read_apsimx.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/read_report.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/remove_model.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/replace_model.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/run_models.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/search_node.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/search_path.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/set_parameter_value.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/test_apsimx.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/update_cultivar.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/with_apsimx.html</loc></url>
+<url><loc>https://rapsimng.bangyou.me/reference/write_apsimx.html</loc></url>
 </urlset>
+
