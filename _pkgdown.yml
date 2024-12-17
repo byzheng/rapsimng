@@ -3,52 +3,48 @@ template:
   bootstrap: 5
   includes:
     in_header: |
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-4HPNYGL5FT"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
+      <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-4HPNYGL5FT"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-          gtag('config', 'G-4HPNYGL5FT');
-        </script>
+        gtag('config', 'G-4HPNYGL5FT');
+      </script>
 reference:
-- title: "APSIMX file"
-  desc: "Functions for Read and write apsimx file."
-- contents:
-  - ends_with("_apsimx")
-- title: "Search in the apsimx"
-  desc: "Functions for search in the apsimx file."
-- contents:
-  - starts_with("search_")
-- title: "Walk through apsimx"
-  desc: "Functions for walk through apsimx file."
-- contents:
-  - "get_parent"
-- title: "Modify apsimx"
-  desc: "Functions for modify apsimx file."
+- title: APSIMX file
+  desc: Functions for Read and write apsimx file.
+- contents: ends_with("_apsimx")
+- title: Search in the apsimx
+  desc: Functions for search in the apsimx file.
+- contents: starts_with("search_")
+- title: Walk through apsimx
+  desc: Functions for walk through apsimx file.
+- contents: get_parent
+- title: Modify apsimx
+  desc: Functions for modify apsimx file.
 - contents:
   - ends_with("_model")
-  - "disable_models"
-  - "set_parameter_value"
-- title: "Run apsimx"
-  desc: "Functions for run apsimx file."
+  - disable_models
+  - set_parameter_value
+- title: Run apsimx
+  desc: Functions for run apsimx file.
 - contents:
   - ends_with("_models")
-- title: "Simulations"
-  desc: "Functions related with simulations"
+  - log_level
+- title: Simulations
+  desc: Functions related with simulations
 - contents:
   - ends_with("_simulations")
   - get_metfile
-- title: "Cultivars"
-  desc: "Functions for cultivar."
-- contents:
-  - ends_with("_cultivar")
-- title: "Report"
-  desc: "Functions for report."
-- contents:
-  - ends_with("_report")
-- title: "Utilities"
-  desc: "Utility functions."
-- contents:
-  - minimum_apsimng
+- title: Cultivars
+  desc: Functions for cultivar.
+- contents: ends_with("_cultivar")
+- title: Report
+  desc: Functions for report.
+- contents: ends_with("_report")
+- title: Utilities
+  desc: Utility functions.
+- contents: minimum_apsimng
+
