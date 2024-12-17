@@ -1,7 +1,7 @@
 Package: rapsimng
 Type: Package
 Title: APSIM Next Generation
-Version: 0.4.4
+Version: 0.4.5
 Authors@R: person("Bangyou", "Zheng", 
                email = "bangyou.zheng@csiro.au", 
                role = c("aut", "cre"))
@@ -22,7 +22,7 @@ Imports: jsonlite,
     rlang,
     DBI,
     RSQLite
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.1
 Suggests: 
     testthat,
     knitr,
