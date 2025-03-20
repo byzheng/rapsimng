@@ -86,7 +86,7 @@
 <div class="section level2">
 <h2 id="read-apsimx-file">Read APSIMX file<a class="anchor" aria-label="anchor" href="#read-apsimx-file"></a>
 </h2>
-<p>The <code>wheat.apsimx</code> in the validation dataset of APSIM NG is used as an example. Function <code>read_apsimx</code> is used to read <code>*.apsimx</code> file through <code><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html" class="external-link">jsonlite::read_json</a></code> and returns as a list.</p>
+<p>The <code>wheat.apsimx</code> in the validation dataset of APSIM NG is used as an example. Function <code>read_apsimx</code> is used to read <code>*.apsimx</code> file through <code><a href="https://jeroen.r-universe.dev/jsonlite/reference/read_json.html" class="external-link">jsonlite::read_json</a></code> and returns as a list.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span></span>
