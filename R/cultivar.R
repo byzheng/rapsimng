@@ -89,6 +89,9 @@ get_cultivar <- function(l, alias = TRUE) {
 update_cultivar <- function(l, df, add = TRUE, use_folder = TRUE,
                             cultivar_folder = "Cultivars") {
 
+    stopifnot(is.character(cultivar_folder))
+    stopifnot(length(cultivar_folder) == 1)
+
     if (is.null(df$name)) {
         stop("'name' column is required in the data frame 'df'.")
     }
@@ -217,6 +220,9 @@ update_cultivar <- function(l, df, add = TRUE, use_folder = TRUE,
 #' a <- new_cultivar(df)
 new_cultivar <- function(df,
                          cultivar_folder = "Cultivars") {
+
+    stopifnot(is.character(cultivar_folder))
+    stopifnot(length(cultivar_folder) == 1)
 
     if (is.null(df$name)) {
         stop("'name' column is required in the data frame 'df'.")
