@@ -15,3 +15,4 @@ cran-comments.md
 ^script$
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$
+.local
