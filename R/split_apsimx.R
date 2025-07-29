@@ -60,13 +60,16 @@ split_apsimx <- function(file, output) {
     sims <- search_node(apsimx_model, all = TRUE, `$type` = "Models.Core.Simulation, Models")
     sims <- sims |> purrr::discard(function(x) x$node$Name %in% c("CO2TEBaseSimulation", "WaterByNFactorial"))
     purrr::map_chr(sims, function(x) x$node$Name)
-    j <- 1
+
     for (j in seq(along = sims)) {
         # Check whether the parent is experiment
         parent <- get_parent(apsimx_model, sims[[j]]$path)
         if (parent$node$`$type` == "Models.Factorial.Experiment, Models") {
             exp_node <- parent$node
             exp_name <- exp_node$Name
+            # obs_exp <- obs %>%
+            #   filter(ExperimentName == exp_name)
+            #
             # Remove all figures
             graphs <- search_node(exp_node,
                 all = TRUE,
