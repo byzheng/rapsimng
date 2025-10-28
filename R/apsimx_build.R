@@ -83,7 +83,6 @@ install_apsimng <- function(
     stopifnot(is.character(branch), length(branch) == 1)
     stopifnot(is.character(install_dir), length(install_dir) == 1)
     stopifnot(is.logical(overwrite), length(overwrite) == 1)
-    stopifnot(is.logical(clean), length(clean) == 1)
 
     # Check dependencies
     if (Sys.which("git") == "") {
@@ -126,11 +125,11 @@ install_apsimng <- function(
     ))
 
 
-    message("📦 Fetching APSIM NG source...")
+    message("Fetching APSIM NG source...")
     system2("git", c("clone", "--depth", "1", "-b", branch, repo, target_dir))
 
     # Build using .NET
-    message("⚙️  Compiling APSIM NG with .NET SDK...")
+    message("Compiling APSIM NG with .NET SDK...")
     csproj_path <- file.path(target_dir, "Models", "Models.csproj")
     result <- system2(
         "dotnet",
@@ -138,12 +137,12 @@ install_apsimng <- function(
         stdout = TRUE, stderr = TRUE
     )
 
-    if (result != 0) stop("❌ Build failed. Check .NET SDK and repo status.")
+    if (result != 0) stop("Build failed. Check .NET SDK and repo status.")
 
     # Clean build artifacts
-    message("🧹 Cleaning temporary files...")
+    message("Cleaning temporary files...")
     unlink(target_dir, recursive = TRUE, force = TRUE)
 
-    message("✅ APSIM NG built successfully at: ", install_dir)
+    message("APSIM NG built successfully at: ", install_dir)
     return(invisible(install_dir))
 }
