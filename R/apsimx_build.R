@@ -68,9 +68,6 @@ test_apsimx <- function(base, example) {
 #' install_apsimng(install_dir = "C:/MyPrograms/ApsimNG")
 #' }
 #'
-#' @seealso
-#' \code{\link{apsimx}}, \code{\link{apsimx_options}}
-#'
 #' @export
 install_apsimng <- function(
     repo = "https://github.com/APSIMInitiative/ApsimX.git",

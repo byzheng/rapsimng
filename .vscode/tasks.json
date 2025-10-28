@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "R: Check R Package",
+			"type": "shell",
+			"command": "Rscript",
+			"args": [
+				"-e",
+				"devtools::document(); devtools::test(); devtools::check()"
+			],
+			"group": {
+				"kind": "build"
+			}
+		}
+	]
+}
