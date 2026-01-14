@@ -23,7 +23,10 @@ get_cultivar <- function(l, alias = TRUE) {
         cul_name <- culs[[i]]$node$Name
         cmds <- unlist(culs[[i]]$node$Command)
         k <- k + 1
-        res[[k]] <- data.frame(name = cul_name, cmd = cmds, stringsAsFactors = FALSE)
+        res[[k]] <- data.frame(name = cul_name, 
+                standard_name = cul_name,
+                cmd = cmds,
+                stringsAsFactors = FALSE)
         # for alias
         if (alias == TRUE && length(culs[[i]]$node$Children) > 0 ){
             aliases <- search_node(culs[[i]]$node, `$type` = 'Models.Core.Alias, Models', all = TRUE)
@@ -31,7 +34,8 @@ get_cultivar <- function(l, alias = TRUE) {
                 for (j in seq(along = aliases)) {
                     k <- k + 1
                     res[[k]] <- data.frame(name = aliases[[j]]$node$Name,
-                                               cmd = cmds, stringsAsFactors = FALSE)
+                            standard_name = cul_name,                    
+                            cmd = cmds, stringsAsFactors = FALSE)
                 }
             }
         }
