@@ -3,7 +3,7 @@ Type: Package
 Title: APSIM Next Generation
 Version: 0.4.6
 Authors@R: person("Bangyou", "Zheng", 
-               email = "bangyou.zheng@csiro.au", 
+               email = "zheng.bangyou@gmail.com", 
                role = c("aut", "cre"))
 Description: The Agricultural Production Systems sIMulator ('APSIM') is a widely
     used to simulate the agricultural systems for multiple crops. This package 
