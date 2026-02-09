@@ -15,6 +15,12 @@ Generation](https://www.apsim.info/).
 
 - Find elements in the \*.apsimx file
 
+## Crop-specific resources
+
+For crop-specific functions and additional resources, please refer to:
+
+- [Canola](https://canola.rapsimng.bangyou.me/)
+
 ## Installation
 
 Install from CRAN.
