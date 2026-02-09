@@ -12,8 +12,15 @@
 
 
 ## Features
+
 * Find elements in the *.apsimx file
 
+
+## Crop-specific resources
+
+For crop-specific functions and additional resources, please refer to:
+
+* [Canola](https://canola.rapsimng.bangyou.me/)
 
 
 ## Installation
@@ -76,5 +83,7 @@ write_apsimx(new, tempfile(fileext = '.json'))
 ## Run apsimx file
 
 A function `run_models` is wrapped for APSIM NG `Models.exe` in the command line and can be called to run apsimx files. See [APSIM website](https://apsimnextgeneration.netlify.app/) for documentation. 
+
+
 
 
