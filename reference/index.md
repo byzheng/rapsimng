@@ -10,6 +10,8 @@
   : Disable models in apsimx
 - [`get_cultivar()`](https://rapsimng.bangyou.me/reference/get_cultivar.md)
   : Get all cultivar parameters in a model
+- [`get_experiment()`](https://rapsimng.bangyou.me/reference/get_experiment.md)
+  : Get an experiment node by name
 - [`get_metfile()`](https://rapsimng.bangyou.me/reference/get_metfile.md)
   : Get the met file name for an experiment
 - [`get_parent()`](https://rapsimng.bangyou.me/reference/get_parent.md)

@@ -10,12 +10,12 @@ Source:
 [`DESCRIPTION`](https://github.com/byzheng/rapsimng/blob/master/DESCRIPTION)
 
 Zheng B (2026). *rapsimng: APSIM Next Generation*. R package version
-0.4.6, <https://rapsimng.bangyou.me/>.
+0.4.7, <https://rapsimng.bangyou.me/>.
 
     @Manual{,
       title = {rapsimng: APSIM Next Generation},
       author = {Bangyou Zheng},
       year = {2026},
-      note = {R package version 0.4.6},
+      note = {R package version 0.4.7},
       url = {https://rapsimng.bangyou.me/},
     }
