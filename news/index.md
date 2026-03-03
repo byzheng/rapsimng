@@ -38,6 +38,8 @@ CRAN release: 2025-09-22
 
 ## rapsimng 0.4.6
 
+CRAN release: 2026-02-09
+
 - Several bug fixes
 - Calculate plant available water content (PAWC) in the soil profile.
 - Add a new function to compile apsimx from git.
