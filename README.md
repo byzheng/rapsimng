@@ -20,6 +20,7 @@
 
 For crop-specific functions and additional resources, please refer to:
 
+* [Wheat](https://wheat.rapsimng.bangyou.me/)
 * [Canola](https://canola.rapsimng.bangyou.me/)
 
 
