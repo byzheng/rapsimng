@@ -96,6 +96,20 @@ website](https://apsimnextgeneration.netlify.app/) for documentation.
   : List all available models in APSIM NG
 - [`disable_models()`](https://rapsimng.bangyou.me/reference/disable_models.md)
   : Disable models in apsimx
+- [`default_frost_heat_params()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  [`stage_sens_frost()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  [`stage_sens_heat()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  [`temp_damage_frost()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  [`temp_damage_heat()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  [`daily_damage_frost()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  [`daily_damage_heat()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  [`daily_damage_frost_heat()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  [`cum_damage_frost()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  [`cum_damage_heat()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  [`cum_damage_frost_heat()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  [`calc_daily_damage_frost_heat()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  [`calc_cum_damage_frost_heat()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)
+  : Frost and Heat Damage Functions
 - [`get_cultivar()`](https://rapsimng.bangyou.me/reference/get_cultivar.md)
   : Get all cultivar parameters in a model
 - [`get_experiment()`](https://rapsimng.bangyou.me/reference/get_experiment.md)
