@@ -47,13 +47,13 @@ for:
 
 PAWC is calculated for each soil layer using the formula:
 
-\*\*When crop = NULL and depth = NULL:\*\* \$\$PAWC_i = (DUL_i - LL15_i)
+**When crop = NULL and depth = NULL:** \$\$PAWC_i = (DUL_i - LL15_i)
 \times Thickness_i\$\$
 
-\*\*When crop is specified:\*\* \$\$PAWC_i = (DUL_i - LL_i) \times
+**When crop is specified:** \$\$PAWC_i = (DUL_i - LL_i) \times
 Thickness_i \times XF_i\$\$
 
-\*\*When depth is specified (with or without crop):\*\* \$\$PAWC_i =
+**When depth is specified (with or without crop):** \$\$PAWC_i =
 (DUL_i - LL_i) \times Thickness_i \times \[XF_i\] \times Weight_i\$\$
 
 Where:

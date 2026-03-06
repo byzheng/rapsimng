@@ -1,6 +1,6 @@
 # Run APSIM Next Generation Simulations in a Temporary Folder
 
-The \`with_apsimx\` function automates the process of setting up and
+The `with_apsimx` function automates the process of setting up and
 running APSIM Next Generation (NG) simulations in a temporary or
 specified folder. This approach helps reduce I/O overhead, particularly
 in high-performance computing (HPC) environments with network file
@@ -29,55 +29,55 @@ with_apsimx(
 - models:
 
   A character string specifying the path to the APSIM NG executable
-  (\`Models.exe\` on Windows or \`Models\` on Linux).
+  (`Models.exe` on Windows or `Models` on Linux).
 
 - file:
 
-  A character string specifying the path to the \`.apsimx\` simulation
+  A character string specifying the path to the `.apsimx` simulation
   file.
 
 - mets:
 
-  A character vector specifying paths to meteorological data (\`.met\`
-  files) used in the simulation. Currently, only \`.met\` files located
-  in the same folder as the \`.apsimx\` file are supported (optional).
+  A character vector specifying paths to meteorological data (`.met`
+  files) used in the simulation. Currently, only `.met` files located in
+  the same folder as the `.apsimx` file are supported (optional).
 
 - target:
 
   A character string specifying the target directory where simulations
   will be run. Defaults to the R system temporary directory
-  (\`tempdir()\`).
+  ([`tempdir()`](https://rdrr.io/r/base/tempfile.html)).
 
 - clean:
 
   A character string specifying which files or directories to clean
   after the simulation. Options are:
 
-  - \`"none"\`: No files are cleaned (default).
+  - `"none"`: No files are cleaned (default).
 
-  - \`"simulations"\`: Cleans only simulation-related files (e.g.,
-    \`\*.apsimx\`, \`\*.db\`, \`\*.db-shm\`, \`\*.db-wal\`, \`\*.csv\`).
+  - `"simulations"`: Cleans only simulation-related files (e.g.,
+    `*.apsimx`, `*.db`, `*.db-shm`, `*.db-wal`, `*.csv`).
 
-  - \`"mets"\`: Cleans only meteorological files (e.g., \`\*.met\`).
+  - `"mets"`: Cleans only meteorological files (e.g., `*.met`).
 
-  - \`"all"\`: Cleans all files, including APSIM NG executable files,
+  - `"all"`: Cleans all files, including APSIM NG executable files,
     simulations, and meteorological files.
 
 - post_process:
 
   An optional function for post-processing simulation results. The
-  function must accept a \`folder\` argument specifying the directory
+  function must accept a `folder` argument specifying the directory
   containing the simulation results.
 
 - ...:
 
-  Additional arguments passed to both the \`run_models\` and
-  \`post_process\` functions.
+  Additional arguments passed to both the `run_models` and
+  `post_process` functions.
 
 ## Value
 
-If a \`post_process\` function is provided, its return value is
-returned. Otherwise, the function returns \`NULL\`.
+If a `post_process` function is provided, its return value is returned.
+Otherwise, the function returns `NULL`.
 
 ## See also
 

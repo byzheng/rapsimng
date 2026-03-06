@@ -93,23 +93,23 @@ weighting to layers that are partially or completely beyond this depth.</p></dd>
     <p>PAWC represents the soil's water storage capacity between field capacity (DUL) and
 the permanent wilting point (LL). It is a critical parameter for:</p>
 <p>PAWC is calculated for each soil layer using the formula:</p>
-<p>**When crop = NULL and depth = NULL:**
+<p><strong>When crop = NULL and depth = NULL:</strong>
 $$PAWC_i = (DUL_i - LL15_i) \times Thickness_i$$</p>
-<p>**When crop is specified:**
+<p><strong>When crop is specified:</strong>
 $$PAWC_i = (DUL_i - LL_i) \times Thickness_i \times XF_i$$</p>
-<p>**When depth is specified (with or without crop):**
+<p><strong>When depth is specified (with or without crop):</strong>
 $$PAWC_i = (DUL_i - LL_i) \times Thickness_i \times [XF_i] \times Weight_i$$</p>
 <p>Where:</p><ul><li><p><strong>DUL</strong> (Drained Upper Limit): The volumetric water content (mm/mm)
-        after the soil has drained under gravity, typically 2-3 days after saturation</p></li>
+after the soil has drained under gravity, typically 2-3 days after saturation</p></li>
 <li><p><strong>LL</strong> (Lower Limit): The volumetric water content (mm/mm) below which
-        plants cannot extract water. This can be either:</p><ul><li><p><strong>LL15</strong>: Generic lower limit at 15 bar suction (used when crop = NULL)</p></li>
+plants cannot extract water. This can be either:</p><ul><li><p><strong>LL15</strong>: Generic lower limit at 15 bar suction (used when crop = NULL)</p></li>
 <li><p><strong>Crop-specific LL</strong>: Lower limit specific to a crop type,
-                accounting for different rooting characteristics</p></li>
+accounting for different rooting characteristics</p></li>
 </ul></li>
 <li><p><strong>Thickness</strong>: Layer thickness in millimeters</p></li>
 <li><p><strong>XF</strong>: Exploration factor (0-1), representing the fraction of a layer
-        explored by roots. Only applied when crop is specified; represents the
-        proportion of the layer volume that roots can explore</p></li>
+explored by roots. Only applied when crop is specified; represents the
+proportion of the layer volume that roots can explore</p></li>
 <li><p><strong>Weight</strong>: Depth weighting factor (0-1), only applied when depth is specified:</p><ul><li><p>1.0 for layers completely within the specified depth</p></li>
 <li><p>Proportional fraction for layers partially within the depth</p></li>
 <li><p>0.0 for layers completely beyond the specified depth</p></li>

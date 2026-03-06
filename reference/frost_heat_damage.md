@@ -53,7 +53,7 @@ calc_cum_damage_frost_heat(
 
 - params:
 
-  A crop parameter list. If provided, it will override the \`crop\`
+  A crop parameter list. If provided, it will override the `crop`
   argument.
 
 - mint:
@@ -66,7 +66,7 @@ calc_cum_damage_frost_heat(
 
 - crop:
 
-  Crop name to use from \`default_frost_heat_params()\`.
+  Crop name to use from `default_frost_heat_params()`.
 
 ## Value
 
@@ -101,9 +101,9 @@ cumulative combined frost-heat damage.
 ## Details
 
 The damage functions are based on the APSIM NG Model
-\[FrostHeatDamageFunctions\](https://github.com/APSIMInitiative/ApsimX/blob/3787815684da28c13467942b9d886fa04f54d4c6/Models/Functions/FrostHeatDamageFunctions.cs#L51).
+[FrostHeatDamageFunctions](https://github.com/APSIMInitiative/ApsimX/blob/3787815684da28c13467942b9d886fa04f54d4c6/Models/Functions/FrostHeatDamageFunctions.cs).
 See full documentation
-\[here\](https://notes.apsimng.bangyou.me/docs/Models/Functions/FrostHeatDamageFunctions.html).
+[here](https://notes.apsimng.bangyou.me/docs/Models/Functions/FrostHeatDamageFunctions.html).
 
 ## Examples
 

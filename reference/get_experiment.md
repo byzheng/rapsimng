@@ -12,7 +12,8 @@ get_experiment(apsimx, experiment)
 
 - apsimx:
 
-  A parsed APSIMX model from \`read_apsimx()\`.
+  A parsed APSIMX model from
+  [`read_apsimx()`](https://rapsimng.bangyou.me/reference/read_apsimx.md).
 
 - experiment:
 
@@ -20,7 +21,7 @@ get_experiment(apsimx, experiment)
 
 ## Value
 
-An \`apsimxNode\` object for the experiment.
+An `apsimxNode` object for the experiment.
 
 ## Examples
 
