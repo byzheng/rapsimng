@@ -22,7 +22,8 @@ Imports: jsonlite,
     purrr,
     rlang,
     DBI,
-    RSQLite
+    RSQLite,
+    tidyweather
 RoxygenNote: 7.3.3
 Suggests: 
     testthat,
