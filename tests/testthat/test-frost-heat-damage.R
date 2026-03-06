@@ -143,6 +143,25 @@ test_that("calc_daily_damage_frost_heat returns expected columns", {
 })
 
 
+
+test_that("calc_daily_damage_frost_heat with params", {
+    out <- calc_daily_damage_frost_heat(
+        mint = c(-4, 0, 5),
+        maxt = c(25, 33, 40),
+        growth_stage = c(6.5, 8.0, 9.3),
+        params = default_frost_heat_params()$Wheat
+    )
+
+    expect_equal(nrow(out), 3)
+    expect_true(all(c(
+        "mint", "maxt", "growth_stage", "stage_sens_frost", "stage_sens_heat",
+        "temp_damage_frost", "temp_damage_heat", "daily_damage_frost",
+        "daily_damage_heat", "daily_damage_frost_heat"
+    ) %in% names(out)))
+})
+
+
+
 test_that("calc_cum_damage_frost_heat returns expected columns", {
     out <- calc_cum_damage_frost_heat(
         mint = c(-4, 0, 5),
@@ -153,5 +172,16 @@ test_that("calc_cum_damage_frost_heat returns expected columns", {
 
     expect_equal(nrow(out), 1)
     expect_true(all(c("cum_frost", "cum_heat", "cum_frost_heat") %in% names(out)))
+})
+
+
+test_that("calc_cum_damage_frost_heat returns with params", {
+    out <- calc_cum_damage_frost_heat(
+        mint = c(-4, 0, 5),
+        maxt = c(25, 33, 40),
+        growth_stage = c(6.5, 8.0, 9.3),
+        params = default_frost_heat_params()$Wheat
+    )
+    expect_equal(nrow(out), 1)
 })
 

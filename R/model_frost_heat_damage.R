@@ -391,6 +391,7 @@ cum_damage_frost_heat <- function(mint, maxt, growth_stage, params) {
 #' @param maxt Numeric vector of daily maximum temperature.
 #' @param growth_stage Numeric vector of daily growth stage.
 #' @param crop Crop name to use from `default_frost_heat_params()`.
+#' @param params A crop parameter list. If provided, it will override the `crop` argument.
 #'
 #' @return A tibble with daily stage sensitivity, temperature damage, and daily
 #'   frost/heat/combined damage.
@@ -406,14 +407,19 @@ calc_daily_damage_frost_heat <- function(
     mint, 
     maxt, 
     growth_stage, 
-    crop = c("Wheat", "Canola")
+    crop = c("Wheat", "Canola"),
+    params = NULL
 ) {
     .check_numeric_vector(mint, "mint")
     .check_numeric_vector(maxt, "maxt")
     .check_numeric_vector(growth_stage, "growth_stage")
     .check_equal_length(mint = mint, maxt = maxt, growth_stage = growth_stage)
-    crop <- match.arg(crop)
-    crop_params <- default_frost_heat_params()[[crop]]
+    if (is.null(params)) {
+        crop <- match.arg(crop)
+        crop_params <- default_frost_heat_params()[[crop]]
+    } else {
+        crop_params <- params
+    }
     .validate_frost_heat_inputs(mint, maxt, growth_stage, crop_params)
 
     tibble::tibble(
@@ -438,6 +444,7 @@ calc_daily_damage_frost_heat <- function(
 #' @param maxt Numeric vector of daily maximum temperature.
 #' @param growth_stage Numeric vector of daily growth stage.
 #' @param crop Crop name to use from `default_frost_heat_params()`.
+#' @param params A crop parameter list. If provided, it will override the `crop` argument.
 #'
 #' @return A tibble with cumulative frost damage, cumulative heat damage, and
 #'   cumulative combined frost-heat damage.
@@ -453,14 +460,19 @@ calc_cum_damage_frost_heat <- function(
     mint, 
     maxt, 
     growth_stage, 
-    crop = c("Wheat", "Canola")
+    crop = c("Wheat", "Canola"),
+    params = NULL
 ) {
     .check_numeric_vector(mint, "mint")
     .check_numeric_vector(maxt, "maxt")
     .check_numeric_vector(growth_stage, "growth_stage")
     .check_equal_length(mint = mint, maxt = maxt, growth_stage = growth_stage)
     crop <- match.arg(crop)
-    crop_params <- default_frost_heat_params()[[crop]]
+    if (is.null(params)) {
+        crop_params <- default_frost_heat_params()[[crop]]
+    } else {
+        crop_params <- params
+    }
     .validate_frost_heat_inputs(mint, maxt, growth_stage, crop_params)
 
     cum_frost <- cum_damage_frost(mint, growth_stage, crop_params)

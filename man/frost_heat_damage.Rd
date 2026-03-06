@@ -43,20 +43,22 @@ calc_daily_damage_frost_heat(
   mint,
   maxt,
   growth_stage,
-  crop = c("Wheat", "Canola")
+  crop = c("Wheat", "Canola"),
+  params = NULL
 )
 
 calc_cum_damage_frost_heat(
   mint,
   maxt,
   growth_stage,
-  crop = c("Wheat", "Canola")
+  crop = c("Wheat", "Canola"),
+  params = NULL
 )
 }
 \arguments{
 \item{growth_stage}{Numeric vector of daily growth stage.}
 
-\item{params}{A crop parameter list.}
+\item{params}{A crop parameter list. If provided, it will override the `crop` argument.}
 
 \item{mint}{Numeric vector of daily minimum temperature.}
 
