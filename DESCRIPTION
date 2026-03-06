@@ -14,7 +14,7 @@ URL: https://rapsimng.bangyou.me/,
     https://github.com/byzheng/rapsimng
 BugReports: https://github.com/byzheng/rapsimng/issues
 Encoding: UTF-8
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.1.0)
 Imports: jsonlite, 
     tibble, 
     magrittr, 

@@ -102,6 +102,10 @@
 #'
 #' Helper and wrapper functions to calculate frost and heat damage from
 #' temperature and growth stage.
+#' 
+#' @details 
+#' 
+#' The damage functions are based on the APSIM NG Model [FrostHeatDamageFunctions](https://github.com/APSIMInitiative/ApsimX/blob/3787815684da28c13467942b9d886fa04f54d4c6/Models/Functions/FrostHeatDamageFunctions.cs#L51). See full documentation [here](https://notes.apsimng.bangyou.me/docs/Models/Functions/FrostHeatDamageFunctions.html).
 #'
 #' @name frost_heat_damage
 NULL
