@@ -15,36 +15,36 @@ with_apsimx(
 )
 }
 \arguments{
-\item{models}{A character string specifying the path to the APSIM NG executable (`Models.exe` on Windows
-or `Models` on Linux).}
+\item{models}{A character string specifying the path to the APSIM NG executable (\code{Models.exe} on Windows
+or \code{Models} on Linux).}
 
-\item{file}{A character string specifying the path to the `.apsimx` simulation file.}
+\item{file}{A character string specifying the path to the \code{.apsimx} simulation file.}
 
-\item{mets}{A character vector specifying paths to meteorological data (`.met` files) used in the simulation.
-Currently, only `.met` files located in the same folder as the `.apsimx` file are supported (optional).}
+\item{mets}{A character vector specifying paths to meteorological data (\code{.met} files) used in the simulation.
+Currently, only \code{.met} files located in the same folder as the \code{.apsimx} file are supported (optional).}
 
 \item{target}{A character string specifying the target directory where simulations will be run.
-Defaults to the R system temporary directory (`tempdir()`).}
+Defaults to the R system temporary directory (\code{tempdir()}).}
 
 \item{clean}{A character string specifying which files or directories to clean after the simulation. Options are:
 \itemize{
-  \item `"none"`: No files are cleaned (default).
-  \item `"simulations"`: Cleans only simulation-related files (e.g., `*.apsimx`, `*.db`, `*.db-shm`, `*.db-wal`, `*.csv`).
-  \item `"mets"`: Cleans only meteorological files (e.g., `*.met`).
-  \item `"all"`: Cleans all files, including APSIM NG executable files, simulations, and meteorological files.
+\item \code{"none"}: No files are cleaned (default).
+\item \code{"simulations"}: Cleans only simulation-related files (e.g., \verb{*.apsimx}, \verb{*.db}, \verb{*.db-shm}, \verb{*.db-wal}, \verb{*.csv}).
+\item \code{"mets"}: Cleans only meteorological files (e.g., \verb{*.met}).
+\item \code{"all"}: Cleans all files, including APSIM NG executable files, simulations, and meteorological files.
 }}
 
 \item{post_process}{An optional function for post-processing simulation results.
-The function must accept a `folder` argument specifying the directory
+The function must accept a \code{folder} argument specifying the directory
 containing the simulation results.}
 
-\item{...}{Additional arguments passed to both the `run_models` and `post_process` functions.}
+\item{...}{Additional arguments passed to both the \code{run_models} and \code{post_process} functions.}
 }
 \value{
-If a `post_process` function is provided, its return value is returned. Otherwise, the function returns `NULL`.
+If a \code{post_process} function is provided, its return value is returned. Otherwise, the function returns \code{NULL}.
 }
 \description{
-The `with_apsimx` function automates the process of setting up and running APSIM Next Generation (NG) simulations
+The \code{with_apsimx} function automates the process of setting up and running APSIM Next Generation (NG) simulations
 in a temporary or specified folder. This approach helps reduce I/O overhead, particularly in high-performance
 computing (HPC) environments with network file systems (NFS). The frequent file I/O operations performed by APSIM NG
 (e.g., writing to SQLite databases) can strain file systems, and redirecting simulations to a local folder mitigates this issue.

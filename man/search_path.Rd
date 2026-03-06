@@ -23,7 +23,7 @@ Find a model in the apsimx file using specified path
 
 Absolute paths have a leading ‘.’ e.g.
 \itemize{
-  \item .Simulations.Test.Clock - absolute path - refers to the clock model
+\item .Simulations.Test.Clock - absolute path - refers to the clock model
 in the 'Test' simulation.
 }
 }
@@ -33,7 +33,7 @@ in the 'Test' simulation.
 Scoped paths have a leading model type in square brackets. A model
 of the specified name, in scope, is located before applying the rest of the path.
 \itemize{
-   \item [Soil].Water - scoped path - refers to the Water model that is a child of a model
+\item [Soil].Water - scoped path - refers to the Water model that is a child of a model
 that has the name 'Soil' that is in scope
 }
 }

@@ -58,13 +58,13 @@ calc_cum_damage_frost_heat(
 \arguments{
 \item{growth_stage}{Numeric vector of daily growth stage.}
 
-\item{params}{A crop parameter list. If provided, it will override the `crop` argument.}
+\item{params}{A crop parameter list. If provided, it will override the \code{crop} argument.}
 
 \item{mint}{Numeric vector of daily minimum temperature.}
 
 \item{maxt}{Numeric vector of daily maximum temperature.}
 
-\item{crop}{Crop name to use from `default_frost_heat_params()`.}
+\item{crop}{Crop name to use from \code{default_frost_heat_params()}.}
 }
 \value{
 A named list with crop-specific parameter lists.
@@ -90,17 +90,17 @@ A scalar cumulative heat damage.
 A scalar cumulative frost and heat damage.
 
 A tibble with daily stage sensitivity, temperature damage, and daily
-  frost/heat/combined damage.
+frost/heat/combined damage.
 
 A tibble with cumulative frost damage, cumulative heat damage, and
-  cumulative combined frost-heat damage.
+cumulative combined frost-heat damage.
 }
 \description{
 Helper and wrapper functions to calculate frost and heat damage from
 temperature and growth stage.
 }
 \details{
-The damage functions are based on the APSIM NG Model [FrostHeatDamageFunctions](https://github.com/APSIMInitiative/ApsimX/blob/3787815684da28c13467942b9d886fa04f54d4c6/Models/Functions/FrostHeatDamageFunctions.cs#L51). See full documentation [here](https://notes.apsimng.bangyou.me/docs/Models/Functions/FrostHeatDamageFunctions.html).
+The damage functions are based on the APSIM NG Model \href{https://github.com/APSIMInitiative/ApsimX/blob/3787815684da28c13467942b9d886fa04f54d4c6/Models/Functions/FrostHeatDamageFunctions.cs}{FrostHeatDamageFunctions}. See full documentation \href{https://notes.apsimng.bangyou.me/docs/Models/Functions/FrostHeatDamageFunctions.html}{here}.
 }
 \examples{
 default_frost_heat_params()

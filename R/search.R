@@ -117,7 +117,7 @@ search_node <- function(l, all = FALSE, max_depth = 1000000,
 #' Scoped paths have a leading model type in square brackets. A model
 #' of the specified name, in scope, is located before applying the rest of the path.
 #' \itemize{
-#'    \item [Soil].Water - scoped path - refers to the Water model that is a child of a model
+#'    \item \[Soil\].Water - scoped path - refers to the Water model that is a child of a model
 #' that has the name 'Soil' that is in scope
 #' }
 #'

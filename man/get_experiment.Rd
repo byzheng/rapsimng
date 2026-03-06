@@ -7,12 +7,12 @@
 get_experiment(apsimx, experiment)
 }
 \arguments{
-\item{apsimx}{A parsed APSIMX model from `read_apsimx()`.}
+\item{apsimx}{A parsed APSIMX model from \code{read_apsimx()}.}
 
 \item{experiment}{A single experiment name to locate.}
 }
 \value{
-An `apsimxNode` object for the experiment.
+An \code{apsimxNode} object for the experiment.
 }
 \description{
 Get an experiment node by name

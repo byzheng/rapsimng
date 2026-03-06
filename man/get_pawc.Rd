@@ -9,61 +9,61 @@ get_pawc(l, soil_path = NULL, crop = NULL, depth = NULL)
 \arguments{
 \item{l}{The list of apsimx file}
 
-\item{soil_path}{The path to the soil model. If NULL (default), searches for the 
+\item{soil_path}{The path to the soil model. If NULL (default), searches for the
 first Soil model. Can be a character string specifying the soil name.}
 
-\item{crop}{The crop name for crop-specific lower limit (LL). 
-If NULL (default), uses LL15 and does not apply XF. If provided, uses the 
+\item{crop}{The crop name for crop-specific lower limit (LL).
+If NULL (default), uses LL15 and does not apply XF. If provided, uses the
 crop-specific LL and XF values from the SoilCrop parameters.}
 
-\item{depth}{The depth (in mm) to which PAWC should be calculated. 
-If NULL (default), calculates for all layers. If specified, applies proportional 
+\item{depth}{The depth (in mm) to which PAWC should be calculated.
+If NULL (default), calculates for all layers. If specified, applies proportional
 weighting to layers that are partially or completely beyond this depth.}
 }
 \value{
 A numeric value of PAWC in mm
 }
 \description{
-This function calculates the Plant Available Water Capacity (PAWC) from soil 
-properties in an APSIM Next Generation (.apsimx) file. PAWC represents the 
+This function calculates the Plant Available Water Capacity (PAWC) from soil
+properties in an APSIM Next Generation (.apsimx) file. PAWC represents the
 amount of water that can be stored in the soil and is available for plant uptake.
 }
 \details{
-PAWC represents the soil's water storage capacity between field capacity (DUL) and 
+PAWC represents the soil's water storage capacity between field capacity (DUL) and
 the permanent wilting point (LL). It is a critical parameter for:
 
 PAWC is calculated for each soil layer using the formula:
 
-**When crop = NULL and depth = NULL:**
+\strong{When crop = NULL and depth = NULL:}
 \deqn{PAWC_i = (DUL_i - LL15_i) \times Thickness_i}
 
-**When crop is specified:**
+\strong{When crop is specified:}
 \deqn{PAWC_i = (DUL_i - LL_i) \times Thickness_i \times XF_i}
 
-**When depth is specified (with or without crop):**
+\strong{When depth is specified (with or without crop):}
 \deqn{PAWC_i = (DUL_i - LL_i) \times Thickness_i \times [XF_i] \times Weight_i}
 
 Where:
 \itemize{
-  \item \strong{DUL} (Drained Upper Limit): The volumetric water content (mm/mm) 
-        after the soil has drained under gravity, typically 2-3 days after saturation
-  \item \strong{LL} (Lower Limit): The volumetric water content (mm/mm) below which 
-        plants cannot extract water. This can be either:
-        \itemize{
-          \item \strong{LL15}: Generic lower limit at 15 bar suction (used when crop = NULL)
-          \item \strong{Crop-specific LL}: Lower limit specific to a crop type, 
-                accounting for different rooting characteristics
-        }
-  \item \strong{Thickness}: Layer thickness in millimeters
-  \item \strong{XF}: Exploration factor (0-1), representing the fraction of a layer 
-        explored by roots. Only applied when crop is specified; represents the 
-        proportion of the layer volume that roots can explore
-  \item \strong{Weight}: Depth weighting factor (0-1), only applied when depth is specified:
-        \itemize{
-          \item 1.0 for layers completely within the specified depth
-          \item Proportional fraction for layers partially within the depth
-          \item 0.0 for layers completely beyond the specified depth
-        }
+\item \strong{DUL} (Drained Upper Limit): The volumetric water content (mm/mm)
+after the soil has drained under gravity, typically 2-3 days after saturation
+\item \strong{LL} (Lower Limit): The volumetric water content (mm/mm) below which
+plants cannot extract water. This can be either:
+\itemize{
+\item \strong{LL15}: Generic lower limit at 15 bar suction (used when crop = NULL)
+\item \strong{Crop-specific LL}: Lower limit specific to a crop type,
+accounting for different rooting characteristics
+}
+\item \strong{Thickness}: Layer thickness in millimeters
+\item \strong{XF}: Exploration factor (0-1), representing the fraction of a layer
+explored by roots. Only applied when crop is specified; represents the
+proportion of the layer volume that roots can explore
+\item \strong{Weight}: Depth weighting factor (0-1), only applied when depth is specified:
+\itemize{
+\item 1.0 for layers completely within the specified depth
+\item Proportional fraction for layers partially within the depth
+\item 0.0 for layers completely beyond the specified depth
+}
 }
 
 The total PAWC is the sum across all layers:
