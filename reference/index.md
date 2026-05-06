@@ -4,8 +4,6 @@
 
 - [`append_model()`](https://rapsimng.bangyou.me/reference/append_model.md)
   : append a model into apsimx
-- [`available_models()`](https://rapsimng.bangyou.me/reference/available_models.md)
-  : List all available models in APSIM NG
 - [`disable_models()`](https://rapsimng.bangyou.me/reference/disable_models.md)
   : Disable models in apsimx
 - [`default_frost_heat_params()`](https://rapsimng.bangyou.me/reference/frost_heat_damage.md)

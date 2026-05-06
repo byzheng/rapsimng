@@ -27,6 +27,7 @@ For crop-specific functions and additional resources, please refer to:
 Install from CRAN.
 
 ``` r
+
 install.packages('rapsimng')
 ```
 
@@ -34,6 +35,7 @@ Install the developing version from
 [Github](https://github.com/byzheng/rapsimng).
 
 ``` r
+
 remotes::install_github('byzheng/rapsimng')
 ```
 
@@ -45,6 +47,7 @@ example. Function `read_apsimx` is used to read `*.apsimx` file through
 and returns as a list.
 
 ``` r
+
 # Read Wheat.apsimx file with `read_apsimx` which returns a list of json results.
 file <- system.file("extdata/wheat.apsimx", package = "rapsimng")
 m <- read_apsimx(file)
@@ -56,6 +59,7 @@ A node in the apsimx file can be found using the path specification in
 APSIM NG.
 
 ``` r
+
 potential <- search_path(m,
     path = '[Structure].BranchingRate.PotentialBranchingRate.Vegetative.PotentialBranchingRate')
 potential
@@ -64,6 +68,7 @@ potential
 ## Modify a found model
 
 ``` r
+
 new_model <- potential$node
 new_model$XProperty <- 'NewVariable'
 ```
@@ -71,12 +76,14 @@ new_model$XProperty <- 'NewVariable'
 ## Replace the new model
 
 ``` r
+
 new <- replace_model(m, potential$path, new_model)
 ```
 
 ## Save into a new apsimx file
 
 ``` r
+
 write_apsimx(new, tempfile(fileext = '.json'))
 ```
 

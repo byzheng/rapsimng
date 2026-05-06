@@ -1,6 +1,7 @@
 # Generate apsimx file for sensitivity analysis
 
 ``` r
+
 library(rapsimng)
 library(tidyverse)
 ```
@@ -20,6 +21,7 @@ The data.frame requires three columns (i.e. parameter, value, name) and
 multiple parameters can be specified here.
 
 ``` r
+
 phyllochron_para <- tibble(parameter = "[Phenology].Phyllochron.BasePhyllochron.FixedValue", 
                            value = seq(60, 130, by = 1)) %>% 
   mutate(name = paste0("Cultivar", seq_len(n())))
@@ -41,6 +43,7 @@ there is a factor `Cv` for culivar in the `Permutation` model which
 specified the cultivar by `[Sowing].Script.CultivarName`.
 
 ``` r
+
 template <- read_apsimx(system.file("extdata/wheat.apsimx", package = "rapsimng"))
 ```
 
@@ -49,6 +52,7 @@ template <- read_apsimx(system.file("extdata/wheat.apsimx", package = "rapsimng"
 replace with new values.
 
 ``` r
+
 template <- update_cultivar(template, phyllochron_para)
 
 node <- search_path(template, "[Permutation].Cv")    
@@ -68,6 +72,7 @@ Finally the new model can be write into file system and run with APSIM
 NG. Uncomment the sections below, update the path to `Models.exe`.
 
 ``` r
+
 
 # write_apsimx(template, "new-path.apsimx")
 # models_path <- "path-to-Models.exe"

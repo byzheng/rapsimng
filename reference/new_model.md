@@ -25,50 +25,44 @@ new_model(model = "PMF.Cultivar")
 #> $`$type`
 #> [1] "Models.PMF.Cultivar, Models"
 #> 
+#> $Command
+#> list()
+#> 
 #> $Name
 #> [1] "Cultivar"
 #> 
+#> $ResourceName
+#> NULL
+#> 
 #> $Children
 #> list()
-#> 
-#> $IncludeInDocumentation
-#> [1] TRUE
 #> 
 #> $Enabled
 #> [1] TRUE
 #> 
 #> $ReadOnly
-#> [1] FALSE
-#> 
-#> $Alias
-#> list()
-#> 
-#> $Command
-#> list()
+#> [1] TRUE
 #> 
 new_model(model = "PMF.Cultivar", name = "example")
 #> $`$type`
 #> [1] "Models.PMF.Cultivar, Models"
 #> 
+#> $Command
+#> list()
+#> 
 #> $Name
 #> [1] "example"
 #> 
+#> $ResourceName
+#> NULL
+#> 
 #> $Children
 #> list()
-#> 
-#> $IncludeInDocumentation
-#> [1] TRUE
 #> 
 #> $Enabled
 #> [1] TRUE
 #> 
 #> $ReadOnly
-#> [1] FALSE
-#> 
-#> $Alias
-#> list()
-#> 
-#> $Command
-#> list()
+#> [1] TRUE
 #> 
 ```

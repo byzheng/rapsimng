@@ -10,6 +10,7 @@ new model as sibling node \* `insert` a new model as child
 i.e. `*.apsimx` for simulations and `*.json` for model under resource.
 
 ``` r
+
 library(rapsimng)
 wheat <- read_apsimx(system.file("extdata/Wheat.json", package = "rapsimng"))
 #wheat <- read_apsimx("inst/Wheat.json")
@@ -21,6 +22,7 @@ The existing model can be `replaced` and `removed`. The example below
 shows to update the critical thermal and then remove it.
 
 ``` r
+
 # Find the ThermalTime model 
 a <- search_path(wheat, '[Wheat].Phenology.ThermalTime')
 a$node$Children[[1]]$X[[2]]
@@ -49,36 +51,35 @@ Function `new_model` is used to generate the required elements for a new
 model, e.g. createing a new cultivar `Hartog`
 
 ``` r
+
 new_cultivar <- new_model("PMF.Cultivar", name = "Hartog")
 new_cultivar
 #> $`$type`
 #> [1] "Models.PMF.Cultivar, Models"
 #> 
+#> $Command
+#> list()
+#> 
 #> $Name
 #> [1] "Hartog"
 #> 
+#> $ResourceName
+#> NULL
+#> 
 #> $Children
 #> list()
-#> 
-#> $IncludeInDocumentation
-#> [1] TRUE
 #> 
 #> $Enabled
 #> [1] TRUE
 #> 
 #> $ReadOnly
-#> [1] FALSE
-#> 
-#> $Alias
-#> list()
-#> 
-#> $Command
-#> list()
+#> [1] TRUE
 ```
 
 Then the `Command` can be updated to specify new parameter values.
 
 ``` r
+
 new_cultivar$Command <- list(
   "[Phenology].MinimumLeafNumber.FixedValue = 6",
   "[Phenology].VrnSensitivity.FixedValue = 0")
@@ -87,6 +88,7 @@ new_cultivar$Command <- list(
 Finally the new cultivar can be inserted into apsimx file.
 
 ``` r
+
 # Read the apsimx file
 wheat <- read_apsimx(system.file("extdata/wheat.apsimx", package = "rapsimng"))
 # Create a new Replacements
@@ -113,30 +115,13 @@ cultivar_node$node$Command
 #> [1] "[Phenology].VrnSensitivity.FixedValue = 0"
 ```
 
-### Available models
-
-A new model can be generated in R according to Models assemble in APSIM
-Next Generation. The rapsimng package stores a copy of `Models.xml` from
-APSIM Next Generation on `1st August, 2020`.  
-The available models can be listed using function `available_models`.
-
-``` r
-head(data.frame(model = available_models()))
-#>                                             model
-#> 1                            AgPasture.AGPBiomass
-#> 2                           AgPasture.BiomassAndN
-#> 3                    AgPasture.BiomassAndNLayered
-#> 4                         AgPasture.TissuesHelper
-#> 5                         AgPasture.SimpleGrazing
-#> 6 AgPasture.SimpleGrazing.GrazingRotationTypeEnum
-```
-
 ## Update cultivar parameter values
 
 Function `update_cultivar` is a short way to update parameter values for
 cultivars.
 
 ``` r
+
 wheat <- read_apsimx(system.file("extdata/wheat.apsimx", package = "rapsimng"))
 # Update cultivars
 df <- data.frame(name = rep("Hartog", 3),

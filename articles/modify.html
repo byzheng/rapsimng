@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rapsimng</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -128,26 +128,23 @@ elements for a new model, e.g. createing a new cultivar
 <span><span class="co">#&gt; $`$type`</span></span>
 <span><span class="co">#&gt; [1] "Models.PMF.Cultivar, Models"</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $Command</span></span>
+<span><span class="co">#&gt; list()</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Name</span></span>
 <span><span class="co">#&gt; [1] "Hartog"</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ResourceName</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Children</span></span>
 <span><span class="co">#&gt; list()</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $IncludeInDocumentation</span></span>
-<span><span class="co">#&gt; [1] TRUE</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Enabled</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ReadOnly</span></span>
-<span><span class="co">#&gt; [1] FALSE</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $Alias</span></span>
-<span><span class="co">#&gt; list()</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $Command</span></span>
-<span><span class="co">#&gt; list()</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p>Then the <code>Command</code> can be updated to specify new parameter
 values.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -180,32 +177,13 @@ values.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[2]]</span></span>
 <span><span class="co">#&gt; [1] "[Phenology].VrnSensitivity.FixedValue = 0"</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="available-models">Available models<a class="anchor" aria-label="anchor" href="#available-models"></a>
-</h3>
-<p>A new model can be generated in R according to Models assemble in
-APSIM Next Generation. The rapsimng package stores a copy of
-<code>Models.xml</code> from APSIM Next Generation on
-<code>1st August, 2020</code>.<br>
-The available models can be listed using function
-<code>available_models</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>model <span class="op">=</span> <span class="fu"><a href="../reference/available_models.html">available_models</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                             model</span></span>
-<span><span class="co">#&gt; 1                            AgPasture.AGPBiomass</span></span>
-<span><span class="co">#&gt; 2                           AgPasture.BiomassAndN</span></span>
-<span><span class="co">#&gt; 3                    AgPasture.BiomassAndNLayered</span></span>
-<span><span class="co">#&gt; 4                         AgPasture.TissuesHelper</span></span>
-<span><span class="co">#&gt; 5                         AgPasture.SimpleGrazing</span></span>
-<span><span class="co">#&gt; 6 AgPasture.SimpleGrazing.GrazingRotationTypeEnum</span></span></code></pre></div>
-</div>
 </div>
 <div class="section level2">
 <h2 id="update-cultivar-parameter-values">Update cultivar parameter values<a class="anchor" aria-label="anchor" href="#update-cultivar-parameter-values"></a>
 </h2>
 <p>Function <code>update_cultivar</code> is a short way to update
 parameter values for cultivars.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wheat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_apsimx.html">read_apsimx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/wheat.apsimx"</span>, package <span class="op">=</span> <span class="st">"rapsimng"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Update cultivars</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Hartog"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
