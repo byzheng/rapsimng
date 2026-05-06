@@ -1,7 +1,7 @@
 Package: rapsimng
 Type: Package
 Title: APSIM Next Generation
-Version: 0.4.7
+Version: 0.5.0
 Authors@R: person("Bangyou", "Zheng", 
                email = "zheng.bangyou@gmail.com", 
                role = c("aut", "cre"))
@@ -24,7 +24,6 @@ Imports: jsonlite,
     DBI,
     RSQLite,
     tidyweather
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Suggests: 
     testthat,
@@ -33,3 +32,4 @@ Suggests:
     tidyverse,
     methods
 VignetteBuilder: knitr
+Config/roxygen2/version: 8.0.0
