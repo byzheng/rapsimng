@@ -33,3 +33,6 @@
 
 * Add model damage function of frost and heat stress based on the APSIM NG model [FrostHeatDamageFunctions](https://github.com/APSIMInitiative/ApsimX/blob/3787815684da28c13467942b9d886fa04f54d4c6/Models/Functions/FrostHeatDamageFunctions.cs#L51). See full documentation [here](https://notes.apsimng.bangyou.me/docs/Models/Functions/FrostHeatDamageFunctions.html).
 
+# rapsimng 0.5.0
+
+* Update internal method to define new models.
