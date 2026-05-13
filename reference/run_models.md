@@ -6,8 +6,8 @@ Run apsimx file using Models.exe
 
 ``` r
 run_models(
-  models_exe,
   path,
+  models_exe = NULL,
   pattern = NULL,
   recurse = FALSE,
   csv = FALSE,
@@ -19,13 +19,15 @@ run_models(
 
 ## Arguments
 
-- models_exe:
-
-  path to Models.exe
-
 - path:
 
   The path to an .apsimx file. May include wildcard.
+
+- models_exe:
+
+  path to Models, the executable for running apsimx simulations. If
+  NULL, the function will look for "Models.exe" on Windows or "Models"
+  on Linux in the system PATH.
 
 - pattern:
 

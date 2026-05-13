@@ -54,4 +54,13 @@ CRAN release: 2026-02-09
 
 ## rapsimng 0.5.0
 
+CRAN release: 2026-05-06
+
 - Update internal method to define new models.
+
+## rapsimng 0.5.1
+
+- update the function `run_models` to allow users to specify the path to
+  Models.exe. If not specified, the function will look for “Models.exe”
+  on Windows or “Models” on Linux in the system PATH. See documentation
+  for details.

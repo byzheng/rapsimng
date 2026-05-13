@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rapsimng</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,8 +51,8 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">run_models</span><span class="op">(</span></span>
-<span>  <span class="va">models_exe</span>,</span>
 <span>  <span class="va">path</span>,</span>
+<span>  models_exe <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pattern <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  recurse <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  csv <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -66,12 +66,12 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-models-exe">models_exe<a class="anchor" aria-label="anchor" href="#arg-models-exe"></a></dt>
-<dd><p>path to Models.exe</p></dd>
-
-
-<dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
+<dl><dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
 <dd><p>The path to an .apsimx file. May include wildcard.</p></dd>
+
+
+<dt id="arg-models-exe">models_exe<a class="anchor" aria-label="anchor" href="#arg-models-exe"></a></dt>
+<dd><p>path to Models, the executable for running apsimx simulations. If NULL, the function will look for "Models.exe" on Windows or "Models" on Linux in the system PATH.</p></dd>
 
 
 <dt id="arg-pattern">pattern<a class="anchor" aria-label="anchor" href="#arg-pattern"></a></dt>
