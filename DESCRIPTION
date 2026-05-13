@@ -1,7 +1,7 @@
 Package: rapsimng
 Type: Package
 Title: APSIM Next Generation
-Version: 0.5.0
+Version: 0.5.1
 Authors@R: person("Bangyou", "Zheng", 
                email = "zheng.bangyou@gmail.com", 
                role = c("aut", "cre"))

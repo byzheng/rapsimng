@@ -5,8 +5,8 @@
 \title{Run apsimx file using Models.exe}
 \usage{
 run_models(
-  models_exe,
   path,
+  models_exe = NULL,
   pattern = NULL,
   recurse = FALSE,
   csv = FALSE,
@@ -16,9 +16,9 @@ run_models(
 )
 }
 \arguments{
-\item{models_exe}{path to Models.exe}
-
 \item{path}{The path to an .apsimx file. May include wildcard.}
+
+\item{models_exe}{path to Models, the executable for running apsimx simulations. If NULL, the function will look for "Models.exe" on Windows or "Models" on Linux in the system PATH.}
 
 \item{pattern}{Use to filter simulation names to run.}
 

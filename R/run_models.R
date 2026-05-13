@@ -2,8 +2,8 @@
 
 #' Run apsimx file using Models.exe
 #'
-#' @param models_exe  path to Models.exe
 #' @param path The path to an .apsimx file. May include wildcard.
+#' @param models_exe  path to Models, the executable for running apsimx simulations. If NULL, the function will look for "Models.exe" on Windows or "Models" on Linux in the system PATH.
 #' @param pattern Use to filter simulation names to run.
 #' @param recurse  Recursively search subdirectories for files matching ApsimXFileSpec. FALSE in default.
 #' @param csv  Export all reports to .csv files. FALSE in default.
@@ -12,15 +12,24 @@
 #' @param verbose Write messages to StdOut when a simulation starts/finishes. Only has an effect when running a directory of .apsimx files (*.apsimx).
 #'
 #' @export
-run_models <- function(models_exe, path,
-                       pattern = NULL,
-                       recurse = FALSE,
-                       csv = FALSE,
-                       parallel = NULL,
-                       ncpus = NULL,
-                       verbose = FALSE) {
-    if (!file.exists(models_exe)) {
-        stop(models_exe, " does not exist")
+run_models <- function(
+    path,
+    models_exe = NULL,
+    pattern = NULL,
+    recurse = FALSE,
+    csv = FALSE,
+    parallel = NULL,
+    ncpus = NULL,
+    verbose = FALSE
+) {
+    if (is.null(models_exe)) {
+        models_exe <- if(.Platform$OS.type == "unix") {
+            "Models"
+        } else {
+            "Models.exe"
+        }
+    } else {
+        stopifnot(is.character(models_exe) && length(models_exe) == 1 && file.exists(models_exe))
     }
     cmd <- paste0('"', models_exe, '" "', path, '"')
     # if (!is.null(pattern) && is.character(pattern)) {
