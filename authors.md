@@ -7,7 +7,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/byzheng/rapsimng/blob/v0.5.0/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/byzheng/rapsimng/blob/master/DESCRIPTION)
 
 Zheng B (2026). *rapsimng: APSIM Next Generation*. R package version
 0.5.1, <https://rapsimng.bangyou.me/>.

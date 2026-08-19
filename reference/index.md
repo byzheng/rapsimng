@@ -71,6 +71,8 @@
   : Split an APSIMX file into separate simulations except cultivar
 - [`test_apsimx()`](https://rapsimng.bangyou.me/reference/test_apsimx.md)
   : Test whether all files under published folder of apsimx are required
+- [`thermaltime_validator()`](https://rapsimng.bangyou.me/reference/thermaltime_validator.md)
+  : Validate a thermaltime definition
 - [`update_cultivar()`](https://rapsimng.bangyou.me/reference/update_cultivar.md)
   : Title Update the cultivar parameters
 - [`with_apsimx()`](https://rapsimng.bangyou.me/reference/with_apsimx.md)
