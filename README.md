@@ -22,7 +22,10 @@ For crop-specific functions and additional resources, please refer to:
 
 * [Wheat](https://wheat.rapsimng.bangyou.me/)
 * [Canola](https://canola.rapsimng.bangyou.me/)
-
+* [Lentil](https://lentil.rapsimng.bangyou.me/)
+* [Faba Bean](https://fababean.rapsimng.bangyou.me/)
+* [Chickpea](https://chickpea.rapsimng.bangyou.me/)
+* [Lupin](https://lupin.rapsimng.bangyou.me/)
 
 ## Installation
 
@@ -83,7 +86,7 @@ write_apsimx(new, tempfile(fileext = '.json'))
 
 ## Run apsimx file
 
-A function `run_models` is wrapped for APSIM NG `Models.exe` in the command line and can be called to run apsimx files. See [APSIM website](https://apsimnextgeneration.netlify.app/) for documentation. 
+A function `run_models` is wrapped for APSIM NG `Models.exe` in the command line and can be called to run apsimx files. See [APSIM website](https://www.apsim.info/) for documentation. 
 
 
 
